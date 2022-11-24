@@ -1,0 +1,61 @@
+.post-dialog {
+    box-shadow: 0 4px 8px 50px rgba(30, 170, 206, 0.2);
+    background-color: rgb(40, 61, 70);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #1eaace;
+    padding: 50px 30px;
+}
+
+.post-dialog-header {
+    padding: 50px;
+    width: 400px;
+    color: rgb(192, 195, 199);
+    padding: 16px 16px 0 16px;
+    background-color: rgba(82, 96, 100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid rgba(82, 96, 100, 0.98);
+}
+
+.post-dialog-body {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    border: 2px solid rgba(82, 96, 100, 0.98);
+    padding: 5px 16px 16px 16px;
+    background-color: rgb(110, 125, 131);
+}
+
+.post-dialog-body input {
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid rgba(82, 96, 100, 0.98);
+}
+
+.post-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.upload-btn {
+    background-color: #4c91af;
+    color: white;
+    text-align: center;
+    border: none;
+    text-decoration: none;
+    margin-top: 10px;
+    padding: 10px 30px;
+    border: rgba(82, 96, 100, 0.98);
+    font-size: 16px;
+    border-radius: 2px;
+}
+
+.upload-btn:hover {
+    background-color: #43afdd;
+    cursor: pointer;
+}

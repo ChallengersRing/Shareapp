@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <servlet>
+        <servlet-name>signinProcess</servlet-name>
+        <servlet-class>in.shareapp.user.servlet.SignInProcessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>signinProcess</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>signupProcess</servlet-name>
+        <servlet-class>in.shareapp.user.servlet.SignUpProcessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>signupProcess</servlet-name>
+        <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LinkController</servlet-name>
+        <servlet-class>in.shareapp.user.servlet.LinkControllerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LinkController</servlet-name>
+        <url-pattern>/link</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PostUpload</servlet-name>
+        <servlet-class>in.shareapp.post.servlet.PostUploadServlet</servlet-class>
+        <multipart-config>
+            <location>/</location>
+            <max-file-size>20848820</max-file-size>
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostUpload</servlet-name>
+        <url-pattern>/postupload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PostRetrieveAll</servlet-name>
+        <servlet-class>in.shareapp.post.servlet.PostsRetrieveAllServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostRetrieveAll</servlet-name>
+        <url-pattern>/postretrieveall</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateUserProfile</servlet-name>
+        <servlet-class>in.shareapp.user.servlet.ProfileUpdateProcessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserProfile</servlet-name>
+        <url-pattern>/updateprofile</url-pattern>
+    </servlet-mapping>
+
+
+    <!--    <servlet>-->
+    <!--        <servlet-name>Servlet4</servlet-name>-->
+    <!--        <servlet-class>in.shareapp.user.servlet.UsersListServlet</servlet-class>-->
+    <!--    </servlet>-->
+    <!--    <servlet-mapping>-->
+    <!--        <servlet-name>Servlet4</servlet-name>-->
+    <!--        <url-pattern>/employeeslist</url-pattern>-->
+    <!--    </servlet-mapping>-->
+
+</web-app>

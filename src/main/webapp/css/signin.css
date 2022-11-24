@@ -1,0 +1,84 @@
+.form-a-container{
+    background: rgb(111, 167, 175);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    border-radius: 8px;
+    border:2px solid black;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-a {
+    /*height: 100%;*/
+    border-radius: 15px;
+    margin: 20px auto;
+    background-color: #f2f2f2;
+    width: 400px;
+    text-align: center;
+    padding: 40px 40px;
+}
+
+.form-a:hover {
+    border: 1px solid #22a6b3;
+}
+
+.form-a-field{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.form-a-field label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+.form-a-field input[type="email"],
+.form-a-field input[type="password"] {
+    width: 100%;
+    padding: 12px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.form-a-btn {
+    margin: 10px;
+    background-color: #33c1d3;
+    color: #f2f2f2;
+    padding: 8px 16px 8px 16px;
+    border: 1px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    float: right;
+    width: 100%;
+}
+
+.form-a-btn:hover {
+    background-color: #22a6b3;
+}
+
+button:not(:disabled) {
+    cursor: pointer;
+}
+
+/* Clear floats after the columns */
+/*.row:after {*/
+/*    content: "";*/
+/*    display: table;*/
+/*    clear: both;*/
+/*}*/
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .form-a-field,
+    /*.col-75,*/
+    input[type="submit"] {
+        width: 100%;
+        margin-top: 0;
+    }
+}

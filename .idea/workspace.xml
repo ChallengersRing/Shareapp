@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="shareapp:war" />
+      <artifact name="shareapp:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6bdd8806-0fae-4660-a3f8-3c25318ad1ab" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/dao/DatabaseDataSource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/dao/PostDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/dao/PostDaoImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/entity/Post.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/service/PostService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/service/PostServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/servlet/PostControllerServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/servlet/PostRetrieveServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/servlet/PostUploadServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/post/servlet/PostsRetrieveAllServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/test/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/dao/UserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/dao/UserDaoImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/service/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/servlet/LinkControllerServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/servlet/ProfileUpdateProcessServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/servlet/SignInProcessServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/servlet/SignUpProcessServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/in/shareapp/user/servlet/UsersListServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/ClientResources/Posts/Charminar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/Modal.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/content.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/createPost.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/loadprofile.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/loginDetailModal.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/signin.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/signup.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/html/signin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/html/signup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/account-circle.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/audio.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/blog.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/close.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/history.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/home.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/like.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/menu-fill.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/menu-fill.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/menu.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/mic-off.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/mic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/posts.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/search.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/setting-voice.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/upload.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/icons/videos.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/custom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/CreatePost.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/LoadProfile.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/PostListAllUsers.jsp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Script" />
+        <option value="JavaScript File" />
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="HTML File" />
+        <option value="CSS File" />
+        <option value="Jsp File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2HRXDVzLPyY1vEnNMhMMfTKbVcw" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/abhay/Desktop/JavaMiniProject/shareapp/src/main/webapp/ClientResources/ProfilePics&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\ClientResources\ProfilePics" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\ClientResources\Posts" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\css" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\jsp" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\java\in\shareapp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\ClientResources\ProfilePics" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\images" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\icons" />
+      <recent name="C:\Users\abhay\Desktop\JavaMiniProject\shareapp\src\main\webapp\jsp" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="in.shareapp.dao" />
+      <recent name="in.shareapp.servlets" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="s" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.68">
+    <configuration name="java" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="in.shareapp.test.Main" />
+      <module name="shareapp" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 9.0.68" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.68" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATING_POLICY" value="redeploy-artifacts" />
+      <deployment>
+        <artifact name="shareapp:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/shareapp" />
+          </settings>
+        </artifact>
+        <artifact name="shareapp:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/shareapp_war_exploded" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="4cf8e08c-9368-4d55-83bc-851c6a3119c7" />
+        <option name="DEPLOY_TOMCAT_APPS" value="true" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="60505" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="shareapp:war" />
+          <artifact name="shareapp:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <configuration name="Smart Tomcat" type="com.poratu.idea.plugins.tomcat">
+      <log_file alias="Tomcat Catalina Log" path="$USER_HOME$/.SmartTomcat/shareapp/shareapp/logs/catalina.*" />
+      <log_file alias="Tomcat Manager Log" path="$USER_HOME$/.SmartTomcat/shareapp/shareapp/logs/manager.*" />
+      <log_file alias="Tomcat Host Manager Log" path="$USER_HOME$/.SmartTomcat/shareapp/shareapp/logs/host-manager.*" />
+      <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
+      <predefined_log_file enabled="true" id="Tomcat Access Log" />
+      <option name="contextPath" value="/shareapp" />
+      <option name="docBase" value="$PROJECT_DIR$/src/main/webapp" />
+      <option name="tomcatInfo">
+        <TomcatInfo>
+          <option name="name" value="Apache Tomcat/9.0.68" />
+          <option name="path" value="$PROJECT_DIR$/../apache-tomcat-9.0.68" />
+          <option name="version" value="9.0.68.0" />
+        </TomcatInfo>
+      </option>
+      <option name="vmOptions" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.java" />
+      <item itemvalue="Smart Tomcat.Smart Tomcat" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.68" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6bdd8806-0fae-4660-a3f8-3c25318ad1ab" name="Changes" comment="" />
+      <created>1668248753397</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1668248753397</updated>
+      <workItem from="1668248756446" duration="21015000" />
+      <workItem from="1668358451383" duration="7476000" />
+      <workItem from="1668395005184" duration="9784000" />
+      <workItem from="1668419264224" duration="7935000" />
+      <workItem from="1668433812655" duration="16208000" />
+      <workItem from="1668481681736" duration="23385000" />
+      <workItem from="1668567899034" duration="14008000" />
+      <workItem from="1668661629659" duration="43671000" />
+      <workItem from="1668739885171" duration="13431000" />
+      <workItem from="1668759613925" duration="27071000" />
+      <workItem from="1668827795024" duration="38961000" />
+      <workItem from="1668882716764" duration="22059000" />
+      <workItem from="1668931227750" duration="1459000" />
+      <workItem from="1668932836540" duration="37745000" />
+      <workItem from="1669000730033" duration="21139000" />
+      <workItem from="1669044640196" duration="16253000" />
+      <workItem from="1669086121456" duration="25404000" />
+      <workItem from="1669128605370" duration="46000" />
+      <workItem from="1669132765915" duration="13459000" />
+      <workItem from="1669146394188" duration="208000" />
+      <workItem from="1669172866401" duration="3438000" />
+      <workItem from="1669219671367" duration="6104000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/in/shareapp/dao/entity/UsersEntity.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

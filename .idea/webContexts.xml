@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/ajax/signin.html" value="file://$PROJECT_DIR$/src/main/webapp/ajax" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/ajax/signup.html" value="file://$PROJECT_DIR$/src/main/webapp/ajax" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/html/createPost.html" value="file://$PROJECT_DIR$/src/main/webapp/html" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/html/signin.html" value="file://$PROJECT_DIR$/src/main/webapp/html" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/index.html" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/index.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/CreatePost.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp" />
+      </map>
+    </option>
+  </component>
+</project>
