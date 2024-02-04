@@ -1,14 +1,17 @@
 package in.shareapp.post.dao;
 
-import in.shareapp.dao.DatabaseDataSource;
+import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.post.entity.Post;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 
 public class PostDaoImpl extends DatabaseDataSource implements PostDao {
+    private static final Logger logger = Logger.getLogger(PostDaoImpl.class.getName());
+
     @Override
     public boolean uploadPost(Post post) {
         boolean status = false;
@@ -36,6 +39,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeStatement(stmt);
@@ -77,6 +81,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -131,6 +136,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
                 counter++;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);

@@ -12,13 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 public class SignUpProcessServlet extends HttpServlet {
+
+    private static final Logger logger = Logger.getLogger(SignUpProcessServlet.class.getName());
+
     UserService userService = new UserServiceImpl();
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("From SignUpProcessServlet");
+        logger.info("From SignUpProcessServlet");
         HttpSession session = req.getSession();
         PrintWriter out = resp.getWriter();
 
@@ -31,8 +35,8 @@ public class SignUpProcessServlet extends HttpServlet {
 
         User user = new User(photo, firstName, lastName, email, phone, password);
         boolean isUserAvailable = userService.checkUserBeforeRegister(user);
-        System.out.println(isUserAvailable);
-        if (isUserAvailable != true) {
+        logger.info("isUserAvailable: " + isUserAvailable);
+        if (!isUserAvailable) {
             boolean result = userService.registerNewUser(user);
             RequestDispatcher rd;
 
@@ -47,6 +51,6 @@ public class SignUpProcessServlet extends HttpServlet {
             session.setAttribute("SIGNUPSTATUS", "Fail");
             out.print("<p style=\"color:red;text-align:center;\">User Already Available</p>");
         }
-        System.out.println("SIGNUPSTATUS at SignUpProcessServlet: " + session.getAttribute("SIGNUPSTATUS"));
+        logger.info("SIGNUPSTATUS: " + session.getAttribute("SIGNUPSTATUS"));
     }
 }

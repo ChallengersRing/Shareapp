@@ -11,8 +11,11 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Logger;
 
 public class PostUploadServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(PostUploadServlet.class.getName());
+
     private String getDateTime() {
         GregorianCalendar date = new GregorianCalendar();
         int year = date.get(Calendar.YEAR);
@@ -30,9 +33,10 @@ public class PostUploadServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         HttpSession session = req.getSession();
 
-        System.out.println("From PostUploadServlet:-----");
+        logger.info("From PostUploadServlet:-----");
 
         User user = (User) session.getAttribute("USERDETAILS");
         if (user != null) {
@@ -54,7 +58,7 @@ public class PostUploadServlet extends HttpServlet {
             thumbnailFilename = postService.getPostFileName(thumbnailFile);
             videoFilename = postService.getPostFileName(videoFile);
 
-            System.out.println("Post Details: " + userId +
+            logger.info("Post Details: " + userId +
                     " " + videoFilename + " " + title + " " +
                     thumbnailFilename + " " + " " + description + " " + date);
 
@@ -76,21 +80,21 @@ public class PostUploadServlet extends HttpServlet {
 
                     if(fsStatusThumbnail && fsStatusVideo){
                         req.setAttribute("PostUpload","success");
-                        System.out.println("Post upload success");
+                        logger.fine("Post upload success");
                     }else {
-                        System.out.println("File System failure");
+                        logger.severe("File System failure");
                     }
                 } else {
                     //Database insert failure
-                    System.out.println("Database post failure");
+                    logger.warning("Database post failure");
                 }
             } else {
                 //Post receiving from client failure
-                System.out.println("Post receiving failure");
+                logger.warning("Post receiving failure");
             }
         } else {
             // User didn't login post upload failure
-            System.out.println("User didn't login post upload failure");
+            logger.warning("User didn't login post upload failure");
         }
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("./index.jsp");

@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 public class SignInProcessServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(SignInProcessServlet.class.getName());
     UserService userService = new UserServiceImpl();
 
     @Override
@@ -26,10 +28,10 @@ public class SignInProcessServlet extends HttpServlet {
         User user = new User(email, password);
         boolean result = userService.authenticateUserByEmailAndPassword(user);
 
-        System.out.println("From SignInProcessServlet:---");
-        System.out.println(email + " " + password);
-        System.out.println("Result:" + result);
-        System.out.println(user.getFirstName() + " " +
+        logger.info("From SignInProcessServlet:---");
+        logger.info(email + " " + password);
+        logger.info("Result:" + result);
+        logger.info(user.getFirstName() + " " +
                 user.getEmail() + " " +
                 user.getPassword());
 
@@ -41,6 +43,6 @@ public class SignInProcessServlet extends HttpServlet {
             session.setAttribute("SIGNINSTATUS", "Fail");
             out.print("<p style=\"color:red;text-align:center;\">Try Again</p>");
         }
-        System.out.println("SIGNINSTATUS at SignInProcessServlet: "+session.getAttribute("SIGNINSTATUS"));
+        logger.info("SIGNINSTATUS at SignInProcessServlet: "+session.getAttribute("SIGNINSTATUS"));
     }
 }

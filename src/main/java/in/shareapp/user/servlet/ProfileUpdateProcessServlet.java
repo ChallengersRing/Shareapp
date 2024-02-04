@@ -1,5 +1,6 @@
 package in.shareapp.user.servlet;
 
+import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
@@ -11,11 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 public class ProfileUpdateProcessServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(DatabaseDataSource.class.getName());
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        System.out.println("From ProfileUpdateProcessServlet: ");
+        logger.info("From ProfileUpdateProcessServlet: ");
 
         PrintWriter out = resp.getWriter();
         HttpSession session = req.getSession();
@@ -42,7 +46,7 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
 
         User user = new User(photo, firstName, lastName, dob, gender, email, phone, password);
 
-        System.out.println(user.toString());
+        logger.info(user.toString());
 
 
 
@@ -79,9 +83,9 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
             messageForClient = messageForClient + "Photo update: Fail, ";
         }
 
-        System.out.println("statusFileSystem: " + statusUploadInFileSystem);
-        System.out.println("statusDatabase: " + statusUploadInDatabase);
-        System.out.println(messageForClient);
+        logger.info("statusFileSystem: " + statusUploadInFileSystem);
+        logger.info("statusDatabase: " + statusUploadInDatabase);
+        logger.info(messageForClient);
         out.print(messageForClient);
     }
 }

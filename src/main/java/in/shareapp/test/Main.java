@@ -18,6 +18,7 @@ public class Main {
         );
 
         UserDao userDao = new UserDaoImpl();
+        userDao.insertUser(user);
         userDao.selectUserByEmailAndPassword(user);
         System.out.println(user.getId() + " " +
                 user.getPhoto() + " " +

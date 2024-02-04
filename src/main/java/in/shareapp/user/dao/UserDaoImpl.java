@@ -1,14 +1,17 @@
 package in.shareapp.user.dao;
 
-import in.shareapp.dao.DatabaseDataSource;
+import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.user.entity.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 
 public class UserDaoImpl extends DatabaseDataSource implements UserDao {
+    private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
+
     public boolean selectUserByColumnFieldName(User user, String columnName, String value){
         Connection dbCon = null;
         Statement stmt = null;
@@ -39,6 +42,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -86,6 +90,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -120,6 +125,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeStatement(stmt);
@@ -172,6 +178,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 counter++;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -207,6 +214,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
+            logger.warning("Query not execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeStatement(stmt);

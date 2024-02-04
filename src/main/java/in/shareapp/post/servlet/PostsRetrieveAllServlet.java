@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class PostsRetrieveAllServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(PostsRetrieveAllServlet.class.getName());
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostService postService = new PostServiceImpl();

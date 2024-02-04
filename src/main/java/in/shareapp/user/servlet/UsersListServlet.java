@@ -1,7 +1,5 @@
 package in.shareapp.user.servlet;
 
-import in.shareapp.user.dao.UserDao;
-import in.shareapp.user.dao.UserDaoImpl;
 import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;

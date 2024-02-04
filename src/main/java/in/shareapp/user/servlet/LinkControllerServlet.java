@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 public class LinkControllerServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(LinkControllerServlet.class.getName());
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.service(req, resp);
@@ -24,7 +27,7 @@ public class LinkControllerServlet extends HttpServlet {
         } else if(linkName.equals("signout")) {
                 session.invalidate();
             out.print("success");
-            System.out.println("SIGNINSTATUS at ServiceControllerServlet: "+session.getAttribute("SIGNINSTATUS"));
+            logger.info("SIGNINSTATUS at ServiceControllerServlet: "+session.getAttribute("SIGNINSTATUS"));
         } else if(linkName.equals("signup")) {
             out.print("success");
         }
