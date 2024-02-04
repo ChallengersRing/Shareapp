@@ -14,35 +14,6 @@ services:
     networks:
       - shareapp
 
-  redis:
-    image: redis/redis-stack:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - shareapp
-
-  zookeeper:
-    image: zookeeper:latest
-    ports:
-      - "2181:2181"
-    networks:
-      - shareapp
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
-      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
-      KAFKA_CREATE_TOPICS: "your_topic_name:1:1"
-    depends_on:
-      - zookeeper
-    networks:
-      - shareapp
-
 networks:
   shareapp:
 
