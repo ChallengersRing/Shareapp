@@ -52,7 +52,7 @@
 
             user = (User) session.getAttribute("USERDETAILS");
         %>
-        <img src="./ClientResources/ProfilePics/<%=user.getPhoto()%>" onclick="signinDetails()" alt=""
+        <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" onclick="signinDetails()" alt=""
              style="border-radius: 50%; height: 40px; width: 40px;">
 
         <!-- The login detail Modal (css in Modal.css)-->
@@ -60,7 +60,7 @@
             <span class="logindetail-close">CLOSE</span>
             <!-- Modal content -->
             <div class="card">
-                <img src="./ClientResources/ProfilePics/<%=user.getPhoto()%>" alt="USER" style="width:100%">
+                <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" alt="USER" style="width:100%">
                 <p><%=user.getFirstName() + " " + user.getLastName()%>
                 </p>
                 <a href="javascript:loadProfile()">

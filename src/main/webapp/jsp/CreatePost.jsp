@@ -11,7 +11,7 @@
 <form action="./postupload" method="POST" enctype="multipart/form-data">
     <div class="post-dialog">
         <div class="post-dialog-header">
-            <img src="./ClientResources/ProfilePics/<%=user.getPhoto()%>" alt=""
+            <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" alt=""
                  style="border-radius: 50%; height: 60px; width: 60px;">
             <span><%=user.getFirstName() + " " + user.getLastName()%></span>
             <span>Visibility: Public</span>

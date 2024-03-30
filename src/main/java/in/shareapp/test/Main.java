@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         User user = new User("abhayraj7631@gmail.com", "123");
         System.out.println(user.getId() + " " +
-                user.getPhoto() + " " +
+                user.getAvatar() + " " +
                 user.getFirstName() + " " +
                 user.getLastName() + " " +
                 user.getDateOfBirth() + " " +
@@ -19,9 +19,9 @@ public class Main {
 
         UserDao userDao = new UserDaoImpl();
         userDao.insertUser(user);
-        userDao.selectUserByEmailAndPassword(user);
+        userDao.selectUserByEmail(user.getEmail());
         System.out.println(user.getId() + " " +
-                user.getPhoto() + " " +
+                user.getAvatar() + " " +
                 user.getFirstName() + " " +
                 user.getLastName() + " " +
                 user.getDateOfBirth() + " " +
@@ -32,7 +32,7 @@ public class Main {
 
         user = new User("abhayraj7631@gmail.com", "1234");
         System.out.println(user.getId() + " " +
-                user.getPhoto() + " " +
+                user.getAvatar() + " " +
                 user.getFirstName() + " " +
                 user.getLastName() + " " +
                 user.getDateOfBirth() + " " +

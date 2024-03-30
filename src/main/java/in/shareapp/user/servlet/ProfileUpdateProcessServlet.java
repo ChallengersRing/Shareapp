@@ -23,7 +23,7 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
         User signedInUser = (User) session.getAttribute("USERDETAILS");
         UserService userService = new UserServiceImpl();
 
-        String photo = signedInUser.getPhoto();
+        String photo = signedInUser.getAvatar();
         String firstName = req.getParameter("fname");
         String lastName = req.getParameter("lname");
         String dob = req.getParameter("dob");

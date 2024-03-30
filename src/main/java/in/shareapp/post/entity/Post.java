@@ -2,8 +2,8 @@ package in.shareapp.post.entity;
 
 public class Post {
     //PROPERTIES
-    private int postId;
-    private int userId;
+    private Long postId;
+    private Long userId;
     private String postFile;
     private String postTitle;
     private String postThumbnail;
@@ -16,7 +16,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(int userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate) {
+    public Post(Long userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate) {
         this.userId = userId;
         this.postFile = postFile;
         this.postTitle = postTitle;
@@ -25,7 +25,7 @@ public class Post {
         this.postDate = postDate;
     }
 
-    public Post(int userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate, int postViews, int postLikes, String postComments) {
+    public Post(Long userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate, int postViews, int postLikes, String postComments) {
         this.userId = userId;
         this.postFile = postFile;
         this.postTitle = postTitle;
@@ -37,7 +37,7 @@ public class Post {
         this.postComments = postComments;
     }
 
-    public Post(int postId, int userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate, int postViews, int postLikes, String postComments) {
+    public Post(Long postId, Long userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate, int postViews, int postLikes, String postComments) {
         this.postId = postId;
         this.userId = userId;
         this.postFile = postFile;
@@ -50,11 +50,11 @@ public class Post {
         this.postComments = postComments;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -91,11 +91,11 @@ public class Post {
     }
 
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 

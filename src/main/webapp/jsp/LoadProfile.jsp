@@ -8,7 +8,7 @@
 </head>
 <body>
 <form enctype="multipart/form-data" class="form-update" id="upd-form">
-    <img src="./ClientResources/ProfilePics/<%=user.getPhoto()%>" alt="" style="border-radius: 50%; height: 60px; width: 60px;">
+    <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" alt="" style="border-radius: 50%; height: 60px; width: 60px;">
     <p class="heading-small text-muted mb-4"><%=user.getFirstName()%>'s Profile</p>
 
     <div class="form-update-group">

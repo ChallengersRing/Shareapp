@@ -9,26 +9,18 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class PostUploadServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PostUploadServlet.class.getName());
 
     private String getDateTime() {
-        GregorianCalendar date = new GregorianCalendar();
-        int year = date.get(Calendar.YEAR);
-        int month = date.get(Calendar.MONTH);
-        int day = date.get(Calendar.DATE);
-        int hour = date.get(Calendar.HOUR_OF_DAY);
-        int minute = date.get(Calendar.MINUTE);
-        int seconds = date.get(Calendar.SECOND);
-
-        //Format: "'2022-12-20 16:06:15'"
-        String dateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds;
-
-        return dateTime;
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+        return formattedDateTime;
     }
 
     @Override
@@ -40,7 +32,7 @@ public class PostUploadServlet extends HttpServlet {
 
         User user = (User) session.getAttribute("USERDETAILS");
         if (user != null) {
-            int userId = user.getId();
+            Long userId = user.getId();
             String title = req.getParameter("title");
             String description = req.getParameter("description");
             String thumbnailFilename = null;

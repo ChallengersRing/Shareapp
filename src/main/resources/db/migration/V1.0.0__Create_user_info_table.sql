@@ -1,12 +1,17 @@
 CREATE SCHEMA IF NOT EXISTS shareapp;
-CREATE TABLE IF NOT EXISTS shareapp.user_info (
-                           user_id            SERIAL PRIMARY KEY,
-                           user_photo         VARCHAR(255),
-                           user_fname         VARCHAR(50),
-                           user_lname         VARCHAR(50),
-                           user_dob           DATE,
-                           user_gender        VARCHAR(10),
-                           user_email         VARCHAR(255) UNIQUE,
-                           user_phone         VARCHAR(20),
-                           user_password      VARCHAR(255)
+CREATE TABLE IF NOT EXISTS shareapp.user_info
+(
+    id            SERIAL PRIMARY KEY,
+    ext_id        uuid                 DEFAULT gen_random_uuid(),
+    avatar        VARCHAR(255),
+    firstname     VARCHAR(50) NOT NULL,
+    lastname      VARCHAR(50) NOT NULL,
+    gender        VARCHAR(10),
+    email         VARCHAR(255) UNIQUE,
+    phone         VARCHAR(20),
+    password      VARCHAR(255),
+    date_of_birth DATE,
+    deleted       BOOLEAN              DEFAULT FALSE,
+    created_at    TIMESTAMP   NOT NULL DEFAULT current_timestamp,
+    updated_at    TIMESTAMP   NOT NULL DEFAULT current_timestamp
 );

@@ -4,138 +4,138 @@ import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.user.entity.User;
 
 import java.sql.*;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
-    public boolean selectUserByColumnFieldName(User user, String columnName, String value) {
-        Connection dbCon = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+    @Override
+    public User selectUserByColumnValue(String column, String value) {
+        User user = null;
+        String sql = "SELECT * FROM shareapp.user_info WHERE " + column + " = ?";
 
-        boolean status = false;
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement();
+            pstmt.setString(1, value);
 
-            String sql = "SELECT *" +
-                    " FROM shareapp.user_info WHERE " +
-                    columnName + "='" + value +
-                    "'";
-
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                user.setId(rs.getInt(1));
-                user.setPhoto(rs.getString(2));
-                user.setFirstName(rs.getString(3));
-                user.setLastName(rs.getString(4));
-                user.setDateOfBirth(rs.getString(5));
-                user.setGender(rs.getString(6));
-                user.setEmail(rs.getString(7));
-                user.setPhone(rs.getString(8));
-                user.setPassword(rs.getString(9));
-                status = true;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = createUserFromResultSet(rs);
+                }
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeResultSet(rs);
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
+            logger.warning("Error selecting user by column field name: " + sqlEx.getMessage());
         }
-        return status;
+
+        return user;
+    }
+
+
+    @Override
+    public Optional<User> selectUserByEmail(String email) {
+        User user = null;
+
+        String sql = "SELECT * FROM shareapp.user_info WHERE email=?";
+
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = createUserFromResultSet(rs);
+                }
+            }
+        } catch (SQLException sqlEx) {
+            logger.warning("Query execution failed: " + sqlEx.getMessage());
+        }
+
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public boolean selectUserByID(User user) {
-        boolean status = selectUserByColumnFieldName(user, "user_id", String.valueOf(user.getId()));
-        return status;
-    }
+    public User selectUserByID(Long userId) {
+        User user = null;
+        String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
 
-    @Override
-    public boolean selectUserByEmailAndPassword(User user) {
-        Connection dbCon = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
-        boolean status = false;
+            pstmt.setLong(1, userId);
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement();
-
-            String sql = "SELECT *" +
-                    " FROM shareapp.user_info WHERE " +
-                    "user_email='" + user.getEmail() +
-                    "' AND user_password='" + user.getPassword() +
-                    "'";
-
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                user.setId(rs.getInt(1));
-                user.setPhoto(rs.getString(2));
-                user.setFirstName(rs.getString(3));
-                user.setLastName(rs.getString(4));
-                user.setDateOfBirth(rs.getString(5));
-                user.setGender(rs.getString(6));
-                // user.setEmail(email);
-                user.setPhone(rs.getString(8));
-                // user.setPassword(password);
-                status = true;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = createUserFromResultSet(rs);
+                }
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeResultSet(rs);
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
+            logger.warning("Error selecting user by ID: " + sqlEx.getMessage());
         }
 
-        return status;
+        return user;
     }
+
+
+    @Override
+    public User selectUserByExtId(UUID extId) {
+        User user = null;
+        String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
+
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+
+            pstmt.setObject(1, extId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = createUserFromResultSet(rs);
+                }
+            }
+        } catch (SQLException sqlEx) {
+            logger.warning("Error selecting user by external ID: " + sqlEx.getMessage());
+        }
+
+        return user;
+    }
+
 
     @Override
     public boolean insertUser(User user) {
         boolean status = false;
 
-        Connection dbCon = null;
-        Statement stmt = null;
+        String sql = "INSERT INTO shareapp.user_info(avatar, firstname, lastname, email, phone, password) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement();
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
-            String sql = "INSERT INTO shareapp.user_info(user_photo, user_fname, user_lname, user_email, user_phone, user_password) VALUES('" +
-                    user.getPhoto() + "', '" +
-                    user.getFirstName() + "', '" +
-                    user.getLastName() + "', '" +
-                    user.getEmail() + "', '" +
-                    user.getPhone() + "', '" +
-                    user.getPassword() + "')";
+            pstmt.setString(1, user.getAvatar());
+            pstmt.setString(2, user.getFirstName());
+            pstmt.setString(3, user.getLastName());
+            pstmt.setString(4, user.getEmail());
+            pstmt.setString(5, user.getPhone());
+            pstmt.setString(6, user.getPassword());
 
-            int row = stmt.executeUpdate(sql);
-            if (row != 0) {
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
                 status = true;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
-        }
+            logger.warning("Error inserting user: " + sqlEx.getMessage());
+            //TODO: Custom exception throw
+        }// Resources are automatically closed by try-with-resources
 
         return status;
     }
 
     @Override
-    public User[] selectAllUsers() {
-        User[] users = null; //will store all users info from the database in this array
+    @Deprecated(since = "May impact performance")
+    public List<User> selectAllUsers() {
+        List<User> userList = new ArrayList<>();
 
         Connection dbCon = null;
         Statement stmt = null;
@@ -146,37 +146,14 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
             String sql = "SELECT * FROM shareapp.user_info";
-
             rs = stmt.executeQuery(sql);
-
-            int rowCounter = 0;
-            while (rs.next()) {
-                rowCounter++;
-            }
-
-            users = new User[rowCounter];
-
-            int counter = 0;
 
             rs.beforeFirst();
             while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt(1));
-                user.setPhoto(rs.getString(2));
-                user.setFirstName(rs.getString(3));
-                user.setLastName(rs.getString(4));
-                user.setDateOfBirth(rs.getString(5));
-                user.setGender(rs.getString(6));
-                user.setEmail(rs.getString(7));
-                user.setPhone(rs.getString(8));
-                user.setPassword(rs.getString(9));
-
-                users[counter] = user;
-
-                counter++;
+                userList.add(createUserFromResultSet(rs));
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: ");
+            logger.warning("Query execution failed: " + sqlEx.getMessage());
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -184,66 +161,86 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             closeDbConnection(dbCon);
         }
 
-        return users;
+        return userList;
     }
 
     @Override
     public boolean updateUser(User user) {
-        Connection dbCon = null;
-        PreparedStatement stmt = null;
-
         boolean status = false;
 
-        try {
-            dbCon = getDbConnection();
+        String sql = "UPDATE shareapp.user_info SET avatar = ?, firstname = ?, lastname = ?, " +
+                "date_of_birth = ?, gender = ?, phone = ?, password = ? WHERE email = ? AND deleted = FALSE";
 
-            String sql = "UPDATE shareapp.user_info SET user_photo = ?, user_fname = ?, user_lname = ?, " +
-                    "user_dob = ?, user_gender = ?, user_phone = ?, user_password = ? WHERE user_email = ?";
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
-            stmt = dbCon.prepareStatement(sql);
+            pstmt.setString(1, user.getAvatar());
+            pstmt.setString(2, user.getFirstName());
+            pstmt.setString(3, user.getLastName());
 
-            stmt.setString(1, user.getPhoto());
-            stmt.setString(2, user.getFirstName());
-            stmt.setString(3, user.getLastName());
-
-            if (Optional.ofNullable(user.getDateOfBirth()).isPresent() && !user.getDateOfBirth().equals( "null")) {
-                stmt.setDate(4, java.sql.Date.valueOf(user.getDateOfBirth()));
+            if (user.getDateOfBirth() != null && !user.getDateOfBirth().equals("null")) {
+                pstmt.setDate(4, java.sql.Date.valueOf(user.getDateOfBirth()));
             } else {
-                stmt.setNull(4, java.sql.Types.DATE);
+                pstmt.setNull(4, java.sql.Types.DATE);
             }
 
-            stmt.setString(5, user.getGender());
-            stmt.setString(6, user.getPhone());
-            stmt.setString(7, user.getPassword());
-            stmt.setString(8, user.getEmail());
+            pstmt.setString(5, user.getGender());
+            pstmt.setString(6, user.getPhone());
+            pstmt.setString(7, user.getPassword());
+            pstmt.setString(8, user.getEmail());
 
-            int rowsUpdated = stmt.executeUpdate();
+            int rowsUpdated = pstmt.executeUpdate();
 
             if (rowsUpdated > 0) {
                 status = true;
             }
-
-            /* String sql = "UPDATE shareapp.user_info t SET user_photo = '" + user.getPhoto() +
-                    "', user_fname = '" + user.getFirstName() +
-                    "', user_lname = '" + user.getLastName() +
-                    "', user_dob = '" + user.getDateOfBirth() +
-                    "', user_gender = '" + user.getGender() +
-                    "', user_phone = '" + user.getPhone() +
-                    "', user_password = '" + user.getPassword() +
-                    "' WHERE t.user_email = '" + user.getEmail() + "'";
-
-            logger.info("Update profile sql: " + sql);
-            int row = stmt.executeUpdate(sql);
-            if (row > 0) {
-                status = true;
-            } */
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
+            logger.warning("Error updating user: " + sqlEx.getMessage());
         }
+
         return status;
     }
+
+    // Should be scheduled cleanup in 90 days.
+    @Override
+    public boolean deleteUserByExtId(UUID extId) {
+        boolean success = false;
+        String sql = "UPDATE shareapp.user_info SET deleted = TRUE WHERE ext_id = ?";
+
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+
+            pstmt.setObject(1, extId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                success = true;
+            }
+        } catch (SQLException sqlEx) {
+            logger.warning("Error soft deleting user by external ID: " + sqlEx.getMessage());
+        }
+
+        return success;
+    }
+
+    private User createUserFromResultSet(ResultSet rs) throws SQLException {
+        User user = new User();
+
+        user.setId(rs.getLong("id"));
+        user.setExtId(rs.getObject("ext_id", UUID.class));
+        user.setAvatar(rs.getString("avatar"));
+        user.setFirstName(rs.getString("firstname"));
+        user.setLastName(rs.getString("lastname"));
+        user.setGender(rs.getString("gender"));
+        user.setEmail(rs.getString("email"));
+        user.setPhone(rs.getString("phone"));
+        user.setPassword(rs.getString("password"));
+        user.setDateOfBirth(rs.getString("date_of_birth"));
+        user.setDeleted(rs.getBoolean("deleted"));
+        user.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
+        user.setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class));
+
+        return user;
+    }
+
 }

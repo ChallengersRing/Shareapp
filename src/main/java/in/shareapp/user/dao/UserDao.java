@@ -1,11 +1,25 @@
 package in.shareapp.user.dao;
 
 import in.shareapp.user.entity.User;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 public interface UserDao {
-    boolean selectUserByColumnFieldName(User user, String columnName, String value);
-    boolean selectUserByID(User user);
-    boolean selectUserByEmailAndPassword(User user);
+    User selectUserByColumnValue(String column, String value);
+
+    User selectUserByID(Long userId);
+
+    User selectUserByExtId(UUID extId);
+
+    Optional<User> selectUserByEmail(String email);
+
     boolean insertUser(User user);
-    User[] selectAllUsers();
+
+    List<User> selectAllUsers();
+
     boolean updateUser(User user);
+
+    boolean deleteUserByExtId(UUID id);
 }

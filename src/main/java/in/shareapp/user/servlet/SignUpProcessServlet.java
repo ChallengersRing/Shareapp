@@ -34,7 +34,7 @@ public class SignUpProcessServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         User user = new User(photo, firstName, lastName, email, phone, password);
-        boolean isUserAvailable = userService.checkUserBeforeRegister(user);
+        boolean isUserAvailable = userService.checkUserExists(user.getEmail());
         logger.info("isUserAvailable: " + isUserAvailable);
         if (!isUserAvailable) {
             boolean result = userService.registerNewUser(user);

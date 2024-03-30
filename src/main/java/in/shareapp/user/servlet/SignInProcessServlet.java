@@ -37,12 +37,12 @@ public class SignInProcessServlet extends HttpServlet {
 
         if (result) {
             session.setAttribute("SIGNINSTATUS", "Success");
-            session.setAttribute("USERDETAILS",user); //if i store user object it vanish after server restart.
+            session.setAttribute("USERDETAILS", user); //if i store user object it vanish after server restart.
             out.print("<p style=\"color:green;text-align:center;\">Success</p>"); //println add new line to success
         } else {
             session.setAttribute("SIGNINSTATUS", "Fail");
             out.print("<p style=\"color:red;text-align:center;\">Try Again</p>");
         }
-        logger.info("SIGNINSTATUS at SignInProcessServlet: "+session.getAttribute("SIGNINSTATUS"));
+        logger.info("SIGNINSTATUS at SignInProcessServlet: " + session.getAttribute("SIGNINSTATUS"));
     }
 }

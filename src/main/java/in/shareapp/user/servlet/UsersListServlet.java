@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class UsersListServlet extends HttpServlet {
 	UserService userService = new UserServiceImpl();
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		User[] users = userService.getAllUsersInformation();
+		List<User> users = userService.getAllUsersInformation();
     	req.setAttribute("USERSLIST", users);
 		RequestDispatcher rd = req.getRequestDispatcher("./UsersList.jsp");
 		rd.forward(req, resp);

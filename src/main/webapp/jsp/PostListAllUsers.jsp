@@ -18,9 +18,7 @@
         UserService userService = new UserServiceImpl();
 
         for (int i = 0; i < posts.length; i++) {
-            User user = new User();
-            user.setId(posts[i].getUserId());
-            userService.getUserInformationByID(user);
+            User user = userService.getUserInformationById(posts[i].getUserId());
     %>
             <%-- single video container--%>
             <div class="video">
@@ -30,7 +28,7 @@
 
                 <div class="video-details">
                     <div class="author">
-                        <img src="./ClientResources/ProfilePics/<%=user.getPhoto()%>" alt="author"/>
+                        <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" alt="author"/>
                     </div>
 
                     <div class="video-title">

@@ -68,7 +68,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
 
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                post.setPostId(rs.getInt(1));
+                post.setPostId(rs.getLong(1));
                 //post.setUserId(rs.getInt(2));
                 post.setPostFile(rs.getString(3));
                 post.setPostTitle(rs.getString(4));
@@ -120,8 +120,8 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
             rs.beforeFirst();
             while (rs.next()) {
                 Post post = new Post();
-                post.setPostId(rs.getInt(1));
-                post.setUserId(rs.getInt(2));
+                post.setPostId(rs.getLong(1));
+                post.setUserId(rs.getLong(2));
                 post.setPostFile(rs.getString(3));
                 post.setPostTitle(rs.getString(4));
                 post.setPostThumbnail(rs.getString(5));
