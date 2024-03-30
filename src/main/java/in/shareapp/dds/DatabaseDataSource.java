@@ -26,6 +26,7 @@ public class DatabaseDataSource {
         Connection dbCon = null;
 
         try {
+            logger.info("Connn:::"+DB_URL+ DB_USER + DB_PASSWORD);
             dbCon = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (SQLException sqlEx) {
             logger.log(Level.SEVERE, "DB Connection fails", sqlEx);

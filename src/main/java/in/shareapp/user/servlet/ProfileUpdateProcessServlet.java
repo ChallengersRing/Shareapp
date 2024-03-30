@@ -6,10 +6,7 @@ import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Logger;
@@ -37,55 +34,49 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
 
         boolean statusUploadInDatabase = false;
         boolean statusUploadInFileSystem = false;
-        String messageForClient = "";
+        StringBuilder messageForClient = new StringBuilder();
 
-        if(password==""){
+        if(password.isEmpty()){
             password=signedInUser.getPassword();
-            messageForClient = messageForClient + "Password didn't update,\n ";
+            messageForClient.append("Password didn't update,\n ");
+        }
+
+        // Photo upload in FileSystem
+        // Retrieving the photo from request object & extracting the filename
+        Part filePart = req.getPart("photo");
+        logger.info("FILE Part:" + filePart);
+
+        if (filePart != null && filePart.getSize() > 0) {
+            photo = userService.getProfilePictureName(filePart);
+
+            if (!photo.equals("FileNotReceived")) {
+                String serverFileDirectory = getServletContext().getRealPath("/") + "ClientResources/ProfilePics";
+                statusUploadInFileSystem = userService.saveProfilePicture(serverFileDirectory, photo, filePart);
+                messageForClient.append(statusUploadInFileSystem ? "Photo update: success, " : "Photo update: Fail, ");
+            } else {
+                messageForClient.append("Photo Upload Fail.");
+            }
+        } else {
+            messageForClient.append("No photo received for upload.");
         }
 
         User user = new User(photo, firstName, lastName, dob, gender, email, phone, password);
-
         logger.info(user.toString());
 
-
-
         // Details Updating in Database.
-        if(email!=null) {
+        if (email != null) {
             statusUploadInDatabase = userService.updateProfile(user);
 
             if (statusUploadInDatabase) {
-                messageForClient = messageForClient + "Details update: success, ";
+                messageForClient.append("Details update: success, ");
             } else {
-                messageForClient = messageForClient + "Details update: Fail, ";
+                messageForClient.append("Details update: Fail, ");
             }
-        }
-
-        //Photo upload in FileSystem
-        /*
-            // Retrieving the photo from request object & extracting the filename
-            Part filePart = req.getPart("photo");
-            System.out.println("FILE Part:" + filePart);
-            photo = userService.getProfilePictureName(filePart);
-
-
-            if (photo.equals("FileNotReceived")) {
-                messageForClient = messageForClient + "Photo Upload Fail.";
-            } else {
-                String serverFileDirectory = getServletContext().getRealPath("/") + "ClientResources/ProfilePics";
-                statusUploadInFileSystem = userService.saveProfilePicture(serverFileDirectory, photo, filePart); //*
-            }
-
-         */
-        if (statusUploadInFileSystem) {
-            messageForClient = messageForClient + "Photo update: success, ";
-        } else {
-            messageForClient = messageForClient + "Photo update: Fail, ";
         }
 
         logger.info("statusFileSystem: " + statusUploadInFileSystem);
         logger.info("statusDatabase: " + statusUploadInDatabase);
-        logger.info(messageForClient);
+        logger.info(messageForClient.toString());
         out.print(messageForClient);
     }
 }

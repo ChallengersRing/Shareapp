@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="./css/Modal.css">
     <link rel="stylesheet" href="./css/loginDetailModal.css">
     <%-- Jquery CDN--%>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<%--    <script src="https://code.jquery.com/jquery-3.6.1.min.js"--%>
+<%--            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>--%>
     <title>ShareApp</title>
 </head>
 <body>
@@ -20,7 +20,7 @@
     <div class="logo left">
         <img onclick="toggleNav()" src="./images/icons/menu.svg" alt="C"
              style="width:30px; height:30px; viewBox:0 0 60 60">
-        <a href="http://localhost:8080/shareapp">ShareApp</a>
+        <a href="/">ShareApp</a>
     </div>
 
     <!-- Search bar -->
@@ -30,7 +30,8 @@
             <button><img onclick="searchApp()" src="./images/icons/search.svg" alt="C"
                          style="width:30px; height:30px; viewBox:0 0 60 60"></button>
         </form>
-        <img onclick="mic()" src="./images/icons/mic.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+        <img onclick="mic()" src="./images/icons/mic.svg" alt="C"
+             style="margin-left:10px; width:30px; height:30px; viewBox:0 0 60 60;">
     </div>
 
     <!-- Right section (user/signin/signup/signout) -->
@@ -156,18 +157,18 @@
             <%-- single video container--%>
             <div class="video">
                 <div class="video-thumbnail">
-                    <img src="" alt="thumbnail"/>
+                    <img src="./ClientResources/Posts/Charminar.png" alt="thumbnail"/>
                 </div>
 
                 <div class="video-details">
                     <div class="author">
-                        <img src="" alt="author"/>
+                        <img src="./ClientResources/ProfilePics/Suliman.jpg" alt="author"/>
                     </div>
 
                     <div class="video-title">
-                        <h3>How To COOK?</h3>
-                        <a href="">Cooking</a>
-                        <span>10M Views . 3 Months Ago</span>
+                        <h3>Travel hyderabad!!</h3>
+                        <a href="">Travel</a>
+                        <span>15M Views . 2 Months Ago</span>
                     </div>
                 </div>
             </div>
@@ -176,12 +177,12 @@
             <%-- single video container--%>
             <div class="video">
                 <div class="video-thumbnail">
-                    <img src="" alt="thumbnail"/>
+                    <img src="./ClientResources/Posts/cooking.jpg" alt="thumbnail"/>
                 </div>
 
                 <div class="video-details">
                     <div class="author">
-                        <img src="" alt="author"/>
+                        <img src="./ClientResources/ProfilePics/Chloe.jpg" alt="author"/>
                     </div>
 
                     <div class="video-title">

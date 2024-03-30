@@ -3,16 +3,14 @@ package in.shareapp.user.dao;
 import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.user.entity.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
-    public boolean selectUserByColumnFieldName(User user, String columnName, String value){
+    public boolean selectUserByColumnFieldName(User user, String columnName, String value) {
         Connection dbCon = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -24,7 +22,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             stmt = dbCon.createStatement();
 
             String sql = "SELECT *" +
-                    " FROM user_info WHERE " +
+                    " FROM shareapp.user_info WHERE " +
                     columnName + "='" + value +
                     "'";
 
@@ -42,7 +40,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
+            logger.warning("Query execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -54,7 +52,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
 
     @Override
     public boolean selectUserByID(User user) {
-        boolean status = selectUserByColumnFieldName(user,"user_id", String.valueOf(user.getId()));
+        boolean status = selectUserByColumnFieldName(user, "user_id", String.valueOf(user.getId()));
         return status;
     }
 
@@ -71,7 +69,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             stmt = dbCon.createStatement();
 
             String sql = "SELECT *" +
-                    " FROM user_info WHERE " +
+                    " FROM shareapp.user_info WHERE " +
                     "user_email='" + user.getEmail() +
                     "' AND user_password='" + user.getPassword() +
                     "'";
@@ -90,7 +88,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
+            logger.warning("Query execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -112,7 +110,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             dbCon = getDbConnection();
             stmt = dbCon.createStatement();
 
-            String sql = "INSERT INTO user_info(user_photo, user_fname, user_lname, user_email, user_phone, user_password) VALUES('" +
+            String sql = "INSERT INTO shareapp.user_info(user_photo, user_fname, user_lname, user_email, user_phone, user_password) VALUES('" +
                     user.getPhoto() + "', '" +
                     user.getFirstName() + "', '" +
                     user.getLastName() + "', '" +
@@ -125,7 +123,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
+            logger.warning("Query execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeStatement(stmt);
@@ -147,7 +145,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             dbCon = getDbConnection();
             stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT * FROM user_info";
+            String sql = "SELECT * FROM shareapp.user_info";
 
             rs = stmt.executeQuery(sql);
 
@@ -178,7 +176,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 counter++;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
+            logger.warning("Query execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeResultSet(rs);
@@ -192,29 +190,55 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     @Override
     public boolean updateUser(User user) {
         Connection dbCon = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
 
-        boolean status =false;
+        boolean status = false;
 
         try {
             dbCon = getDbConnection();
-            stmt = dbCon.createStatement();
 
-            String sql = "UPDATE shareapp.user_info t SET t.user_photo = '"+ user.getPhoto() +
-                    "', t.user_fname = '"+ user.getFirstName() +
-                    "', t.user_lname = '"+ user.getLastName()+
-                    "', t.user_dob = '"+user.getDateOfBirth()+
-                    "', t.user_gender = '"+user.getGender()+
-                    "', t.user_phone = '"+user.getPhone()+
-                    "', t.user_password = '"+user.getPassword()+
-                    "' WHERE t.user_email = '" +user.getEmail()+"'";
+            String sql = "UPDATE shareapp.user_info SET user_photo = ?, user_fname = ?, user_lname = ?, " +
+                    "user_dob = ?, user_gender = ?, user_phone = ?, user_password = ? WHERE user_email = ?";
 
-            int row = stmt.executeUpdate(sql);
-            if(row>0){
+            stmt = dbCon.prepareStatement(sql);
+
+            stmt.setString(1, user.getPhoto());
+            stmt.setString(2, user.getFirstName());
+            stmt.setString(3, user.getLastName());
+
+            if (Optional.ofNullable(user.getDateOfBirth()).isPresent() && !user.getDateOfBirth().equals( "null")) {
+                stmt.setDate(4, java.sql.Date.valueOf(user.getDateOfBirth()));
+            } else {
+                stmt.setNull(4, java.sql.Types.DATE);
+            }
+
+            stmt.setString(5, user.getGender());
+            stmt.setString(6, user.getPhone());
+            stmt.setString(7, user.getPassword());
+            stmt.setString(8, user.getEmail());
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
                 status = true;
             }
+
+            /* String sql = "UPDATE shareapp.user_info t SET user_photo = '" + user.getPhoto() +
+                    "', user_fname = '" + user.getFirstName() +
+                    "', user_lname = '" + user.getLastName() +
+                    "', user_dob = '" + user.getDateOfBirth() +
+                    "', user_gender = '" + user.getGender() +
+                    "', user_phone = '" + user.getPhone() +
+                    "', user_password = '" + user.getPassword() +
+                    "' WHERE t.user_email = '" + user.getEmail() + "'";
+
+            logger.info("Update profile sql: " + sql);
+            int row = stmt.executeUpdate(sql);
+            if (row > 0) {
+                status = true;
+            } */
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
+            logger.warning("Query execution failed: ");
             sqlEx.printStackTrace();
         } finally {
             closeStatement(stmt);

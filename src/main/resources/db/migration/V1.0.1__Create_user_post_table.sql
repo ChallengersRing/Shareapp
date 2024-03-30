@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS user_post (
+CREATE SCHEMA IF NOT EXISTS shareapp;
+CREATE TABLE IF NOT EXISTS shareapp.user_post (
                            post_id          SERIAL PRIMARY KEY,
                            user_id          INTEGER,
                            post_file        VARCHAR(255),
@@ -10,5 +11,3 @@ CREATE TABLE IF NOT EXISTS user_post (
                            post_likes       INTEGER,
                            post_comments    TEXT
 );
-
-ALTER TABLE  IF EXISTS user_post OWNER TO postgres;

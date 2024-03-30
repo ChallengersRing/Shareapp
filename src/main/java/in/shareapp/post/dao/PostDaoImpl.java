@@ -23,7 +23,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
             dbCon = getDbConnection();
             stmt = dbCon.createStatement();
 
-            String sql = "INSERT INTO user_post(user_id,post_file,post_title,post_thumbnail,post_description,post_date,post_views,post_likes,post_comments)VALUES('" +
+            String sql = "INSERT INTO shareapp.user_post(user_id,post_file,post_title,post_thumbnail,post_description,post_date,post_views,post_likes,post_comments)VALUES('" +
                     post.getUserId() + "', '" +
                     post.getPostFile() + "', '" +
                     post.getPostTitle() + "', '" +
@@ -62,7 +62,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
             stmt = dbCon.createStatement();
 
             String sql = "SELECT *" +
-                    " FROM user_post WHERE " +
+                    " FROM shareapp.user_post WHERE " +
                     "user_id='" + post.getUserId() +
                     "'";
 
@@ -104,7 +104,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
             dbCon = getDbConnection();
             stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT * FROM user_post";
+            String sql = "SELECT * FROM shareapp.user_post";
 
             rs = stmt.executeQuery(sql);
 

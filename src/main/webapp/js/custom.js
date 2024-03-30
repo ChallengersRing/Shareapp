@@ -108,8 +108,8 @@ function sendSignInDataToServer(form) {
     console.log(data);
     console.log(FD.keys().next());
 
-    // var url = "http://localhost:8080/shareapp/signin?"+new URLSearchParams(data).toString();
-    var url = "http://localhost:8080/shareapp/signin";
+    // var url = window.location + "signin?"+new URLSearchParams(data).toString();
+    var url = window.location + "signin";
     console.log(url);
 
     // Define what happens on successful data submission
@@ -121,7 +121,7 @@ function sendSignInDataToServer(form) {
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
-                window.location.replace("http://localhost:8080/shareapp");
+                window.location.replace(window.location.origin + '/shareapp');
             }
         }
     });
@@ -178,7 +178,7 @@ function sendSignUpDataToServer(form) {
     };
     console.log(data);
 
-    var url = "http://localhost:8080/shareapp/signup";
+    var url = window.location + "signup";
     console.log(url);
 
     // Define what happens on successful data submission
@@ -190,7 +190,7 @@ function sendSignUpDataToServer(form) {
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
-                window.location.replace("http://localhost:8080/shareapp");
+                window.location.replace(window.location.origin + '/shareapp');
             }
         }
     });
@@ -245,7 +245,7 @@ function signOut() {
     xhr.setRequestHeader("Content-Type", "text/plain");
     xhr.send("sending something!");
     xhr.onload = function () {
-        window.location.replace("http://localhost:8080/shareapp");
+        window.location.pathname.replace(window.location.origin + '/shareapp');
     };
 }
 
@@ -285,21 +285,22 @@ function sendUpdateData(form) {
     const xhr = new XMLHttpRequest();
 
     // Bind the FormData object and the form element
-    const FD = new FormData(form);
+    const formData = new FormData(form);
 
-    var data = {
-        'photo': FD.get('photo'),
-        'fname': FD.get('fname'),
-        'lname': FD.get('lname'),
-        'dob': FD.get('dob'),
-        'gender': FD.get('gender'),
-        'email': FD.get('email'),
-        'phone': FD.get('phone'),
-        'password': FD.get('password'),
-    };
+    // var data = {
+    //     'photo': FD.get('photo'),
+    //     'fname': FD.get('fname'),
+    //     'lname': FD.get('lname'),
+    //     'dob': FD.get('dob'),
+    //     'gender': FD.get('gender'),
+    //     'email': FD.get('email'),
+    //     'phone': FD.get('phone'),
+    //     'password': FD.get('password'),
+    // };
     // console.log(data);
 
-    var url = "http://localhost:8080/shareapp/updateprofile?" + new URLSearchParams(data).toString();
+    // var url = window.location + "updateprofile?" + new URLSearchParams(data).toString();
+    var url = window.location + "updateprofile";
     console.log(url);
 
     // Event set on successful data submission
@@ -314,10 +315,11 @@ function sendUpdateData(form) {
     });
 
     // Set up our request
-    xhr.open("GET", url);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.open("POST", url, true);
+    // xhr.setRequestHeader("Content-type", "multipart/form-data; boundary=" + FD._boundary);
+    // console.log("multipart/form-data; boundary=" + FD._boundary);
     // The data sent is what the user provided in the form
-    xhr.send();
+    xhr.send(formData);
 }
 
 function editProfile() {
@@ -408,7 +410,7 @@ function openPostCreatorWindow() {
 }
 
 function goHome() {
-    window.location.replace("http://localhost:8080/shareapp");
+    window.location.replace(window.location.origin + '/shareapp');
 }
 
 

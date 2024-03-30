@@ -53,6 +53,12 @@
     <servlet>
         <servlet-name>UpdateUserProfile</servlet-name>
         <servlet-class>in.shareapp.user.servlet.ProfileUpdateProcessServlet</servlet-class>
+        <multipart-config>
+            <location>/</location> <!-- Temporary location to store uploaded files -->
+            <max-file-size>20848820</max-file-size> <!-- Max file size allowed -->
+            <max-request-size>418018841</max-request-size> <!-- Max request size allowed -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- Threshold size for storing files in memory -->
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUserProfile</servlet-name>

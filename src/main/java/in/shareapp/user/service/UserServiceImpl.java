@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String getProfilePictureName(Part part) {
-        String profilePicName = (part.getSubmittedFileName().length()) == 0 ? "FileNotReceived" : part.getSubmittedFileName();
+        String profilePicName = part.getSubmittedFileName().isEmpty() ? "FileNotReceived" : part.getSubmittedFileName();
 
         return profilePicName;
     }

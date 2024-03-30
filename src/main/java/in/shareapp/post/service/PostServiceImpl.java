@@ -16,7 +16,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public String getPostFileName(Part part) {
-        String postFileName = (part.getSubmittedFileName().length()) == 0 ? "PostNotReceived" : part.getSubmittedFileName();
+        String postFileName = part.getSubmittedFileName().isEmpty() ? "PostNotReceived" : part.getSubmittedFileName();
         return postFileName;
     }
 

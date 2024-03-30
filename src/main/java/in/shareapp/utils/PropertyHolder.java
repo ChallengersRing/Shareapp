@@ -15,6 +15,7 @@ public class PropertyHolder {
     // Static block to load properties when the class is initialized
     static {
         loadProperties();
+        System.out.println("Size::::"+properties.size());
     }
 
     private static void loadProperties() {

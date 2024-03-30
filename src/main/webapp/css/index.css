@@ -42,6 +42,7 @@ a {
 
 .search {
     display: flex;
+    align-items: center;
 }
 
 .search form {
@@ -49,14 +50,6 @@ a {
     border-radius: 5px;
     border: 1px solid #ddd;
     height: 45px;
-}
-
-.search input {
-    width: 600px;
-    padding: 10px;
-    border: 0;
-    height: 100%;
-    border-radius: 2px 0 0 2px
 }
 
 .search input {
