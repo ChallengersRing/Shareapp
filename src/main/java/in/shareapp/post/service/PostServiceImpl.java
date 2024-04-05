@@ -6,10 +6,11 @@ import in.shareapp.post.entity.Post;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
     private static final Logger logger = Logger.getLogger(PostServiceImpl.class.getName());
 
     PostDao postDao = new PostDaoImpl();
@@ -43,7 +44,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Post[] retrieveAllUsersPost() {
+    public List<Post> retrieveAllUsersPost() {
         return postDao.retrieveAllPost();
     }
 }

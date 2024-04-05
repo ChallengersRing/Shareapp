@@ -1,149 +1,152 @@
 package in.shareapp.post.entity;
 
+import java.util.UUID;
+
 public class Post {
     //PROPERTIES
-    private Long postId;
+    private Long id;
+    private UUID extId;
     private Long userId;
-    private String postFile;
-    private String postTitle;
-    private String postThumbnail;
-    private String postDescription;
-    private String postDate;
-    private int postViews;
-    private int postLikes;
-    private String postComments;
+    private String file;
+    private String title;
+    private String thumbnail;
+    private String description;
+    private String date;
+    private int views;
+    private int likes;
+    private String comments;
 
     public Post() {
     }
 
-    public Post(Long userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate) {
+    public Post(Long userId, String file, String title, String thumbnail, String description, String date) {
         this.userId = userId;
-        this.postFile = postFile;
-        this.postTitle = postTitle;
-        this.postThumbnail = postThumbnail;
-        this.postDescription = postDescription;
-        this.postDate = postDate;
+        this.file = file;
+        this.title = title;
+        this.thumbnail = thumbnail;
+        this.description = description;
+        this.date = date;
     }
 
-    public Post(Long userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate, int postViews, int postLikes, String postComments) {
+    public Post(Long userId, String file, String title, String thumbnail, String description, String date, int views, int likes, String comments) {
         this.userId = userId;
-        this.postFile = postFile;
-        this.postTitle = postTitle;
-        this.postThumbnail = postThumbnail;
-        this.postDescription = postDescription;
-        this.postDate = postDate;
-        this.postViews = postViews;
-        this.postLikes = postLikes;
-        this.postComments = postComments;
+        this.file = file;
+        this.title = title;
+        this.thumbnail = thumbnail;
+        this.description = description;
+        this.date = date;
+        this.views = views;
+        this.likes = likes;
+        this.comments = comments;
     }
 
-    public Post(Long postId, Long userId, String postFile, String postTitle, String postThumbnail, String postDescription, String postDate, int postViews, int postLikes, String postComments) {
-        this.postId = postId;
+    public Post(Long id, Long userId, String file, String title, String thumbnail, String description, String date, int views, int likes, String comments) {
+        this.id = id;
         this.userId = userId;
-        this.postFile = postFile;
-        this.postTitle = postTitle;
-        this.postThumbnail = postThumbnail;
-        this.postDescription = postDescription;
-        this.postDate = postDate;
-        this.postViews = postViews;
-        this.postLikes = postLikes;
-        this.postComments = postComments;
+        this.file = file;
+        this.title = title;
+        this.thumbnail = thumbnail;
+        this.description = description;
+        this.date = date;
+        this.views = views;
+        this.likes = likes;
+        this.comments = comments;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public void setPostFile(String postFile) {
-        this.postFile = postFile;
+    public void setFile(String file) {
+        this.file = file;
     }
 
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setPostThumbnail(String postThumbnail) {
-        this.postThumbnail = postThumbnail;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
-    public void setPostDescription(String postDescription) {
-        this.postDescription = postDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setPostViews(int postViews) {
-        this.postViews = postViews;
+    public void setViews(int views) {
+        this.views = views;
     }
 
-    public void setPostLikes(int postLikes) {
-        this.postLikes = postLikes;
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
-    public void setPostComments(String postComments) {
-        this.postComments = postComments;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
 
-    public Long getPostId() {
-        return postId;
+    public Long getId() {
+        return id;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public String getPostFile() {
-        return postFile;
+    public String getFile() {
+        return file;
     }
 
-    public String getPostTitle() {
-        return postTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public String getPostThumbnail() {
-        return postThumbnail;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public String getPostDescription() {
-        return postDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public String getPostDate() {
-        return postDate;
+    public String getDate() {
+        return date;
     }
 
-    public int getPostViews() {
-        return postViews;
+    public int getViews() {
+        return views;
     }
 
-    public int getPostLikes() {
-        return postLikes;
+    public int getLikes() {
+        return likes;
     }
 
-    public String getPostComments() {
-        return postComments;
+    public String getComments() {
+        return comments;
     }
 
     @Override
     public String toString() {
         return "Post{" +
-                "postId=" + postId +
+                "id=" + id +
                 ", userId=" + userId +
-                ", postFile='" + postFile + '\'' +
-                ", postTitle='" + postTitle + '\'' +
-                ", postThumbnail='" + postThumbnail + '\'' +
-                ", postDescription='" + postDescription + '\'' +
-                ", postDate='" + postDate + '\'' +
-                ", postViews=" + postViews +
-                ", postLikes=" + postLikes +
-                ", postComments='" + postComments + '\'' +
+                ", file='" + file + '\'' +
+                ", title='" + title + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", description='" + description + '\'' +
+                ", date='" + date + '\'' +
+                ", views=" + views +
+                ", likes=" + likes +
+                ", comments='" + comments + '\'' +
                 '}';
     }
 }

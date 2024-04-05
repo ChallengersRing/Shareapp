@@ -3,10 +3,9 @@ package in.shareapp.post.dao;
 import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.post.entity.Post;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class PostDaoImpl extends DatabaseDataSource implements PostDao {
@@ -15,35 +14,27 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
     @Override
     public boolean uploadPost(Post post) {
         boolean status = false;
+        final String sql = "INSERT INTO shareapp.user_post(user_id, file, title, thumbnail, description, views, likes, comments) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        Connection dbCon = null;
-        Statement stmt = null;
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement();
+            pstmt.setLong(1, post.getUserId());
+            pstmt.setString(2, post.getFile());
+            pstmt.setString(3, post.getTitle());
+            pstmt.setString(4, post.getThumbnail());
+            pstmt.setString(5, post.getDescription());
+            pstmt.setInt(6, post.getViews());
+            pstmt.setInt(7, post.getLikes());
+            pstmt.setString(8, post.getComments());
 
-            String sql = "INSERT INTO shareapp.user_post(user_id,post_file,post_title,post_thumbnail,post_description,post_date,post_views,post_likes,post_comments)VALUES('" +
-                    post.getUserId() + "', '" +
-                    post.getPostFile() + "', '" +
-                    post.getPostTitle() + "', '" +
-                    post.getPostThumbnail() + "', '" +
-                    post.getPostDescription() + "', '" +
-                    post.getPostDate() + "', '" +
-                    post.getPostViews() + "', '" +
-                    post.getPostLikes() + "', '" +
-                    post.getPostComments() + "')";
-
-            int row = stmt.executeUpdate(sql);
+            int row = pstmt.executeUpdate();
             if (row != 0) {
                 status = true;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
+            logger.warning("Query execution failed: " + sqlEx.getMessage());
         }
 
         return status;
@@ -51,99 +42,64 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
 
     @Override
     public boolean retrievePost(Post post) {
-        Connection dbCon = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
         boolean status = false;
+        final String sql = "SELECT * FROM shareapp.user_post WHERE user_id = ?";
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement();
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
-            String sql = "SELECT *" +
-                    " FROM shareapp.user_post WHERE " +
-                    "user_id='" + post.getUserId() +
-                    "'";
+            pstmt.setLong(1, post.getUserId());
 
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                post.setPostId(rs.getLong(1));
-                //post.setUserId(rs.getInt(2));
-                post.setPostFile(rs.getString(3));
-                post.setPostTitle(rs.getString(4));
-                post.setPostThumbnail(rs.getString(5));
-                post.setPostDescription(rs.getString(6));
-                post.setPostDate(rs.getString(7));
-                post.setPostViews(rs.getInt(8));
-                post.setPostLikes(rs.getInt(9));
-                post.setPostComments(rs.getString(10));
-                status = true;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    post.setId(rs.getLong("id"));
+                    post.setFile(rs.getString("file"));
+                    post.setTitle(rs.getString("title"));
+                    post.setThumbnail(rs.getString("thumbnail"));
+                    post.setDescription(rs.getString("description"));
+                    post.setDate(rs.getString("created_at"));
+                    post.setViews(rs.getInt("views"));
+                    post.setLikes(rs.getInt("likes"));
+                    post.setComments(rs.getString("comments"));
+                    status = true;
+                }
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeResultSet(rs);
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
+            logger.warning("Query execution failed: " + sqlEx.getMessage());
         }
 
         return status;
     }
 
     @Override
-    public Post[] retrieveAllPost() {
-        Post[] posts = null; //will store all users posts from the database in this array
+    public List<Post> retrieveAllPost() {
+        List<Post> posts = new ArrayList<>();
+        final String sql = "SELECT * FROM shareapp.user_post";
 
-        Connection dbCon = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-            String sql = "SELECT * FROM shareapp.user_post";
-
-            rs = stmt.executeQuery(sql);
-
-            int rowCounter = 0;
-            while (rs.next()) {
-                rowCounter++;
-            }
-
-            posts = new Post[rowCounter];
-
-            int counter = 0;
-
-            rs.beforeFirst();
             while (rs.next()) {
                 Post post = new Post();
-                post.setPostId(rs.getLong(1));
-                post.setUserId(rs.getLong(2));
-                post.setPostFile(rs.getString(3));
-                post.setPostTitle(rs.getString(4));
-                post.setPostThumbnail(rs.getString(5));
-                post.setPostDescription(rs.getString(6));
-                post.setPostDate(rs.getString(7));  //date*
-                post.setPostViews(rs.getInt(8));
-                post.setPostLikes(rs.getInt(9));
-                post.setPostComments(rs.getString(10));
+                post.setId(rs.getLong("id"));
+                post.setUserId(rs.getLong("user_id"));
+                post.setFile(rs.getString("file"));
+                post.setTitle(rs.getString("title"));
+                post.setThumbnail(rs.getString("thumbnail"));
+                post.setDescription(rs.getString("description"));
+                post.setDate(rs.getString("created_at"));
+                post.setViews(rs.getInt("views"));
+                post.setLikes(rs.getInt("likes"));
+                post.setComments(rs.getString("comments"));
 
-                posts[counter] = post;
-
-                counter++;
+                posts.add(post);
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query not execution failed: ");
-            sqlEx.printStackTrace();
-        } finally {
-            closeResultSet(rs);
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
+            logger.warning("Query execution failed: " + sqlEx.getMessage());
         }
 
         return posts;
     }
+
 }

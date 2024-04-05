@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class PostsRetrieveAllServlet extends HttpServlet {
@@ -18,11 +19,11 @@ public class PostsRetrieveAllServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostService postService = new PostServiceImpl();
-        Post[] posts = postService.retrieveAllUsersPost();
+        List<Post> posts = postService.retrieveAllUsersPost();
 
         //forwarding request to PostListAllUsers.jsp to display the all post in html content
         req.setAttribute("POSTLISTALLUSERS", posts);
-        Post[] posts1 = (Post[]) req.getAttribute("POSTLISTALLUSERS");
+        List<Post> posts1 = (List<Post>) req.getAttribute("POSTLISTALLUSERS");
         RequestDispatcher rd = req.getRequestDispatcher("./jsp/PostListAllUsers.jsp");
         rd.forward(req, resp);
     }

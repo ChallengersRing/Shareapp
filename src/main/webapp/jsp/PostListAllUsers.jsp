@@ -2,6 +2,7 @@
 <%@ page import="in.shareapp.user.service.UserService" %>
 <%@ page import="in.shareapp.user.service.UserServiceImpl" %>
 <%@ page import="in.shareapp.user.entity.User" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,18 +13,18 @@
 <div class="videos-container">
     <%
         System.out.println("From PostListAllUsers.jsp");
-        Post[] posts = (Post[]) request.getAttribute("POSTLISTALLUSERS");
-        System.out.println("POST LIST ALL USERS at PostListAllUsers.jsp: "+posts.length);
+        List<Post> posts = (List<Post>) request.getAttribute("POSTLISTALLUSERS");
+        System.out.println("POST LIST ALL USERS at PostListAllUsers.jsp: "+posts.size());
 
         UserService userService = new UserServiceImpl();
 
-        for (int i = 0; i < posts.length; i++) {
-            User user = userService.getUserInformationById(posts[i].getUserId());
+        for (int i = 0; i < posts.size(); i++) {
+            User user = userService.getUserInformationById(posts.get(i).getUserId());
     %>
             <%-- single video container--%>
             <div class="video">
                 <div class="video-thumbnail">
-                    <img src="./ClientResources/Posts/<%=posts[i].getPostThumbnail()%>" alt="thumbnail"/>
+                    <img src="./ClientResources/Posts/<%=posts.get(i).getThumbnail()%>" alt="thumbnail"/>
                 </div>
 
                 <div class="video-details">
@@ -32,9 +33,9 @@
                     </div>
 
                     <div class="video-title">
-                        <h3> <%= posts[i].getPostTitle() %> </h3>
+                        <h3> <%= posts.get(i).getTitle() %> </h3>
                         <a href=""> <%= user.getFirstName() + " " + user.getLastName() %> </a>
-                        <span>views: <%= posts[i].getPostViews() %> &#8226; <%= posts[i].getPostDate() %> </span>
+                        <span>views: <%= posts.get(i).getViews() %> &#8226; <%= posts.get(i).getDate() %> </span>
                     </div>
                 </div>
             </div>

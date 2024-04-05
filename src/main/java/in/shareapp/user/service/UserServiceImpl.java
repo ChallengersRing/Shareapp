@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
         // TODO: Encrypt passwd
         Optional<User> dbUser = userDao.selectUserByEmail(user.getEmail());
         if (dbUser.isPresent() && user.getPassword().equals(dbUser.get().getPassword())) {
+            user.setId(dbUser.get().getId());
             user.setExtId(dbUser.get().getExtId());
             user.setFirstName(dbUser.get().getFirstName());
             user.setLastName(dbUser.get().getLastName());
@@ -46,9 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getProfilePictureName(Part part) {
-        String profilePicName = part.getSubmittedFileName().isEmpty() ? "FileNotReceived" : part.getSubmittedFileName();
-
-        return profilePicName;
+        return part.getSubmittedFileName().isEmpty() ? "FileNotReceived" : part.getSubmittedFileName();
     }
 
     @Override
@@ -58,7 +57,6 @@ public class UserServiceImpl implements UserService {
             return true;
         } catch (IOException ioException) {
             logger.log(Level.SEVERE, "Fail to save profile pic in FS", ioException);
-            ioException.printStackTrace();
             return false;
         }
     }
@@ -74,8 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateProfile(User user) {
-        boolean status = userDao.updateUser(user);
-        return status;
+        return userDao.updateUser(user);
     }
 
 }

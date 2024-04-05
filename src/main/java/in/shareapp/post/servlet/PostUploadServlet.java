@@ -42,7 +42,6 @@ public class PostUploadServlet extends HttpServlet {
             int likes = 0;
             String comments = "No Comments";
 
-
             //Receiving the "file" from request object, extract "filename"
             Part thumbnailFile = req.getPart("thumbnail");
             Part videoFile = req.getPart("video");
@@ -56,7 +55,7 @@ public class PostUploadServlet extends HttpServlet {
 
             Post post = new Post(userId, videoFilename, title, thumbnailFilename, description, date, views, likes, comments);
 
-            req.setAttribute("PostUpload","fail");
+            req.setAttribute("PostUpload", "fail");
 
             if (!(videoFilename.equals("PostNotReceived")) && !(thumbnailFilename.equals("PostNotReceived"))) {
                 //Status after SAVING in DATABASE.
@@ -70,10 +69,10 @@ public class PostUploadServlet extends HttpServlet {
                     boolean fsStatusThumbnail = postService.savePostFile(serverFileDirectory, thumbnailFilename, videoFile);
                     boolean fsStatusVideo = postService.savePostFile(serverFileDirectory, videoFilename, thumbnailFile);
 
-                    if(fsStatusThumbnail && fsStatusVideo){
-                        req.setAttribute("PostUpload","success");
+                    if (fsStatusThumbnail && fsStatusVideo) {
+                        req.setAttribute("PostUpload", "success");
                         logger.fine("Post upload success");
-                    }else {
+                    } else {
                         logger.severe("File System failure");
                     }
                 } else {
@@ -90,6 +89,6 @@ public class PostUploadServlet extends HttpServlet {
         }
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("./index.jsp");
-        requestDispatcher.forward(req,resp);
+        requestDispatcher.forward(req, resp);
     }
 }

@@ -1,5 +1,5 @@
-package in.shareapp.post.servlet;
-
-public class PostControllerServlet {
-
-}
+//package in.shareapp.post.servlet;
+//
+//public class PostControllerServlet {
+//
+//}
