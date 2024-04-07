@@ -1,44 +1,80 @@
 /* The Modal (background) */
-.popup-container {
+.modal-container {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    z-index: 50; /* Sit on top */
+    inset: 0; /* Covers the entire viewport */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-
+    background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
 }
 
-/*hide the scrollbar*/
-.popup-container::-webkit-scrollbar{
-    display: none;
-}
-/* Modal Content */
-.popup-box {
-    background-color: rgba(0, 0, 0, 0.4);
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 600px;
-
+/* MODAL */
+.modal {
+    background: #ffffff;
+    border-radius: 0.5em;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+    left: 50%;
+    max-width: 90%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 30em;
+    text-align: left;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    pointer-events: all;
 }
 
 /* The Close Button */
-.popup-close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+.modal-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4.5em;
+    height: 4.5em;
+    padding: 1.3em 2em;
 }
 
-.popup-close:hover,
-.popup-close:focus {
-    color: #000;
+.modal-close-icon {
+    color: #7c7676;
+    float: right;
+    font-size: 40px;
+    font-weight: lighter;
+}
+
+.modal-close-icon:hover,
+.modal-close-icon:focus {
+    color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* TITLE */
+.modal-title {
+    color: #111827;
+    padding: 1.3em 2em;
+    pointer-events: all;
+    position: relative;
+    width: calc(100% - 4.5em);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: normal;
+}
+
+/* CONTENT */
+.modal-content {
+    border-top: 1px solid #e0e0e0;
+    padding: 1em;
+    pointer-events: all;
+    overflow: auto;
+}
+
+/*hide the scrollbar*/
+.modal-content::-webkit-scrollbar {
+    display: none;
 }

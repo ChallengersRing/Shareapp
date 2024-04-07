@@ -18,6 +18,7 @@ public class PostsRetrieveAllServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Loading all posts...");
         PostService postService = new PostServiceImpl();
         List<Post> posts = postService.retrieveAllUsersPost();
 

@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="./css/index.css"/>
     <link rel="stylesheet" href="./css/Modal.css">
     <link rel="stylesheet" href="./css/loginDetailModal.css">
-    <%-- Jquery CDN--%>
-<%--    <script src="https://code.jquery.com/jquery-3.6.1.min.js"--%>
-<%--            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>--%>
     <title>ShareApp</title>
 </head>
 <body>
@@ -77,29 +74,32 @@
     </div>
 </header>
 
+<%--TODO: replace with toaster--%>
 <%
-    if(request.getAttribute("PostUpload")!=null){
+    if (request.getAttribute("PostUpload") != null) {
         String color = "green";
-        if (request.getAttribute("PostUpload").equals("fail")){
+        if (request.getAttribute("PostUpload").equals("fail")) {
             color = "red";
         }
 %>
-        <div style="background: black; display: flex; justify-content: center">
-            <p style="color: <%=color%>">
-                Post upload: <%= request.getAttribute("PostUpload") %>
-                <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
-            </p>
-        </div>
+<div id="toastr"></div>
+<div style="background: black; display: flex; justify-content: center">
+    <p style="color: <%=color%>">
+        Post upload: <%= request.getAttribute("PostUpload") %>
+        <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
+    </p>
+</div>
 <%
     }
 %>
 
-<!-- The Modal (css in Modal.css)-->
-<div id="modal" class="popup-container">
-    <!-- Modal content -->
-    <div class="popup-box">
-        <span class="popup-close">&times;</span>
-        <div class="pop-content"></div>
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-close">
+            <span class="modal-close-icon">&times;</span>
+        </div>
+        <div class="modal-title"></div>
+        <div class="modal-content"></div>
     </div>
 </div>
 

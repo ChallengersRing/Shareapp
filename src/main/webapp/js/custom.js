@@ -1,32 +1,35 @@
 // -------------------------- Modal functionality. -------------------------- -----------
 // Get the modal
-var modal = document.getElementsByClassName("popup-container")[0];
+let modalOverlay = document.querySelector(".modal-container");
 
-// Get the <span> element that closes the modal
-var closeBtn = document.getElementsByClassName("popup-close")[0];
-
-// When the user clicks on <span> (x), close the modal
-closeBtn.onclick = function () {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside the modal will close it.
-window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+function initializeModal(title) {
+    // When the user clicks on <span> (x), close the modal
+    document.querySelector(".modal-close").onclick = function () {
+        modalOverlay.style.display = "none";
     }
+    if (title) {
+        document.querySelector(".modal-title").innerHTML = title;
+    }
+    // When the user clicks anywhere outside the modal will close it.
+    window.onclick = function (event) {
+        if (event.target === modalOverlay) {
+            modalOverlay.style.display = "none";
+        }
+    }
+    modalOverlay.style.display = "block";
 }
-//To open the MODAL from anywhere: modal.style.display = "block";
+
+//To open the MODAL from anywhere: modalOverlay.style.display = "block";
 //-------------------------- Modal functionality ends ---------------------------------------
 // --------------------------------------------------------------------------------------------------------
 
 // ------When the user clicks the button, open the modal and load signin page---------
 function loadSignin() {
-    modal.style.display = "block";
-    var xhr = new XMLHttpRequest();
+    initializeModal("Sign In");
+    const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementsByClassName("pop-content")[0].innerHTML = this.responseText;
+            document.getElementsByClassName("modal-content")[0].innerHTML = this.responseText;
         }
     };
     xhr.open("POST", "./html/signin.html", true);
@@ -34,10 +37,11 @@ function loadSignin() {
 }
 
 function loadSignup() {
+    initializeModal("Sign Up");
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementsByClassName("pop-content")[0].innerHTML = this.responseText;
+            document.getElementsByClassName("modal-content")[0].innerHTML = this.responseText;
         }
     };
     xhr.open("POST", "./html/signup.html", true);
@@ -108,7 +112,6 @@ function sendSignInDataToServer(form) {
     console.log(data);
     console.log(FD.keys().next());
 
-    // var url = window.location + "signin?"+new URLSearchParams(data).toString();
     var url = window.location + "signin";
     console.log(url);
 
@@ -119,8 +122,8 @@ function sendSignInDataToServer(form) {
 
         //To refresh the window
         window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (event.target === modalOverlay) {
+                modalOverlay.style.display = "none";
                 window.location.replace(window.location.origin + '/shareapp');
             }
         }
@@ -189,7 +192,7 @@ function sendSignUpDataToServer(form) {
         //To refresh the window after the process
         window.onclick = function (event) {
             if (event.target == modal) {
-                modal.style.display = "none";
+                modalOverlay.style.display = "none";
                 window.location.replace(window.location.origin + '/shareapp');
             }
         }
@@ -270,11 +273,11 @@ function signinDetails() {
 
 //load profile on the modal for editing or viewing details
 function loadProfile() {
-    modal.style.display = "block";
-    var xhr = new XMLHttpRequest();
+    initializeModal("Profile");
+    const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementsByClassName("pop-content")[0].innerHTML = this.responseText;
+            document.getElementsByClassName("modal-content")[0].innerHTML = this.responseText;
         }
     };
     xhr.open("POST", "./jsp/LoadProfile.jsp", true);
@@ -287,20 +290,7 @@ function sendUpdateData(form) {
     // Bind the FormData object and the form element
     const formData = new FormData(form);
 
-    // var data = {
-    //     'photo': FD.get('photo'),
-    //     'fname': FD.get('fname'),
-    //     'lname': FD.get('lname'),
-    //     'dob': FD.get('dob'),
-    //     'gender': FD.get('gender'),
-    //     'email': FD.get('email'),
-    //     'phone': FD.get('phone'),
-    //     'password': FD.get('password'),
-    // };
-    // console.log(data);
-
-    // var url = window.location + "updateprofile?" + new URLSearchParams(data).toString();
-    var url = window.location + "updateprofile";
+    let url = window.location + "updateprofile";
     console.log(url);
 
     // Event set on successful data submission
@@ -314,16 +304,13 @@ function sendUpdateData(form) {
         document.getElementById('updstatus').innerHTML = "Oops! Something went wrong.";
     });
 
-    // Set up our request
+    // Set up our request & send
     xhr.open("POST", url, true);
-    // xhr.setRequestHeader("Content-type", "multipart/form-data; boundary=" + FD._boundary);
-    // console.log("multipart/form-data; boundary=" + FD._boundary);
-    // The data sent is what the user provided in the form
     xhr.send(formData);
 }
 
 function editProfile() {
-    var a = document.getElementsByClassName("dis").length;
+    let a = document.getElementsByClassName("dis").length;
     for (let i = 0; i < a; i++) {
         document.getElementsByClassName("dis")[i].removeAttribute("disabled");
     }
@@ -353,9 +340,9 @@ function toggleNav() {
 }
 
 //Setting buttons active by click
-var header = document.getElementsByClassName("side-bar")[0];
-var btns = header.getElementsByClassName("nav-link");
-for (var i = 0; i < btns.length; i++) {
+const header = document.querySelector(".side-bar");
+const btns = header.querySelector(".nav-link");
+for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener("click", function () {
         var current = document.getElementsByClassName("active");
         current[0].className = current[0].className.replace(" active", "");
@@ -435,35 +422,6 @@ function uploadPost() {
     // create and send the reqeust
     xhr.open('POST', url)
     xhr.send(formData)
-}
-
-function setListner() {
-    // define URL and for element
-    const url = '/upload-avatar'
-    const form = document.querySelector('form')
-
-    // add event listener
-    form.addEventListener('submit', e => {
-        // disable default action
-        e.preventDefault()
-
-        // collect files
-        const files = document.querySelector('[name=file]').files
-        const formData = new FormData()
-        formData.append('avatar', files[0])
-
-        // post form data
-        const xhr = new XMLHttpRequest()
-
-        // log response
-        xhr.onload = () => {
-            console.log(xhr.responseText)
-        }
-
-        // create and send the reqeust
-        xhr.open('POST', url)
-        xhr.send(formData)
-    })
 }
 
 // ------------------------Sidebar functionality Ends-----------------------------------------------------
