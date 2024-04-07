@@ -310,10 +310,8 @@ function sendUpdateData(form) {
 }
 
 function editProfile() {
-    let a = document.getElementsByClassName("dis").length;
-    for (let i = 0; i < a; i++) {
-        document.getElementsByClassName("dis")[i].removeAttribute("disabled");
-    }
+    Array.from(document.querySelectorAll(".dis"))
+        .forEach(element => element.removeAttribute("disabled"));
 
     // Get the form element
     const form = document.getElementById('upd-form');

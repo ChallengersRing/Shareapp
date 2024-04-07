@@ -1,51 +1,97 @@
 .profile-update {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
+    font-family: monospace;
+    text-wrap: pretty;
+    padding: 0 1rem;
 }
 
-.profile-update {
-    display: flex;
-    flex-direction: column;
+.edit-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    float: right;
+    padding-top: 1rem;
 }
 
-.profile-update-group {
+/* Avatar */
+.u-avatar {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.profile-update-label {
-    flex: 1;
-    padding: 12px 20px;
-    margin: 8px 0;
-    margin-right: 8px;
+.u-avatar label {
+    height: 4rem;
+    width: 4rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 0.3rem;
+    border: 1px solid #4ce729;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer; /* Make the label clickable */
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.u-avatar-img {
+    border-radius: 50%;
+    max-height: 100%;
+}
+
+/* fields */
+.u-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+}
+
+.u-field > label {
     display: inline-block;
-    border: 1px solid green;
-    border-radius: 4px;
-    box-sizing: border-box;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    width: 8rem;
 }
 
-.profile-update-input {
-    flex: 2;
-    padding: 12px 20px;
-    margin: 8px 0;
+.u-field > input {
     display: inline-block;
-    border: 1px solid green;
-    border-radius: 4px;
-    box-sizing: border-box;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    border: 0;
+    margin-left: 1rem;
+    outline: none;
+    resize: none;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    background: #e2f8f6;
 }
 
-.profile-update-btn {
-    width: 100%;
-    background-color: #4CAF50;
+input:disabled, button:disabled {
+    opacity: 0.5;
+}
+
+.u-btn-save {
+    background-color: #4c91af;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 8px;
+    text-align: center;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    text-decoration: none;
+    margin-top: 10px;
+    padding: 10px 30px;
+    border: rgba(82, 96, 100, 0.98);
+    font-size: 16px;
+    border-radius: 2px;
+    float: right;
 }
 
-.profile-update-input:hover {
-    background-color: #45a049;
+.u-btn-save:not([disabled]):hover {
+    background-color: #43afdd;
+    cursor: pointer;
 }

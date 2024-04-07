@@ -8,69 +8,71 @@
 </head>
 <body>
 <form enctype="multipart/form-data" class="profile-update" id="upd-form">
-    <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" alt=""
-         style="border-radius: 50%; height: 60px; width: 60px;">
-    <p class="heading-small text-muted mb-4"><%=user.getFirstName()%>'s Profile</p>
+    <button class="edit-button" type="button" onclick="editProfile()">
+        <box-icon type='solid' name='pencil'></box-icon>
+    </button>
 
-    <div class="profile-update-group">
-        <label class="profile-update-label" for="input-photo">Photo</label>
-        <input name="photo" type="file" id="input-photo" class="profile-update-input dis"
-               placeholder="Photo" value="" disabled>
+    <%-- TODO: Add camera icon --%>
+    <div class="u-avatar">
+        <input name="photo" type="file" id="input-photo" accept="image/*" placeholder="Photo" value=""
+               onchange="document.querySelector('.u-avatar-img').src = window.URL.createObjectURL(this.files[0])"/>
+        <label for="input-photo">
+            <img class="u-avatar-img" src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" alt=""/>
+        </label>
     </div>
 
-    <div class="profile-update-group">
+    <div class="u-field">
         <label class="profile-update-label" for="input-first-name">First name</label>
         <input name="fname" type="text" id="input-first-name" class="profile-update-input dis"
                placeholder="" value="<%=user.getFirstName()%>" disabled>
     </div>
 
-    <div class="profile-update-group">
+    <div class="u-field">
         <label class="profile-update-label" for="input-last-name">Last name</label>
         <input name="lname" type="text" id="input-last-name" class="profile-update-input dis"
                placeholder="" value="<%=user.getLastName()%>" disabled>
     </div>
 
-    <div class="profile-update-group">
+
+    <div class="u-field">
         <label class="profile-update-label" for="input-dob">Birthdate</label>
         <input name="dob" type="text" id="input-dob" class="profile-update-input dis"
                placeholder="" value="<%=user.getDateOfBirth()%>" disabled>
     </div>
 
-    <div class="profile-update-group">
+    <div class="u-field">
         <label class="profile-update-label" for="input-gender">Gender</label>
         <input name="gender" type="text" id="input-gender" class="profile-update-input dis"
                placeholder="" value="<%=user.getGender()%>" disabled>
     </div>
 
     </div>
-    <div class="profile-update-group">
+    <div class="u-field">
         <label class="profile-update-label" for="input-email">Email address</label>
         <input name="email" type="email" id="input-email" class="profile-update-input"
                placeholder="" value="<%=user.getEmail()%>" disabled>
     </div>
 
-    <div class="profile-update-group">
+    <div class="u-field">
         <label class="profile-update-label" for="input-phone">Phone</label>
         <input name="phone" type="text" id="input-phone" class="profile-update-input dis"
                placeholder="XXXXXXXXXX" value="<%=user.getPhone()%>" disabled>
     </div>
 
-    <div class="profile-update-group">
+    <div class="u-field">
         <label class="profile-update-label" for="input-password">Password</label>
         <input name="password" type="password" id="input-password" class="profile-update-input dis"
                placeholder="Enter new Password" value="" disabled>
     </div>
 
-    <div class="profile-update-group">
-        <button type="button" onclick="editProfile()" class="profile-update-btn">Edit</button>
-        <button type="submit" id="upd" class="profile-update-btn dis" role="button" disabled>Update</button>
+    <div class="u-field">
+        <button type="submit" class="u-btn-save dis" role="button" disabled>Update</button>
     </div>
-    <div class="profile-update-group">
+
+    <%-- TODO: Dont update status whatever comes in response validate first. --%>
+    <div class="u-field">
         <p id="updstatus"></p>
     </div>
 </form>
 </body>
 </html>
-
-<%--action="./updateprofile" method="POST" --%>
-<%-- onclick="updateProfile()"--%>

@@ -35,7 +35,9 @@
                     </svg>
                     <video style="display: none" class="p-vid-preview" controls autoplay muted></video>
                 </label>
-                <input name="video" id="post-video"  type="file" placeholder="Choose File" value=""
+
+                <%-- TODO: FIX file corrouption --%>
+                <input name="video" id="post-video" type="file" placeholder="Choose File" value=""
                        onchange="document.querySelector('.p-vid-preview').src = window.URL.createObjectURL(this.files[0]);
                        document.querySelector('.p-vid-preview').style.display = 'block'"
                 />
