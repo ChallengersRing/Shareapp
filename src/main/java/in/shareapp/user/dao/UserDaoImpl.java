@@ -126,7 +126,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             }
         } catch (SQLException sqlEx) {
             logger.warning("Error inserting user: " + sqlEx.getMessage());
-            //TODO: Custom exception throw
+            //TODO: Custom exception throw.
         }// Resources are automatically closed by try-with-resources
 
         return status;

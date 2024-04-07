@@ -12,7 +12,7 @@
         <box-icon type='solid' name='pencil'></box-icon>
     </button>
 
-    <%-- TODO: Add camera icon --%>
+    <%-- TODO: Add camera icon. --%>
     <div class="u-avatar">
         <input name="photo" type="file" id="input-photo" accept="image/*" placeholder="Photo" value=""
                onchange="document.querySelector('.u-avatar-img').src = window.URL.createObjectURL(this.files[0])"/>
@@ -69,7 +69,7 @@
         <button type="submit" class="u-btn-save dis" role="button" disabled>Update</button>
     </div>
 
-    <%-- TODO: Dont update status whatever comes in response validate first. --%>
+    <%-- TODO: Don't update status whatever comes in response validate first. --%>
     <div class="u-field">
         <p id="updstatus"></p>
     </div>

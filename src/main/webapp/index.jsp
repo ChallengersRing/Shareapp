@@ -74,7 +74,7 @@
     </div>
 </header>
 
-<%--TODO: replace with toaster--%>
+<%--TODO: replace with toaster.--%>
 <%
     if (request.getAttribute("PostUpload") != null) {
         String color = "green";

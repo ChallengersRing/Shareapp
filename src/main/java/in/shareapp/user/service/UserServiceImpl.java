@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authenticateUserByEmailAndPassword(User user) {
-        // TODO: Encrypt passwd
+        // TODO: Encrypt passwd.
         Optional<User> dbUser = userDao.selectUserByEmail(user.getEmail());
         if (dbUser.isPresent() && user.getPassword().equals(dbUser.get().getPassword())) {
             user.setId(dbUser.get().getId());
