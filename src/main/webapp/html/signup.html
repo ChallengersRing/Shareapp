@@ -1,50 +1,36 @@
-<style type="text/css">   @import url("./css/signup.css"); </style>
-
-<form class="form-a" id="signup-a">
-    <div class="form-a-field">
-        <label for="fname">First name..</label>
+<form class="auth-form">
+    <div class="a-field">
+        <label for="fname">First name</label>
         <input name="fname" id="fname" class="" type="text" placeholder="firstname" value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label for="lname">Last name..</label>
+    <div class="a-field">
+        <label for="lname">Last name</label>
         <input name="lname" id="lname" class="" type="text" placeholder="lastname" value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label for="phone">Phone..</label>
+    <div class="a-field">
+        <label for="phone">Phone</label>
         <input name="phone" id="phone" class="" type="tel" placeholder="0123456789" value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label for="email">Email..</label>
+    <div class="a-field">
+        <label for="email">Email</label>
         <input name="email" id="email" class="" type="email" placeholder="name@example.com" value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label for="pass">Password..</label>
+    <div class="a-field">
+        <label for="pass">Password</label>
         <input name="password" id="pass" class="" type="password" placeholder="..........." value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label>
-            <input type="checkbox" value="remember-me"/>
-            Remember me
-        </label>
-    </div>
-
-    <button type="submit" style="display:none;">Sign Up</button>
-    <button onclick="processSignup()" class="form-a-btn">Sign Up</button>
+    <button type="submit" onclick="processSignup()" class="a-btn">Sign Up</button>
 
     <a class="" href="javascript:loadSignin()">Alreay a user! signin</a>
-    <p class="copyright">&copy; 2022</p>
-    <div id="result"></div>
+    <div id="a-result"></div>
 </form>
-
-<!--Scripts-->
-<!--<script type="text/javascript" src="./js/signupValidation.js"></script>-->

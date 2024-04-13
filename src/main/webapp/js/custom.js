@@ -28,7 +28,7 @@ function loadSignin() {
     initializeModal("Sign In");
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             document.getElementsByClassName("modal-content")[0].innerHTML = this.responseText;
         }
     };
@@ -40,7 +40,7 @@ function loadSignup() {
     initializeModal("Sign Up");
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             document.getElementsByClassName("modal-content")[0].innerHTML = this.responseText;
         }
     };
@@ -117,8 +117,8 @@ function sendSignInDataToServer(form) {
 
     // Define what happens on successful data submission
     xhr.addEventListener("load", (event) => {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("result").innerHTML = event.target.responseText;
+        document.querySelector("#a-result").style.display = "block";
+        document.querySelector("#a-result").innerHTML = event.target.responseText;
 
         //To refresh the window
         window.onclick = function (event) {
@@ -129,7 +129,7 @@ function sendSignInDataToServer(form) {
         }
     });
     xhr.addEventListener("error", (event) => {
-        document.getElementById('result').innerHTML = "<p style='color: darkred'>Server Error</p>";
+        document.querySelector("#a-result").innerHTML = "<p style='color: darkred'>Server Error</p>";
     });
     xhr.open("POST", url);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -139,7 +139,7 @@ function sendSignInDataToServer(form) {
 function processSignin() {
     console.log("Form Loaded");
 
-    const form = document.getElementById("signin-a");
+    const form = document.querySelector("#signin-form");
 
     form.addEventListener("submit", function (event) {
         console.log("Form Event Listener set")
@@ -186,8 +186,8 @@ function sendSignUpDataToServer(form) {
 
     // Define what happens on successful data submission
     xhr.addEventListener("load", (event) => {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("result").innerHTML = event.target.responseText;
+        document.querySelector("#a-result").style.display = "block";
+        document.querySelector("#a-result").innerHTML = event.target.responseText;
 
         //To refresh the window after the process
         window.onclick = function (event) {
@@ -198,7 +198,7 @@ function sendSignUpDataToServer(form) {
         }
     });
     xhr.addEventListener("error", (event) => {
-        document.getElementById('result').innerHTML = "<p style='color: darkred'>Server Error</p>";
+        document.querySelector('#a-result').innerHTML = "<p style='color: darkred'>Server Error</p>";
     });
     xhr.open("POST", url);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -236,7 +236,7 @@ function processSignup() {
             sendSignUpDataToServer(form);
         }
     });
-};
+}
 // -----------------Sign up validation and submit process ends --------------------
 // --------------------------------------------------------------------------------------------------------
 
@@ -276,7 +276,7 @@ function loadProfile() {
     initializeModal("Profile");
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             document.getElementsByClassName("modal-content")[0].innerHTML = this.responseText;
         }
     };
@@ -386,7 +386,7 @@ function loadLikedItems() {
 function openPostCreatorWindow() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             document.getElementsByClassName("videos")[0].innerHTML = this.responseText;
         }
     };

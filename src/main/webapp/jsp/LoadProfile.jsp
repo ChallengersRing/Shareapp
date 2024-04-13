@@ -9,7 +9,7 @@
 <body>
 <form enctype="multipart/form-data" class="profile-update" id="upd-form">
     <button class="edit-button" type="button" onclick="editProfile()">
-        <box-icon type='solid' name='pencil'></box-icon>
+        <i class='bx bxs-pencil bx-sm' ></i>
     </button>
 
     <%-- TODO: Add camera icon. --%>
@@ -46,7 +46,6 @@
                placeholder="" value="<%=user.getGender()%>" disabled>
     </div>
 
-    </div>
     <div class="u-field">
         <label class="profile-update-label" for="input-email">Email address</label>
         <input name="email" type="email" id="input-email" class="profile-update-input"

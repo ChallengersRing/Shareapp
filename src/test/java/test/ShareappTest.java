@@ -1,10 +1,10 @@
-package in.shareapp.test;
+package test;
 
 import in.shareapp.user.dao.UserDao;
 import in.shareapp.user.dao.UserDaoImpl;
 import in.shareapp.user.entity.User;
 
-public class Main {
+public class ShareappTest {
     public static void main(String[] args) {
         User user = new User("abhayraj7631@gmail.com", "123");
         System.out.println(user.getId() + " " +

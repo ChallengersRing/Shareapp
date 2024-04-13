@@ -1,0 +1,63 @@
+.auth-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    padding: 2rem;
+    flex-direction: column;
+    color: var(--text-color);
+}
+
+.auth-form small {
+    color: var(--error-color);
+}
+
+.a-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.a-field > label {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.a-field > input {
+    font-size: 1rem;
+    width: 100%;
+    outline: none;
+    border: 0;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    background: #a7f3ec;
+    cursor: pointer;
+}
+
+.a-btn {
+    font-size: 1rem;
+    margin: 10px 0;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--btn-border-radius);
+    background: var(--btn-bg-color);
+    color: var(--btn-text-color);
+    cursor: pointer;
+}
+
+.a-btn:hover {
+    background-color: var(--btn-bg-color-hover);
+}
+
+button:not(:disabled) {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    .a-field {
+        width: 100%;
+    }
+}

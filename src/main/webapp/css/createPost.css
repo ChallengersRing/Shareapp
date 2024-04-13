@@ -12,6 +12,11 @@
     box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
 }
 
+.p-dialog > h1 {
+    margin-bottom: 10px;
+    /*color: var(--text-color);*/
+}
+
 .p-dialog > div {
     border-top: 1px solid #e0e0e0;
     width: calc(100% - 4.5em);
@@ -22,7 +27,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0rem;
+    padding: 1rem 0;
 }
 
 .p-mid > div {
@@ -57,7 +62,7 @@
 
 /* Thumbnail */
 .p-thumbnail {
-    padding: 1rem 0rem;
+    padding: 1rem 0;
 }
 
 .p-thumbnail > label {
@@ -75,7 +80,7 @@
 .custom-file-upload {
     border: 1px solid #ccc;
     display: inline-block;
-    padding: 12px 12px 12px 0px;
+    padding: 12px 12px 12px 0;
     cursor: pointer;
     width: 8rem;
     height: 3rem;

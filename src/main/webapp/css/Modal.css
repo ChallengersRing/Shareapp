@@ -10,7 +10,7 @@
 
 /* MODAL */
 .modal {
-    background: #ffffff;
+    background: var(--bg-color);
     border-radius: 0.5em;
     box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
     left: 50%;
@@ -41,7 +41,7 @@
 }
 
 .modal-close-icon {
-    color: #7c7676;
+    color: var(--text-color);
     float: right;
     font-size: 40px;
     font-weight: lighter;
@@ -56,7 +56,7 @@
 
 /* TITLE */
 .modal-title {
-    color: #111827;
+    color: var(--text-color);
     padding: 1.3em 2em;
     pointer-events: all;
     position: relative;
@@ -68,7 +68,7 @@
 
 /* CONTENT */
 .modal-content {
-    border-top: 1px solid #e0e0e0;
+    border-top: var(--border-color);
     padding: 1em;
     pointer-events: all;
     overflow: auto;

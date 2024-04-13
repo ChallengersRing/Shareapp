@@ -8,31 +8,54 @@
     <link rel="stylesheet" href="./css/index.css"/>
     <link rel="stylesheet" href="./css/Modal.css">
     <link rel="stylesheet" href="./css/loginDetailModal.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>ShareApp</title>
 </head>
 <body>
 <%-- NavBar --%>
 <header class="header">
     <!-- Sidebar toggle btn && home/App logo -->
-    <div class="logo left">
-        <img onclick="toggleNav()" src="./images/icons/menu.svg" alt="C"
-             style="width:30px; height:30px; viewBox:0 0 60 60">
+    <div class="hd-left">
+        <button onclick="toggleNav()">
+            <i class='bx bx-menu-alt-left bx-sm'></i>
+        </button>
         <a href="/">ShareApp</a>
     </div>
 
     <!-- Search bar -->
-    <div class="search center">
+    <div class="hd-center">
         <form action="/search" method="post">
             <input type="text" placeholder="Search"/>
-            <button><img onclick="searchApp()" src="./images/icons/search.svg" alt="C"
-                         style="width:30px; height:30px; viewBox:0 0 60 60"></button>
+            <img onclick="searchApp()" src="./images/icons/search.svg" alt="C"
+                 class="icon-cst">
+            <img onclick="mic()" src="./images/icons/mic.svg" alt="C"
+                 class="icon-cst">
         </form>
-        <img onclick="mic()" src="./images/icons/mic.svg" alt="C"
-             style="margin-left:10px; width:30px; height:30px; viewBox:0 0 60 60;">
     </div>
 
     <!-- Right section (user/signin/signup/signout) -->
-    <div class="icons right">
+    <div class="hd-right">
+        <button class="theme-change" type="button" onclick="toggleTheme()">
+            <i class='bx bx-sun bx-sm'></i>
+        </button>
+
+        <script>
+            const storedTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+            storedTheme && document.documentElement.setAttribute('data-theme', storedTheme);
+
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute("data-theme");
+                let targetTheme = "light";
+
+                if (currentTheme === "light") {
+                    targetTheme = "dark";
+                }
+
+                document.documentElement.setAttribute('data-theme', targetTheme)
+                localStorage.setItem('theme', targetTheme);
+            }
+        </script>
+
         <%
             User user = null;
             //session.invalidate();
@@ -41,7 +64,7 @@
                 System.out.println("USERDETAILS at Index.jsp:" + session.getAttribute("USERDETAILS"));
         %>
         <!-- Trigger/Open The Modal by click on button -->
-        <a class="display-this" onclick="loadSignin()" class="login">SignIn</a>
+        <a onclick="loadSignin()">SignIn</a>
         <%
         } else {
             System.out.println("SIGNINSTATUS at Index.jsp:" + session.getAttribute("SIGNINSTATUS"));
@@ -49,8 +72,7 @@
 
             user = (User) session.getAttribute("USERDETAILS");
         %>
-        <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" onclick="signinDetails()" alt=""
-             style="border-radius: 50%; height: 40px; width: 40px;">
+        <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" onclick="signinDetails()" alt=""/>
 
         <!-- The login detail Modal (css in Modal.css)-->
         <div id="loginDetailModal" class="logindetail-container">
@@ -109,19 +131,19 @@
     <div class="side-bar">
         <div class="nav">
             <a class="nav-link active" onclick="loadVideos()">
-                <img src="./images/icons/videos.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/videos.svg" alt="C" class="icon-cst">
                 <span>Videos</span>
             </a>
             <a class="nav-link" onclick="loadAudios()">
-                <img src="./images/icons/audio.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/audio.svg" alt="C" class="icon-cst">
                 <span>Audio</span>
             </a>
             <a class="nav-link" onclick="loadBlogs()">
-                <img src="./images/icons/blog.png" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/blog.png" alt="C" class="icon-cst">
                 <span>Blogs</span>
             </a>
             <a class="nav-link" onclick="loadHistory()">
-                <img src="./images/icons/history.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/history.svg" alt="C" class="icon-cst">
                 <span>History</span>
             </a>
             <hr/>
@@ -129,15 +151,15 @@
                 if (user != null) {
             %>
             <a class="nav-link" onclick="myPosts()">
-                <img src="./images/icons/posts.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/posts.svg" alt="C" class="icon-cst">
                 <span>My Posts</span>
             </a>
             <a class="nav-link" onclick="loadLikedItems()">
-                <img src="./images/icons/like.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/like.svg" alt="C" class="icon-cst">
                 <span>Liked items</span>
             </a>
             <a class="nav-link" onclick="openPostCreatorWindow()">
-                <img src="./images/icons/upload.svg" alt="C" style="width:30px; height:30px; viewBox:0 0 60 60">
+                <img src="./images/icons/upload.svg" alt="C" class="icon-cst">
                 <span>Upload</span>
             </a>
             <hr/>
@@ -149,8 +171,6 @@
     </div>
 
     <!--Content start-->
-    <style type="text/css">   @import url("./css/content.css"); </style>
-
     <div class="videos">
         <h1>Recommended </h1>
         <div class="videos-container">
@@ -200,9 +220,6 @@
 
 <!-- Scripts -->
 <script src="./js/custom.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/dist/boxicons.js"
-        integrity="sha512-Dm5UxqUSgNd93XG7eseoOrScyM1BVs65GrwmavP0D0DujOA8mjiBfyj71wmI2VQZKnnZQsSWWsxDKNiQIqk8sQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style type="text/css">   @import url("./css/authform.css"); </style>
 </body>
 </html>

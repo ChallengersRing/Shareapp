@@ -1,32 +1,18 @@
-<style type="text/css">   @import url("./css/signin.css"); </style>
-
-<form class="form-a" id="signin-a">
-    <div class="form-a-field">
-        <label for="email">Email..</label>
+<form class="auth-form" id="signin-form">
+    <div class="a-field">
+        <label for="email">Email</label>
         <input name="email" id="email" class="" type="email" placeholder="name@example.com" value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label for="pass">Password..</label>
+    <div class="a-field">
+        <label for="pass">Password</label>
         <input name="password" id="pass" class="" type="password" placeholder="..........." value="">
         <small></small>
     </div>
 
-    <div class="form-a-field">
-        <label>
-            <input type="checkbox" value="remember-me"/> Remember me
-        </label><br/>
-    </div>
-
-    <button type="submit" style="display:none;">Signin</button>
-    <button onclick="processSignin()" class="form-a-btn">Sign In</button>
+    <button type="submit" onclick="processSignin()" class="a-btn">Sign In</button>
 
     <a class="" href="javascript:loadSignup()">New User! Create account</a>
-    <p class="copyright">&copy; 2022</p>
-    <div id="result"></div>
+    <div id="a-result"></div>
 </form>
-
-
-<!--Scripts-->
-<!--<script>   @import url("./js/signinValidation.js"); </script>-->
