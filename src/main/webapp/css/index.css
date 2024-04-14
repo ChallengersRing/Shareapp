@@ -127,8 +127,9 @@ input::selection, textarea::selection {
     border: none;
     border-right: var(--border-color);
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 1rem;
+    padding-left: 0.3rem;
 }
 
 .hd-center img:hover {
@@ -181,6 +182,7 @@ input::selection, textarea::selection {
 /*---------------------------------------------------------------*/
 /*main section = side-bar + content-panel*/
 main {
+    border-top: 1px var(--border-color);
     height: calc(100% - 60px);
     display: flex;
     overflow: hidden;
@@ -191,10 +193,13 @@ main {
 
 /* Sidebar */
 .side-bar {
-    width: 200px;
+    width: 250px;
     background-color: var(--bg-color);
     color: var(--btn-text-color);
+    border-top: var(--border-color);
+    border-right: var(--border-color);
     overflow-y: scroll;
+    transition: width 0.3s ease;
 }
 
 .side-bar::-webkit-scrollbar {
@@ -218,6 +223,9 @@ main {
 
 .nav-link span {
     margin-left: 15px;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis;
 }
 
 .nav-link:hover {
@@ -311,51 +319,15 @@ main {
     color: var(--text-color-fade)
 }
 
-@media (max-width: 425px) {
-    /*Nav bar*/
+@media (max-width: 425px), (max-width: 768px), (max-width: 968px) {
+    /* No need to duplicate the same styles, just use the common properties */
     .hd-center {
         display: none;
     }
 
-    /*Side bar*/
     .side-bar {
-        width: 300px;
-        display: none;
-    }
-
-    /*Content*/
-    .videos {
-    }
-}
-
-@media (max-width: 768px) {
-    /*Nav bar*/
-    .hd-center {
-        display: none;
-    }
-
-    /*Side bar*/
-    .side-bar {
-        width: 300px;
-        display: none;
-    }
-
-    /*Content*/
-    .videos {
-    }
-}
-
-@media (max-width: 968px) {
-    /*Nav bar*/
-    .hd-center {
-        display: none;
-    }
-
-    /*Side bar*/
-    .side-bar {
-        width: 300px;
+        /*width: 300px;*/
         display: none;
     }
 }
-
 /*content-panel ends*/

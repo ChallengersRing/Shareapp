@@ -4,11 +4,10 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/x-icon" href="./images/icons/favicon.png">
     <!-- CSS File -->
     <link rel="stylesheet" href="./css/index.css"/>
-    <link rel="stylesheet" href="./css/Modal.css">
     <link rel="stylesheet" href="./css/loginDetailModal.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>ShareApp</title>
 </head>
 <body>
@@ -38,23 +37,6 @@
         <button class="theme-change" type="button" onclick="toggleTheme()">
             <i class='bx bx-sun bx-sm'></i>
         </button>
-
-        <script>
-            const storedTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-            storedTheme && document.documentElement.setAttribute('data-theme', storedTheme);
-
-            function toggleTheme() {
-                const currentTheme = document.documentElement.getAttribute("data-theme");
-                let targetTheme = "light";
-
-                if (currentTheme === "light") {
-                    targetTheme = "dark";
-                }
-
-                document.documentElement.setAttribute('data-theme', targetTheme)
-                localStorage.setItem('theme', targetTheme);
-            }
-        </script>
 
         <%
             User user = null;
@@ -104,13 +86,12 @@
             color = "red";
         }
 %>
-<div id="toastr"></div>
-<div style="background: black; display: flex; justify-content: center">
-    <p style="color: <%=color%>">
-        Post upload: <%= request.getAttribute("PostUpload") %>
-        <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
-    </p>
-</div>
+        <div style="background: black; display: flex; justify-content: center">
+            <p style="color: <%=color%>">
+                Post upload: <%= request.getAttribute("PostUpload") %>
+                <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
+            </p>
+        </div>
 <%
     }
 %>
@@ -150,7 +131,7 @@
             <%
                 if (user != null) {
             %>
-            <a class="nav-link" onclick="myPosts()">
+            <a class="nav-link" onclick="loadMyPosts()">
                 <img src="./images/icons/posts.svg" alt="C" class="icon-cst">
                 <span>My Posts</span>
             </a>
@@ -220,6 +201,14 @@
 
 <!-- Scripts -->
 <script src="./js/custom.js"></script>
-<style type="text/css">   @import url("./css/authform.css"); </style>
+
+<link href='' rel='stylesheet'>
+<style type="text/css">
+    @import url("./css/authform.css");
+    @import url("./css/toaster.css");
+    @import url("./css/createPost.css");
+    @import url("./css/Modal.css");
+    @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+</style>
 </body>
 </html>

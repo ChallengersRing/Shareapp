@@ -1,5 +1,6 @@
 package in.shareapp.post.servlet;
 
+import com.fasterxml.jackson.jr.ob.JSON;
 import in.shareapp.post.entity.Post;
 import in.shareapp.post.service.PostService;
 import in.shareapp.post.service.PostServiceImpl;
@@ -11,10 +12,86 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class PostUploadServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PostUploadServlet.class.getName());
+
+    @Override
+    protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+        final HttpSession session = req.getSession();
+        final Map<String, String> jsonResponse = new HashMap<>();
+
+        final User user = (User) session.getAttribute("USERDETAILS");
+        if (user == null) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "User not logged in, post upload failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        final String title = req.getParameter("title");
+        final String description = req.getParameter("description");
+        if (title == null || description == null) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "Title or description not provided, post upload failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        final Part thumbnailFile = req.getPart("thumbnail");
+        final Part videoFile = req.getPart("video");
+        if (thumbnailFile == null || videoFile == null) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "Thumbnail or video file not received, post upload failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        final String thumbnailFilename = getFileName(thumbnailFile);
+        final String videoFilename = getFileName(videoFile);
+        if (thumbnailFilename.equals("PostNotReceived") || videoFilename.equals("PostNotReceived")) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "Thumbnail or video file not received from client, post upload failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        final PostService postService = new PostServiceImpl();
+        final String date = getDateTime();
+        final int views = 0;
+        final int likes = 0;
+        final String comments = "No Comments";
+
+        final Long userId = user.getId();
+        final Post post = new Post(userId, videoFilename, title, thumbnailFilename, description, date, views, likes, comments);
+
+        // Status after saving in database.
+        final boolean dbStatus = postService.uploadUserPost(post);
+        if (!dbStatus) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "Database post failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        // Setting the file directory where to store the posts.
+        final String serverFileDirectory = getServletContext().getRealPath("/") + "ClientResources/Posts";
+        // Store in filesystem after successful update in db.
+        final boolean fsStatusThumbnail = postService.savePostFile(serverFileDirectory, thumbnailFilename, videoFile);
+        final boolean fsStatusVideo = postService.savePostFile(serverFileDirectory, videoFilename, thumbnailFile);
+        if (!fsStatusThumbnail || !fsStatusVideo) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "File System failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        jsonResponse.put("status", "success");
+        writeJsonResponse(resp, jsonResponse, 200);
+    }
 
     private String getDateTime() {
         final LocalDateTime now = LocalDateTime.now();
@@ -22,70 +99,21 @@ public class PostUploadServlet extends HttpServlet {
         return now.format(formatter);
     }
 
-    @Override
-    protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-        final HttpSession session = req.getSession();
+    private String getFileName(Part part) {
+        return (part != null) ? part.getSubmittedFileName() : "PostNotReceived";
+    }
 
-        logger.info("From PostUploadServlet:-----");
-
-        final User user = (User) session.getAttribute("USERDETAILS");
-        if (user != null) {
-            final String date = this.getDateTime();
-            final int views = 0;
-            final int likes = 0;
-            final String comments = "No Comments";
-
-            final Long userId = user.getId();
-            final String title = req.getParameter("title");
-            final String description = req.getParameter("description");
-
-            //Receiving the "file" from request object, extract "filename"
-            final Part thumbnailFile = req.getPart("thumbnail");
-            final Part videoFile = req.getPart("video");
-            final PostService postService = new PostServiceImpl();
-            final String thumbnailFilename = postService.getPostFileName(thumbnailFile);
-            final String videoFilename = postService.getPostFileName(videoFile);
-
-            logger.info("Post Details: " + userId +
-                    " " + videoFilename + " " + title + " " +
-                    thumbnailFilename + " " + " " + description + " " + date);
-
-            final Post post = new Post(userId, videoFilename, title, thumbnailFilename, description, date, views, likes, comments);
-
-            req.setAttribute("PostUpload", "fail");
-
-            if (!(videoFilename.equals("PostNotReceived")) && !(thumbnailFilename.equals("PostNotReceived"))) {
-                //Status after SAVING in DATABASE.
-                final boolean dbStatus = postService.uploadUserPost(post);
-
-                //Setting the file directory where to store the posts.
-                final String serverFileDirectory = getServletContext().getRealPath("/") + "ClientResources/Posts";
-
-                //STORE IN FILESYSTEM after successfully update in db.
-                if (dbStatus) {
-                    final boolean fsStatusThumbnail = postService.savePostFile(serverFileDirectory, thumbnailFilename, videoFile);
-                    final boolean fsStatusVideo = postService.savePostFile(serverFileDirectory, videoFilename, thumbnailFile);
-
-                    if (fsStatusThumbnail && fsStatusVideo) {
-                        req.setAttribute("PostUpload", "success");
-                        logger.fine("Post upload success");
-                    } else {
-                        logger.severe("File System failure");
-                    }
-                } else {
-                    //Database insert failure
-                    logger.warning("Database post failure");
-                }
-            } else {
-                //Post receiving from client failure
-                logger.warning("Post receiving failure");
-            }
-        } else {
-            // User didn't login post upload failure
-            logger.warning("User didn't login post upload failure");
-        }
-
+    private void forwardToIndexPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher("./index.jsp");
         requestDispatcher.forward(req, resp);
+    }
+
+    private void writeJsonResponse(HttpServletResponse response, Map<String, String> jsonResponse, int statusCode) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(statusCode);
+        response.getWriter().write(JSON.std
+                .with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+                .asString(jsonResponse));
     }
 }

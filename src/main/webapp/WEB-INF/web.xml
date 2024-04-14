@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+
+    <display-name>Shareapp</display-name>
+
     <servlet>
         <servlet-name>signinProcess</servlet-name>
         <servlet-class>in.shareapp.user.servlet.SignInProcessServlet</servlet-class>
@@ -65,14 +68,33 @@
         <url-pattern>/updateprofile</url-pattern>
     </servlet-mapping>
 
+    <!-- Configuration for caching static resources -->
+    <!--    <welcome-file-list>-->
+    <!--        <welcome-file>index.jsp</welcome-file>-->
+    <!--    </welcome-file-list>-->
 
-    <!--    <servlet>-->
-    <!--        <servlet-name>Servlet4</servlet-name>-->
-    <!--        <servlet-class>in.shareapp.user.servlet.UsersListServlet</servlet-class>-->
-    <!--    </servlet>-->
     <!--    <servlet-mapping>-->
-    <!--        <servlet-name>Servlet4</servlet-name>-->
-    <!--        <url-pattern>/employeeslist</url-pattern>-->
+    <!--        <servlet-name>default</servlet-name>-->
+    <!--        <url-pattern>*.html</url-pattern>-->
     <!--    </servlet-mapping>-->
+
+    <!--    <mime-mapping>-->
+    <!--        <extension>html</extension>-->
+    <!--        <mime-type>text/html</mime-type>-->
+    <!--    </mime-mapping>-->
+
+    <!--    <filter>-->
+    <!--        <filter-name>ExpiresFilter</filter-name>-->
+    <!--        <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>-->
+    <!--        <init-param>-->
+    <!--            <param-name>ExpiresByType text/html</param-name>-->
+    <!--            <param-value>access plus 1 hour</param-value>-->
+    <!--        </init-param>-->
+    <!--    </filter>-->
+
+    <!--    <filter-mapping>-->
+    <!--        <filter-name>ExpiresFilter</filter-name>-->
+    <!--        <url-pattern>*.html</url-pattern>-->
+    <!--    </filter-mapping>-->
 
 </web-app>

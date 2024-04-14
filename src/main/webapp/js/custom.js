@@ -1,6 +1,67 @@
+// -------------------------- Theme functionality. --------------------------
+const storedTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+storedTheme && document.documentElement.setAttribute('data-theme', storedTheme);
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    let targetTheme = "light";
+
+    if (currentTheme === "light") {
+        targetTheme = "dark";
+    }
+
+    document.documentElement.setAttribute('data-theme', targetTheme)
+    localStorage.setItem('theme', targetTheme);
+}
+
+// -------------------------- Toaster functionality. -------------------------- -----------
+// Display a single toast
+function showToast(message, type = "info", duration = 3000) {
+    const newToast = document.createElement('div');
+    newToast.classList.add('toaster', `toast-${type}`, 'show');
+    const iconMapping = {
+        "info": "info-circle",
+        "success": "check-circle",
+        "warning": "error-alt",
+        "error": "error"
+    };
+
+    newToast.innerHTML = `
+        <div class="toast-icon">
+            <i class="bx bx-${iconMapping[type]} bx-sm ${type}"></i>
+        </div>
+        <span class="toast-message">${message}</span>
+        <div class="toast-progress"></div>
+        <div class="toast-close">
+            <i class='bx bx-x bx-sm ${type}'></i>
+        </div>
+    `;
+
+    document.body.appendChild(newToast);
+
+    const progress = newToast.querySelector('.toast-progress');
+    progress.style.animationDuration = `${duration / 1000}s`;
+
+    setTimeout(() => {
+        hideToast(newToast);
+    }, duration);
+
+    const closeButton = newToast.querySelector('.toast-close');
+    closeButton.addEventListener('click', () => {
+        hideToast(newToast);
+    });
+}
+
+function hideToast(toastElement) {
+    toastElement.classList.remove('show');
+    setTimeout(() => {
+        toastElement.remove();
+    }, 500); // Wait for the fade-out animation to complete before removing the toast from the DOM
+}
+
 // -------------------------- Modal functionality. -------------------------- -----------
 // Get the modal
-let modalOverlay = document.querySelector(".modal-container");
+const modalOverlay = document.querySelector(".modal-container");
 
 function initializeModal(title) {
     // When the user clicks on <span> (x), close the modal
@@ -19,9 +80,7 @@ function initializeModal(title) {
     modalOverlay.style.display = "block";
 }
 
-//To open the MODAL from anywhere: modalOverlay.style.display = "block";
 //-------------------------- Modal functionality ends ---------------------------------------
-// --------------------------------------------------------------------------------------------------------
 
 // ------When the user clicks the button, open the modal and load signin page---------
 function loadSignin() {
@@ -237,6 +296,7 @@ function processSignup() {
         }
     });
 }
+
 // -----------------Sign up validation and submit process ends --------------------
 // --------------------------------------------------------------------------------------------------------
 
@@ -257,9 +317,9 @@ function signOut() {
 
 //Show signin details on click Profile photo---------------------------------------
 function signinDetails() {
-    loginDetailsModal = document.getElementsByClassName("logindetail-container")[0];
+    const loginDetailsModal = document.getElementsByClassName("logindetail-container")[0];
     loginDetailsModal.style.display = "block";
-    var closeBtn = document.getElementsByClassName("logindetail-close")[0];
+    const closeBtn = document.getElementsByClassName("logindetail-close")[0];
     closeBtn.onclick = function () {
         loginDetailsModal.style.display = "none";
     }
@@ -328,13 +388,19 @@ function editProfile() {
 // ----------------- Sidebar functionality Starts ---------------------------------
 // sidebar open/close functionality on click the left corner button on the page
 function toggleNav() {
-    let val = getComputedStyle(document.getElementsByClassName("side-bar")[0]).display;
-    // console.log(getComputedStyle(document.getElementsByClassName("side-bar")[0].width));
-    if (val == "block") {
-        document.getElementsByClassName("side-bar")[0].style.display = "none";
+    const sidebar = document.querySelector(".side-bar");
+    const sidebarDisplay = getComputedStyle(sidebar).width;
+
+    if (sidebarDisplay > "10px") {
+        sidebar.style.width = "0px";
     } else {
-        document.getElementsByClassName("side-bar")[0].style.display = "block";
+        sidebar.style.width = "250px";
     }
+}
+
+function toggleNav1() {
+    let sideBar = document.querySelector(".side-bar");
+    sideBar.classList.toggle("close");
 }
 
 //Setting buttons active by click
@@ -342,15 +408,10 @@ const header = document.querySelector(".side-bar");
 const btns = header.querySelector(".nav-link");
 for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener("click", function () {
-        var current = document.getElementsByClassName("active");
+        const current = document.getElementsByClassName("active");
         current[0].className = current[0].className.replace(" active", "");
         this.className += " active";
     });
-}
-
-//Show my post
-function myPosts() {
-
 }
 
 //Load videos in the content panel
@@ -360,7 +421,7 @@ window.onload = function () {
 
 function loadVideos() {
     console.log("loading videos..");
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementsByClassName("videos")[0].innerHTML = this.responseText;
@@ -369,6 +430,47 @@ function loadVideos() {
     xhr.open("POST", "postretrieveall", true);
     xhr.send();
 }
+
+// load the post creator on press upload
+function openPostCreatorWindow() {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementsByClassName("videos")[0].innerHTML = this.responseText;
+        }
+    };
+    xhr.open("POST", "./html/PostCreator.html", true);
+    xhr.setRequestHeader("Cache-Control", "max-age=604800");
+    xhr.send();
+}
+
+function uploadVideo(event) {
+    event.preventDefault();
+
+    const form = document.getElementById('post-upload-form');
+    const formData = new FormData(form);
+
+    // Make AJAX request using fetch API
+    fetch('./postupload', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            showToast("Post uploaded successfully.", "success", 3000);
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast(error, "error", 5000);
+        });
+}
+
 
 function loadAudios() {
 }
@@ -379,48 +481,15 @@ function loadBlogs() {
 function loadHistory() {
 }
 
+function loadMyPosts() {
+}
+
 function loadLikedItems() {
-}
-
-// load the post creator on press upload
-function openPostCreatorWindow() {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByClassName("videos")[0].innerHTML = this.responseText;
-        }
-    };
-    xhr.open("POST", "./jsp/CreatePost.jsp", true);
-    xhr.send();
-}
-
-function goHome() {
-    window.location.replace(window.location.origin + '/shareapp');
-}
-
-
-function uploadPost() {
-    console.log("in uploadPostmtd");
-    // define URL and for element
-    const url = "/postupload";
-    // collect files
-    const files = document.querySelector('[name=post-file]').files;
-    const formData = new FormData(document.querySelector('#create-post-form'));
-    formData.append('file', files[0]);
-    console.log("in uploadPostmtd");
-
-    // post form data
-    const xhr = new XMLHttpRequest();
-
-    // log response
-    xhr.onload = () => {
-        console.log(xhr.responseText)
-    }
-
-    // create and send the reqeust
-    xhr.open('POST', url)
-    xhr.send(formData)
 }
 
 // ------------------------Sidebar functionality Ends-----------------------------------------------------
 // --------------------------------------------------------------------------------------------------------
+
+function goHome() {
+    window.location.replace(window.location.origin + '/shareapp');
+}
