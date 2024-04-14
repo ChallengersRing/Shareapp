@@ -14,7 +14,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     @Override
     public User selectUserByColumnValue(String column, String value) {
         User user = null;
-        String sql = "SELECT * FROM shareapp.user_info WHERE " + column + " = ?";
+        final String sql = "SELECT * FROM shareapp.user_info WHERE " + column + " = ?";
 
         try (Connection dbCon = getDbConnection();
              PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
@@ -38,7 +38,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     public Optional<User> selectUserByEmail(String email) {
         User user = null;
 
-        String sql = "SELECT * FROM shareapp.user_info WHERE email=?";
+        final String sql = "SELECT * FROM shareapp.user_info WHERE email=?";
 
         try (Connection dbCon = getDbConnection();
              PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
@@ -60,7 +60,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     @Override
     public User selectUserByID(Long userId) {
         User user = null;
-        String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
+        final String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
 
         try (Connection dbCon = getDbConnection();
              PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
@@ -83,7 +83,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     @Override
     public User selectUserByExtId(UUID extId) {
         User user = null;
-        String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
+        final String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
 
         try (Connection dbCon = getDbConnection();
              PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
@@ -107,7 +107,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     public boolean insertUser(User user) {
         boolean status = false;
 
-        String sql = "INSERT INTO shareapp.user_info(avatar, firstname, lastname, email, phone, password) " +
+        final String sql = "INSERT INTO shareapp.user_info(avatar, firstname, lastname, email, phone, password) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection dbCon = getDbConnection();
@@ -137,32 +137,22 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     public List<User> selectAllUsers() {
         List<User> userList = new ArrayList<>();
 
-        Connection dbCon = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+        final String sql = "SELECT * FROM shareapp.user_info";
 
-        try {
-            dbCon = getDbConnection();
-            stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        try (Connection dbCon = getDbConnection();
+             PreparedStatement pstmt = dbCon.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
-            String sql = "SELECT * FROM shareapp.user_info";
-            rs = stmt.executeQuery(sql);
-
-            rs.beforeFirst();
             while (rs.next()) {
                 userList.add(createUserFromResultSet(rs));
             }
         } catch (SQLException sqlEx) {
             logger.warning("Query execution failed: " + sqlEx.getMessage());
-            sqlEx.printStackTrace();
-        } finally {
-            closeResultSet(rs);
-            closeStatement(stmt);
-            closeDbConnection(dbCon);
         }
 
         return userList;
     }
+
 
     @Override
     public boolean updateUser(User user) {
