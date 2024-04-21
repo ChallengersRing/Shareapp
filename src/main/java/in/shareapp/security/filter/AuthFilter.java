@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @WebFilter(
         filterName = "AuthFilter",
-        urlPatterns = {"/postupload", "/updateprofile"}
+        urlPatterns = {"/postupload", "/updateprofile", "/jsp/LoadProfile.jsp"}
 )
 public class AuthFilter implements Filter {
 

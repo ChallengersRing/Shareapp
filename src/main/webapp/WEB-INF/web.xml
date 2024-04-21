@@ -4,40 +4,13 @@
 
     <display-name>Shareapp</display-name>
 
-    <session-config>
-        <cookie-config>
-            <http-only>true</http-only>
-            <secure>true</secure>
-        </cookie-config>
-        <tracking-mode>COOKIE</tracking-mode>
-    </session-config>
-
-    <servlet>
-        <servlet-name>signinProcess</servlet-name>
-        <servlet-class>in.shareapp.user.servlet.SignInProcessServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>signinProcess</servlet-name>
-        <url-pattern>/signin</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>signupProcess</servlet-name>
-        <servlet-class>in.shareapp.user.servlet.SignUpProcessServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>signupProcess</servlet-name>
-        <url-pattern>/signup</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LinkController</servlet-name>
-        <servlet-class>in.shareapp.user.servlet.LinkControllerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LinkController</servlet-name>
-        <url-pattern>/link</url-pattern>
-    </servlet-mapping>
+<!--    <session-config>-->
+<!--        <cookie-config>-->
+<!--            <http-only>true</http-only>-->
+<!--            <secure>true</secure>-->
+<!--        </cookie-config>-->
+<!--        <tracking-mode>COOKIE</tracking-mode>-->
+<!--    </session-config>-->
 
     <servlet>
         <servlet-name>PostUpload</servlet-name>
@@ -51,15 +24,6 @@
         <servlet-name>PostUpload</servlet-name>
         <url-pattern>/postupload</url-pattern>
     </servlet-mapping>
-
-<!--    <servlet>-->
-<!--        <servlet-name>PostRetrieveAll</servlet-name>-->
-<!--        <servlet-class>in.shareapp.post.servlet.PostsRetrieveAllServlet</servlet-class>-->
-<!--    </servlet>-->
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>PostRetrieveAll</servlet-name>-->
-<!--        <url-pattern>/postretrieveall</url-pattern>-->
-<!--    </servlet-mapping>-->
 
     <servlet>
         <servlet-name>UpdateUserProfile</servlet-name>

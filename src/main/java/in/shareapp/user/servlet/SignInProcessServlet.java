@@ -6,6 +6,7 @@ import in.shareapp.user.service.UserServiceImpl;
 import in.shareapp.security.jwt.JwtUtil;
 import in.shareapp.utils.PropertyHolder;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+@WebServlet("/signin")
 public class SignInProcessServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(SignInProcessServlet.class.getName());
     private static final long expirationTimeMillis = Long.parseLong(PropertyHolder.getProperty("jwt.expirationTime"));

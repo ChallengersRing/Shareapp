@@ -83,7 +83,7 @@ function initializeModal(title) {
 //-------------------------- Modal functionality ends ---------------------------------------
 
 // ------When the user clicks the button, open the modal and load signin page---------
-function loadSignin() {
+function loadSignIn() {
     initializeModal("Sign In");
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
@@ -95,7 +95,7 @@ function loadSignin() {
     xhr.send();
 }
 
-function loadSignup() {
+function loadSignUp() {
     initializeModal("Sign Up");
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
@@ -189,7 +189,7 @@ function sendSignInDataToServer(form) {
     xhr.send(new URLSearchParams(data).toString());
 }
 
-function processSignin(event) {
+function processSignIn(event) {
     event.preventDefault();
 
     const form = document.querySelector("#signin-form");
@@ -215,7 +215,7 @@ function sendSignUpDataToServer(form) {
     // Bind the FormData object and the form element
     const FD = new FormData(form);
 
-    var data = {
+    const data = {
         'fname': FD.get('fname'),
         'lname': FD.get('lname'),
         'email': FD.get('email'),
@@ -249,36 +249,28 @@ function sendSignUpDataToServer(form) {
 }
 
 //validate and submit to server
-function processSignup() {
-    console.log("Form Loaded");
+function processSignUp(event) {
+    event.preventDefault();
 
-    const form = document.getElementById("signup-a");
+    const form = document.querySelector("#signup-form");
+    const FNAME_REQUIRED = "Please enter your first name";
+    const LNAME_REQUIRED = "Please enter your last name";
+    const PHONE_REQUIRED = "Please enter your phone number";
+    const EMAIL_REQUIRED = "Please enter your email";
+    const EMAIL_INVALID = "Please enter a correct email address format";
+    const PASS_REQUIRED = "Please enter password";
 
-    form.addEventListener("submit", function (event) {
-        console.log("Form Event Listener set")
+    // validate the form
+    let fnameValid = hasValue(form.elements["fname"], FNAME_REQUIRED);
+    let lnameValid = hasValue(form.elements["lname"], LNAME_REQUIRED);
+    let phoneValid = hasValue(form.elements["phone"], PHONE_REQUIRED);
+    let emailValid = validateEmail(form.elements["email"], EMAIL_REQUIRED, EMAIL_INVALID);
+    let passValid = hasValue(form.elements["password"], PASS_REQUIRED);
 
-        // stop form submission
-        event.preventDefault();
-
-        const FNAME_REQUIRED = "Please enter your first name";
-        const LNAME_REQUIRED = "Please enter your last name";
-        const PHONE_REQUIRED = "Please enter your phone number";
-        const EMAIL_REQUIRED = "Please enter your email";
-        const EMAIL_INVALID = "Please enter a correct email address format";
-        const PASS_REQUIRED = "Please enter password";
-
-        // validate the form
-        let fnameValid = hasValue(form.elements["fname"], FNAME_REQUIRED);
-        let lnameValid = hasValue(form.elements["lname"], LNAME_REQUIRED);
-        let phoneValid = hasValue(form.elements["phone"], PHONE_REQUIRED);
-        let emailValid = validateEmail(form.elements["email"], EMAIL_REQUIRED, EMAIL_INVALID);
-        let passValid = hasValue(form.elements["password"], PASS_REQUIRED);
-
-        // if valid, submit the form.
-        if (fnameValid && lnameValid && phoneValid && emailValid && passValid) {
-            sendSignUpDataToServer(form);
-        }
-    });
+    // if valid, submit the form.
+    if (fnameValid && lnameValid && phoneValid && emailValid && passValid) {
+        sendSignUpDataToServer(form);
+    }
 }
 
 // -----------------Sign up validation and submit process ends --------------------
@@ -288,12 +280,10 @@ function processSignup() {
 // -----------------Sign-out functionality by post method -------------------------- -------
 function signOut() {
     const xhr = new XMLHttpRequest();
-    xhr.open('post', './link?rqst=signout');
+    xhr.onload = () => window.location.replace(window.location.origin + '/shareapp');
+    xhr.open('GET', './signout?rqst=signout');
     xhr.setRequestHeader("Content-Type", "text/plain");
-    xhr.send("sending something!");
-    xhr.onload = function () {
-        window.location.pathname.replace(window.location.origin + '/shareapp');
-    };
+    xhr.send();
 }
 
 // ------------------Sign-out functionality by post method ends --------------------------

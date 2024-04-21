@@ -43,8 +43,6 @@
         <%
             Optional<String> token = JwtUtil.extractToken(request);
             Optional<User> userOptional = token.isPresent() ? JwtUtil.getInstance().resolveClaims(token.get()) : Optional.empty();
-            System.out.println("Token: "+token);
-            System.out.println(userOptional);
             boolean isAuthorized = false;
             if (userOptional.isPresent()) {
                 isAuthorized = true;
@@ -70,7 +68,7 @@
         <%
         } else {
         %>
-        <a onclick="loadSignin()">Sign In</a>
+        <a onclick="loadSignIn()">Sign In</a>
         <%
             }
         %>

@@ -1,4 +1,4 @@
-<form class="auth-form">
+<form class="auth-form" id="signup-form">
     <div class="a-field">
         <label for="fname">First name</label>
         <input name="fname" id="fname" class="" type="text" placeholder="firstname" value="">
@@ -29,8 +29,8 @@
         <small></small>
     </div>
 
-    <button type="submit" onclick="processSignup()" class="a-btn">Sign Up</button>
+    <button type="submit" onclick="processSignUp(event)" class="a-btn">Sign Up</button>
 
-    <a class="" href="javascript:loadSignin()">Alreay a user! signin</a>
+    <a class="" href="javascript:loadSignIn()">Alreay a user! signin</a>
     <div id="a-result"></div>
 </form>
