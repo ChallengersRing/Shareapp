@@ -7,6 +7,8 @@ import in.shareapp.user.entity.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -17,6 +19,13 @@ import java.util.logging.Logger;
 
 import static in.shareapp.utils.ServletUtil.writeJsonResponse;
 
+@WebServlet("/postupload")
+@MultipartConfig(
+        maxFileSize = 1024 * 1024 * 20,
+        fileSizeThreshold = 1024 * 1024 * 20, //if uploaded file’s size is greater, then it will be stored on the disk. otherwise memory
+        maxRequestSize = 1024 * 1024 * 25, //all files include other form data size
+        location = "/" //Temp loc for store upload file
+)
 public class PostUploadServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PostUploadServlet.class.getName());
 

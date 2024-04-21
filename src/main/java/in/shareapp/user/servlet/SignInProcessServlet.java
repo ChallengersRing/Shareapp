@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 @WebServlet("/signin")
 public class SignInProcessServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(SignInProcessServlet.class.getName());
-    private static final long expirationTimeMillis = Long.parseLong(PropertyHolder.getProperty("jwt.expirationTime"));
     private final UserService userService = new UserServiceImpl();
 
     @Override
@@ -32,12 +31,8 @@ public class SignInProcessServlet extends HttpServlet {
 
         if (authenticatedUser.isPresent()) {
             // Generate JWT token
-            String token = JwtUtil.generateToken(authenticatedUser.get(), expirationTimeMillis);
-
-            Cookie cookie = new Cookie("TOKEN", token);
-            cookie.setPath("/");
-            cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(expirationTimeMillis));
-            resp.addCookie(cookie);
+            String token = JwtUtil.generateToken(authenticatedUser.get());
+            JwtUtil.addTokenToResponse(token, resp);
 
             // Set token in response header
             // resp.setHeader("Authorization", "Bearer " + token);

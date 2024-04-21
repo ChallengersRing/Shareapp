@@ -1,11 +1,14 @@
 package in.shareapp.user.servlet;
 
 import in.shareapp.dds.DatabaseDataSource;
+import in.shareapp.security.jwt.JwtUtil;
 import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +18,13 @@ import java.util.logging.Logger;
 
 import static in.shareapp.utils.ServletUtil.writeJsonResponse;
 
+@WebServlet("/updateprofile")
+@MultipartConfig(
+        maxFileSize = 1024 * 1024 * 20,
+        fileSizeThreshold = 1024 * 1024 * 20, //if uploaded file’s size is greater, then it will be stored on the disk. otherwise memory
+        maxRequestSize = 1024 * 1024 * 25, //all files include other form data size
+        location = "/" //Temp loc for store upload file
+)
 public class ProfileUpdateProcessServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(DatabaseDataSource.class.getName());
 
@@ -78,6 +88,8 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
             statusUploadInDatabase = userService.updateProfile(user);
 
             if (statusUploadInDatabase) {
+                String token = JwtUtil.generateToken(user);
+                JwtUtil.addTokenToResponse(token, resp);
                 messageForClient.append("Details update: success, ");
             } else {
                 messageForClient.append("Details update: Fail, ");

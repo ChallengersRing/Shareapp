@@ -1,6 +1,7 @@
 <%@ page import="in.shareapp.user.entity.User" %>
 <%@ page import="in.shareapp.security.jwt.JwtUtil" %>
 <%@ page import="java.util.Optional" %>
+<%@ page session="false" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
@@ -74,24 +75,6 @@
         %>
     </div>
 </header>
-
-<%--TODO: replace with toaster.--%>
-<%
-    if (request.getAttribute("PostUpload") != null) {
-        String color = "green";
-        if (request.getAttribute("PostUpload").equals("fail")) {
-            color = "red";
-        }
-%>
-<div style="background: black; display: flex; justify-content: center">
-    <p style="color: <%=color%>">
-        Post upload: <%= request.getAttribute("PostUpload") %>
-        <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
-    </p>
-</div>
-<%
-    }
-%>
 
 <div class="modal-container">
     <div class="modal">

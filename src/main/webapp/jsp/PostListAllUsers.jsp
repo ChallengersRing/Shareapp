@@ -4,6 +4,7 @@
 <%@ page import="in.shareapp.user.entity.User" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page session="false" %>
 <html>
 <head>
     <title>ShareApp</title>

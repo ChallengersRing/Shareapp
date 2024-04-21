@@ -372,16 +372,11 @@ function toggleNav() {
     }
 }
 
-function toggleNav1() {
-    let sideBar = document.querySelector(".side-bar");
-    sideBar.classList.toggle("close");
-}
-
 //Setting buttons active by click
 const header = document.querySelector(".side-bar");
-const btns = header.querySelector(".nav-link");
-for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function () {
+const navButtons = header.querySelector(".nav-link");
+for (let i = 0; i < navButtons.length; i++) {
+    navButtons[i].addEventListener("click", function () {
         const current = document.getElementsByClassName("active");
         current[0].className = current[0].className.replace(" active", "");
         this.className += " active";

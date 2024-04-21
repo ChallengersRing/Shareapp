@@ -1,5 +1,6 @@
 <%@ page import="in.shareapp.user.entity.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page session="false" %>
 <%User user = (User) request.getAttribute("user");%>
 <style type="text/css">   @import url("./css/loadprofile.css"); </style>
 <html>

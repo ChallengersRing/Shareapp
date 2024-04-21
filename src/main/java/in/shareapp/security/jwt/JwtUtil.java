@@ -8,9 +8,11 @@ import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +25,7 @@ public class JwtUtil {
 
     // set in env //Jwts.SIG.HS512.key().build();
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(PropertyHolder.getProperty("jwt.secret").getBytes());
+    private static final long expirationTimeMillis = Long.parseLong(PropertyHolder.getProperty("jwt.expirationTime"));
 
     private JwtUtil() {
         this.jwtParser = Jwts.parser().verifyWith(SECRET_KEY).build();
@@ -39,7 +42,8 @@ public class JwtUtil {
         return instance;
     }
 
-    public static String generateToken(User user, long expirationTimeMillis) {
+    public static String generateToken(User user) {
+
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + expirationTimeMillis);
 
@@ -118,12 +122,12 @@ public class JwtUtil {
         }
     }
 
-//    public static void addTokenToResponse(HttpServletResponse response, String token) {
-//        Cookie cookie = new Cookie("TOKEN", token);
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true); // Set HttpOnly flag for added security
-//        cookie.setSecure(true); // Ensure the cookie is only sent over HTTPS
-//        cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(expirationTimeMillis)); // Set expiration time
-//        response.addCookie(cookie);
-//    }
+    public static void addTokenToResponse( String token, HttpServletResponse response) {
+        Cookie cookie = new Cookie("TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true); // Set HttpOnly flag for added security
+        cookie.setSecure(true); // Ensure the cookie is only sent over HTTPS
+        cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(expirationTimeMillis)); // Set expiration time
+        response.addCookie(cookie);
+    }
 }
