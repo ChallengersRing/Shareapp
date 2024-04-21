@@ -214,23 +214,19 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     }
 
     private User createUserFromResultSet(ResultSet rs) throws SQLException {
-        User user = new User();
-
-        user.setId(rs.getLong("id"));
-        user.setExtId(rs.getObject("ext_id", UUID.class));
-        user.setAvatar(rs.getString("avatar"));
-        user.setFirstName(rs.getString("firstname"));
-        user.setLastName(rs.getString("lastname"));
-        user.setGender(rs.getString("gender"));
-        user.setEmail(rs.getString("email"));
-        user.setPhone(rs.getString("phone"));
-        user.setPassword(rs.getString("password"));
-        user.setDateOfBirth(rs.getString("date_of_birth"));
-        user.setDeleted(rs.getBoolean("deleted"));
-        user.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
-        user.setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class));
-
-        return user;
+        return new User.Builder(rs.getString("email"), rs.getString("password"))
+                .id(rs.getLong("id"))
+                .extId(rs.getObject("ext_id", UUID.class))
+                .avatar(rs.getString("avatar"))
+                .firstName(rs.getString("firstname"))
+                .lastName(rs.getString("lastname"))
+                .gender(rs.getString("gender"))
+                .phone(rs.getString("phone"))
+                .dateOfBirth(rs.getString("date_of_birth"))
+                .isDeleted(rs.getBoolean("deleted"))
+                .createdAt(rs.getObject("created_at", LocalDateTime.class))
+                .updatedAt(rs.getObject("updated_at", LocalDateTime.class))
+                .build();
     }
 
 }

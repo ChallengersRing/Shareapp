@@ -1,6 +1,5 @@
 package in.shareapp.post.servlet;
 
-import com.fasterxml.jackson.jr.ob.JSON;
 import in.shareapp.post.entity.Post;
 import in.shareapp.post.service.PostService;
 import in.shareapp.post.service.PostServiceImpl;
@@ -16,15 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static in.shareapp.utils.ServletUtil.writeJsonResponse;
+
 public class PostUploadServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PostUploadServlet.class.getName());
 
     @Override
     protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-        final HttpSession session = req.getSession();
-        final Map<String, String> jsonResponse = new HashMap<>();
+        final Map<String, Object> jsonResponse = new HashMap<>();
 
-        final User user = (User) session.getAttribute("USERDETAILS");
+        final User user = (User) req.getAttribute("user");
         if (user == null) {
             jsonResponse.put("status", "error");
             jsonResponse.put("message", "User not logged in, post upload failure");
@@ -65,7 +65,7 @@ public class PostUploadServlet extends HttpServlet {
         final int likes = 0;
         final String comments = "No Comments";
 
-        final Long userId = user.getId();
+        final Long userId = 1L;
         final Post post = new Post(userId, videoFilename, title, thumbnailFilename, description, date, views, likes, comments);
 
         // Status after saving in database.
@@ -106,14 +106,5 @@ public class PostUploadServlet extends HttpServlet {
     private void forwardToIndexPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher("./index.jsp");
         requestDispatcher.forward(req, resp);
-    }
-
-    private void writeJsonResponse(HttpServletResponse response, Map<String, String> jsonResponse, int statusCode) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.setStatus(statusCode);
-        response.getWriter().write(JSON.std
-                .with(JSON.Feature.PRETTY_PRINT_OUTPUT)
-                .asString(jsonResponse));
     }
 }

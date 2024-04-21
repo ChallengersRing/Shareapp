@@ -9,18 +9,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
+
+import static in.shareapp.utils.ServletUtil.writeJsonResponse;
 
 public class ProfileUpdateProcessServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(DatabaseDataSource.class.getName());
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        final Map<String, Object> jsonResponse = new HashMap<>();
         logger.info("From ProfileUpdateProcessServlet: ");
 
         PrintWriter out = resp.getWriter();
-        HttpSession session = req.getSession();
-        User signedInUser = (User) session.getAttribute("USERDETAILS");
+        User signedInUser = (User) req.getAttribute("user");
+        if (signedInUser == null) {
+            jsonResponse.put("status", "error");
+            jsonResponse.put("message", "User not logged in, post upload failure");
+            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
         UserService userService = new UserServiceImpl();
 
         String photo = signedInUser.getAvatar();
@@ -36,8 +46,8 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
         boolean statusUploadInFileSystem = false;
         StringBuilder messageForClient = new StringBuilder();
 
-        if(password.isEmpty()){
-            password=signedInUser.getPassword();
+        if (password.isEmpty()) {
+            password = signedInUser.getPassword();
             messageForClient.append("Password didn't update,\n ");
         }
 

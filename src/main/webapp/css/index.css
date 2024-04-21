@@ -4,7 +4,7 @@
     --bg-color: #E0F4FF;
     --border-color: 1px solid #a9b7be;
     --text-color: #33393d;
-    --btn-bg-color: #5c6d81;
+    --btn-bg-color: rgb(195, 243, 236);
     --btn-bg-color-hover: rgba(133, 159, 157, 0.41);
     --btn-text-color: #121416d8;
     --btn-border-radius: 10px;
@@ -25,7 +25,7 @@ html[data-theme='dark'] {
     --text-color: #87b295;
     --text-color-fade: #546e7a;
     --btn-text-color: #a7b7b9;
-    --btn-bg-color: #263238;
+    --btn-bg-color: #374c52;
     --btn-bg-color-hover: rgba(44, 75, 72, 0.41);
 }
 

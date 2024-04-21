@@ -4,6 +4,14 @@
 
     <display-name>Shareapp</display-name>
 
+    <session-config>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>true</secure>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
     <servlet>
         <servlet-name>signinProcess</servlet-name>
         <servlet-class>in.shareapp.user.servlet.SignInProcessServlet</servlet-class>
@@ -44,14 +52,14 @@
         <url-pattern>/postupload</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>PostRetrieveAll</servlet-name>
-        <servlet-class>in.shareapp.post.servlet.PostsRetrieveAllServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PostRetrieveAll</servlet-name>
-        <url-pattern>/postretrieveall</url-pattern>
-    </servlet-mapping>
+<!--    <servlet>-->
+<!--        <servlet-name>PostRetrieveAll</servlet-name>-->
+<!--        <servlet-class>in.shareapp.post.servlet.PostsRetrieveAllServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>PostRetrieveAll</servlet-name>-->
+<!--        <url-pattern>/postretrieveall</url-pattern>-->
+<!--    </servlet-mapping>-->
 
     <servlet>
         <servlet-name>UpdateUserProfile</servlet-name>

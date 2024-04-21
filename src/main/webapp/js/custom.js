@@ -159,22 +159,16 @@ function validateEmail(input, requiredMsg, invalidMsg) {
 
 // -----------------------send to server via POST METHOD --------------------------
 function sendSignInDataToServer(form) {
+    const url = window.location + "signin";
     const xhr = new XMLHttpRequest();
 
     // Bind the FormData object and the form element
     const FD = new FormData(form);
-
-    var data = {
+    const data = {
         'email': FD.get('email'),
         'password': FD.get('password'),
     };
-    console.log(data);
-    console.log(FD.keys().next());
 
-    var url = window.location + "signin";
-    console.log(url);
-
-    // Define what happens on successful data submission
     xhr.addEventListener("load", (event) => {
         document.querySelector("#a-result").style.display = "block";
         document.querySelector("#a-result").innerHTML = event.target.responseText;
@@ -195,30 +189,20 @@ function sendSignInDataToServer(form) {
     xhr.send(new URLSearchParams(data).toString());
 }
 
-function processSignin() {
-    console.log("Form Loaded");
+function processSignin(event) {
+    event.preventDefault();
 
     const form = document.querySelector("#signin-form");
+    const EMAIL_REQUIRED = "Please enter your email";
+    const EMAIL_INVALID = "Please enter a correct email address format";
+    const PASS_REQUIRED = "Please enter password";
 
-    form.addEventListener("submit", function (event) {
-        console.log("Form Event Listener set")
+    let emailValid = validateEmail(form.elements["email"], EMAIL_REQUIRED, EMAIL_INVALID);
+    let passValid = hasValue(form.elements["password"], PASS_REQUIRED);
 
-        // stop form submission
-        event.preventDefault();
-
-        const EMAIL_REQUIRED = "Please enter your email";
-        const EMAIL_INVALID = "Please enter a correct email address format";
-        const PASS_REQUIRED = "Please enter password";
-
-        // validate the form
-        let emailValid = validateEmail(form.elements["email"], EMAIL_REQUIRED, EMAIL_INVALID);
-        let passValid = hasValue(form.elements["password"], PASS_REQUIRED);
-
-        // if valid, submit the form.
-        if (emailValid && passValid) {
-            sendSignInDataToServer(form);
-        }
-    });
+    if (emailValid && passValid) {
+        sendSignInDataToServer(form);
+    }
 }
 
 // ------------------Sign-in field Validation and submit process ends. --------------------------

@@ -19,25 +19,26 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-
-    public User() {
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.extId = builder.extId;
+        this.avatar = builder.avatar;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.gender = builder.gender;
+        this.email = builder.email;
+        this.phone = builder.phone;
+        this.password = builder.password;
+        this.isDeleted = builder.isDeleted;
+        this.createdAt = builder.createdAt;
+        this.updatedAt = builder.updatedAt;
     }
 
-    public User(Long id, UUID extId, String avatar, String firstName, String lastName, String dateOfBirth, String gender,
-                String email, String phone, String password, boolean isDeleted, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.extId = extId;
-        this.avatar = avatar;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
+    //for signin
+    public User(String email, String password) {
         this.email = email;
-        this.phone = phone;
         this.password = password;
-        this.isDeleted = isDeleted;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     // for signup
@@ -50,15 +51,7 @@ public class User {
         this.password = password;
     }
 
-    //for signin
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    //for update profile
-
-
+    //for update
     public User(String avatar, String firstName, String lastName, String dateOfBirth, String gender, String email,
                 String phone, String password) {
         this.avatar = avatar;
@@ -75,104 +68,138 @@ public class User {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public UUID getExtId() {
         return extId;
-    }
-
-    public void setExtId(UUID extId) {
-        this.extId = extId;
     }
 
     public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getDateOfBirth() {
         return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isDeleted() {
         return isDeleted;
     }
 
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public static class Builder {
+        // Required parameters
+        private final String email;
+        private final String password;
+
+        // Optional parameters - initialized to default values
+        private Long id;
+        private UUID extId;
+        private String avatar;
+        private String firstName;
+        private String lastName;
+        private String dateOfBirth;
+        private String gender;
+        private String phone;
+        private boolean isDeleted;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+        // Builder constructor with required parameters
+        public Builder(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
+
+        // Setter methods for optional parameters
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder extId(UUID extId) {
+            this.extId = extId;
+            return this;
+        }
+
+        public Builder avatar(String avatar) {
+            this.avatar = avatar;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder dateOfBirth(String dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder isDeleted(boolean isDeleted) {
+            this.isDeleted = isDeleted;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        // Build method to create User instance
+        public User build() {
+            return new User(this);
+        }
     }
 
     @Override

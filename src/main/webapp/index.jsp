@@ -1,4 +1,6 @@
 <%@ page import="in.shareapp.user.entity.User" %>
+<%@ page import="in.shareapp.security.jwt.JwtUtil" %>
+<%@ page import="java.util.Optional" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
@@ -39,23 +41,16 @@
         </button>
 
         <%
-            User user = null;
-            //session.invalidate();
-            if (session.getAttribute("SIGNINSTATUS") == null || session.getAttribute("SIGNINSTATUS").toString().equals("Fail")) {
-                System.out.println("SIGNINSTATUS at Index.jsp:" + session.getAttribute("SIGNINSTATUS"));
-                System.out.println("USERDETAILS at Index.jsp:" + session.getAttribute("USERDETAILS"));
-        %>
-        <!-- Trigger/Open The Modal by click on button -->
-        <a onclick="loadSignin()">SignIn</a>
-        <%
-        } else {
-            System.out.println("SIGNINSTATUS at Index.jsp:" + session.getAttribute("SIGNINSTATUS"));
-            System.out.println("USERDETAILS at Index.jsp:" + session.getAttribute("USERDETAILS"));
-
-            user = (User) session.getAttribute("USERDETAILS");
+            Optional<String> token = JwtUtil.extractToken(request);
+            Optional<User> userOptional = token.isPresent() ? JwtUtil.getInstance().resolveClaims(token.get()) : Optional.empty();
+            System.out.println("Token: "+token);
+            System.out.println(userOptional);
+            boolean isAuthorized = false;
+            if (userOptional.isPresent()) {
+                isAuthorized = true;
+                User user = userOptional.get();
         %>
         <img src="./ClientResources/ProfilePics/<%=user.getAvatar()%>" onclick="signinDetails()" alt=""/>
-
         <!-- The login detail Modal (css in Modal.css)-->
         <div id="loginDetailModal" class="logindetail-container">
             <span class="logindetail-close">CLOSE</span>
@@ -73,6 +68,10 @@
             </div>
         </div>
         <%
+        } else {
+        %>
+        <a onclick="loadSignin()">Sign In</a>
+        <%
             }
         %>
     </div>
@@ -86,12 +85,12 @@
             color = "red";
         }
 %>
-        <div style="background: black; display: flex; justify-content: center">
-            <p style="color: <%=color%>">
-                Post upload: <%= request.getAttribute("PostUpload") %>
-                <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
-            </p>
-        </div>
+<div style="background: black; display: flex; justify-content: center">
+    <p style="color: <%=color%>">
+        Post upload: <%= request.getAttribute("PostUpload") %>
+        <button onclick="goHome()" style="padding: 5px 15px 5px 15px;">OK</button>
+    </p>
+</div>
 <%
     }
 %>
@@ -129,7 +128,7 @@
             </a>
             <hr/>
             <%
-                if (user != null) {
+                if (isAuthorized) {
             %>
             <a class="nav-link" onclick="loadMyPosts()">
                 <img src="./images/icons/posts.svg" alt="C" class="icon-cst">
@@ -144,7 +143,6 @@
                 <span>Upload</span>
             </a>
             <hr/>
-
             <%
                 }
             %>

@@ -17,22 +17,27 @@ public class UserServiceImpl implements UserService {
     UserDao userDao = new UserDaoImpl();
 
     @Override
-    public boolean authenticateUserByEmailAndPassword(User user) {
+    public Optional<User> authenticateUserByEmailAndPassword(User user) {
         // TODO: Encrypt passwd.
-        Optional<User> dbUser = userDao.selectUserByEmail(user.getEmail());
-        if (dbUser.isPresent() && user.getPassword().equals(dbUser.get().getPassword())) {
-            user.setId(dbUser.get().getId());
-            user.setExtId(dbUser.get().getExtId());
-            user.setFirstName(dbUser.get().getFirstName());
-            user.setLastName(dbUser.get().getLastName());
-            user.setAvatar(dbUser.get().getAvatar());
-            user.setEmail(dbUser.get().getEmail());
-            user.setDateOfBirth(dbUser.get().getDateOfBirth());
-            user.setPhone(dbUser.get().getPhone());
-            user.setGender(dbUser.get().getGender());
-            return true;
+        Optional<User> dbUserOptional = userDao.selectUserByEmail(user.getEmail());
+        if (dbUserOptional.isPresent() && user.getPassword().equals(dbUserOptional.get().getPassword())) {
+            User dbUser = dbUserOptional.get();
+            User authenticatedUser = new User.Builder(user.getEmail(), user.getPassword())
+                    .id(dbUser.getId())
+                    .extId(dbUser.getExtId())
+                    .firstName(dbUser.getFirstName())
+                    .lastName(dbUser.getLastName())
+                    .avatar(dbUser.getAvatar())
+                    .dateOfBirth(dbUser.getDateOfBirth())
+                    .gender(dbUser.getGender())
+                    .phone(dbUser.getPhone())
+                    .isDeleted(dbUser.isDeleted())
+                    .createdAt(dbUser.getCreatedAt())
+                    .updatedAt(dbUser.getUpdatedAt())
+                    .build();
+            return Optional.of(authenticatedUser);
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
