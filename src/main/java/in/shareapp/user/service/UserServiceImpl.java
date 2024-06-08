@@ -13,16 +13,15 @@ import java.util.logging.Logger;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
-
-    UserDao userDao = new UserDaoImpl();
+    private final UserDao userDao = new UserDaoImpl();
 
     @Override
-    public Optional<User> authenticateUserByEmailAndPassword(User user) {
+    public Optional<User> authenticateUserByEmailAndPassword(final User user) {
         // TODO: Encrypt passwd.
-        Optional<User> dbUserOptional = userDao.selectUserByEmail(user.getEmail());
+        final Optional<User> dbUserOptional = userDao.selectUserByEmail(user.getEmail());
         if (dbUserOptional.isPresent() && user.getPassword().equals(dbUserOptional.get().getPassword())) {
-            User dbUser = dbUserOptional.get();
-            User authenticatedUser = new User.Builder(user.getEmail(), user.getPassword())
+            final User dbUser = dbUserOptional.get();
+            final User authenticatedUser = new User.Builder(user.getEmail(), user.getPassword())
                     .id(dbUser.getId())
                     .extId(dbUser.getExtId())
                     .firstName(dbUser.getFirstName())
@@ -41,22 +40,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUserExists(String email) {
+    public boolean checkUserExists(final String email) {
         return Optional.ofNullable(userDao.selectUserByColumnValue("email", email)).isPresent();
     }
 
     @Override
-    public boolean registerNewUser(User user) {
+    public boolean registerNewUser(final User user) {
         return userDao.insertUser(user);
     }
 
     @Override
-    public String getProfilePictureName(Part part) {
-        return part.getSubmittedFileName().isEmpty() ? "FileNotReceived" : part.getSubmittedFileName();
+    public String getProfilePictureName(final Part part) {
+        return part.getSubmittedFileName().isEmpty() ? "" : part.getSubmittedFileName();
     }
 
     @Override
-    public boolean saveProfilePicture(String serverProfilePicDirectory, String profilePicName, Part part) {
+    public boolean saveProfilePicture(final String serverProfilePicDirectory, final String profilePicName, final Part part) {
         try {
             part.write(serverProfilePicDirectory + "\\" + profilePicName);
             return true;
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User getUserInformationById(Long userId) {
+    public User getUserInformationById(final Long userId) {
         return userDao.selectUserByID(userId);
     }
 
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateProfile(User user) {
+    public boolean updateProfile(final User user) {
         return userDao.updateUser(user);
     }
 

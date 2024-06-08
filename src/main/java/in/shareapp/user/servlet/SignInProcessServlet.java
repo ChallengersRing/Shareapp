@@ -4,16 +4,13 @@ import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
 import in.shareapp.security.jwt.JwtUtil;
-import in.shareapp.utils.PropertyHolder;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 @WebServlet("/signin")
@@ -30,21 +27,16 @@ public class SignInProcessServlet extends HttpServlet {
         Optional<User> authenticatedUser = this.userService.authenticateUserByEmailAndPassword(user);
 
         if (authenticatedUser.isPresent()) {
-            // Generate JWT token
             String token = JwtUtil.generateToken(authenticatedUser.get());
             JwtUtil.addTokenToResponse(token, resp);
-
-            // Set token in response header
-            // resp.setHeader("Authorization", "Bearer " + token);
-
-            // Send JSON response indicating success
             resp.setContentType("application/json");
             resp.getWriter().write("{\"success\": true}");
         } else {
             // Authentication failed
+            logger.warning("Failed authentication for user with email: " + email);
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.setContentType("application/json");
-            resp.getWriter().write("{\"success\": false, \"message\": \"Authentication failed\"}");
+            resp.getWriter().write("{\"success\": false, \"message\": \"Invalid User\"}");
         }
     }
 }

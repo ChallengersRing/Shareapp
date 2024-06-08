@@ -17,15 +17,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JwtUtil {
-    Logger logger = Logger.getLogger(JwtUtil.class.getName());
-    private static volatile JwtUtil instance;
-    private final JwtParser jwtParser;
+    private static final Logger logger = Logger.getLogger(JwtUtil.class.getName());
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
+    private static final String TOKEN = "TOKEN";
+    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(PropertyHolder.getProperty("jwt.secret").getBytes()); // set in env //Jwts.SIG.HS512.key().build();
+    private static final long EXPIRATION_TIME_MILLIS = Long.parseLong(PropertyHolder.getProperty("jwt.expirationTime"));
 
-    // set in env //Jwts.SIG.HS512.key().build();
-    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(PropertyHolder.getProperty("jwt.secret").getBytes());
-    private static final long expirationTimeMillis = Long.parseLong(PropertyHolder.getProperty("jwt.expirationTime"));
+    private static volatile JwtUtil instance;
+    private final JwtParser jwtParser;
 
     private JwtUtil() {
         this.jwtParser = Jwts.parser().verifyWith(SECRET_KEY).build();
@@ -43,9 +43,8 @@ public class JwtUtil {
     }
 
     public static String generateToken(User user) {
-
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + expirationTimeMillis);
+        Date expirationDate = new Date(now.getTime() + EXPIRATION_TIME_MILLIS);
 
         ClaimsBuilder claimsBuilder = Jwts.claims()
                 .id(UUID.randomUUID().toString())
@@ -79,7 +78,7 @@ public class JwtUtil {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("TOKEN".equals(cookie.getName())) {
+                if (TOKEN.equals(cookie.getName())) {
                     return Optional.of(cookie.getValue());
                 }
             }
@@ -93,6 +92,7 @@ public class JwtUtil {
         if (!this.validateClaims(claims)) {
             return Optional.empty();
         }
+
         return Optional.of(new User.Builder(claims.get("email", String.class), "")
                 .extId(UUID.fromString(claims.get("id", String.class)))
                 .firstName(claims.get("firstname", String.class))
@@ -122,12 +122,12 @@ public class JwtUtil {
         }
     }
 
-    public static void addTokenToResponse( String token, HttpServletResponse response) {
-        Cookie cookie = new Cookie("TOKEN", token);
+    public static void addTokenToResponse(String token, HttpServletResponse response) {
+        Cookie cookie = new Cookie(TOKEN, token);
         cookie.setPath("/");
         cookie.setHttpOnly(true); // Set HttpOnly flag for added security
         cookie.setSecure(true); // Ensure the cookie is only sent over HTTPS
-        cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(expirationTimeMillis)); // Set expiration time
+        cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(EXPIRATION_TIME_MILLIS)); // Set expiration time
         response.addCookie(cookie);
     }
 }

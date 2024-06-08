@@ -12,21 +12,21 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
     @Override
-    public User selectUserByColumnValue(String column, String value) {
+    public User selectUserByColumnValue(final String column, final String value) {
         User user = null;
         final String sql = "SELECT * FROM shareapp.user_info WHERE " + column + " = ?";
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
             pstmt.setString(1, value);
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+            try (final ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     user = createUserFromResultSet(rs);
                 }
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Error selecting user by column field name: " + sqlEx.getMessage());
         }
 
@@ -35,22 +35,22 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
 
 
     @Override
-    public Optional<User> selectUserByEmail(String email) {
+    public Optional<User> selectUserByEmail(final String email) {
         User user = null;
 
         final String sql = "SELECT * FROM shareapp.user_info WHERE email=?";
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+            try (final ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     user = createUserFromResultSet(rs);
                 }
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Query execution failed: " + sqlEx.getMessage());
         }
 
@@ -58,21 +58,21 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     }
 
     @Override
-    public User selectUserByID(Long userId) {
+    public User selectUserByID(final Long userId) {
         User user = null;
         final String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
             pstmt.setLong(1, userId);
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+            try (final ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     user = createUserFromResultSet(rs);
                 }
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Error selecting user by ID: " + sqlEx.getMessage());
         }
 
@@ -81,12 +81,12 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
 
 
     @Override
-    public User selectUserByExtId(UUID extId) {
+    public User selectUserByExtId(final UUID extId) {
         User user = null;
         final String sql = "SELECT * FROM shareapp.user_info WHERE id = ?";
 
         try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
             pstmt.setObject(1, extId);
 
@@ -95,7 +95,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                     user = createUserFromResultSet(rs);
                 }
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Error selecting user by external ID: " + sqlEx.getMessage());
         }
 
@@ -104,14 +104,14 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
 
 
     @Override
-    public boolean insertUser(User user) {
+    public boolean insertUser(final User user) {
         boolean status = false;
 
         final String sql = "INSERT INTO shareapp.user_info(avatar, firstname, lastname, email, phone, password) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
             pstmt.setString(1, user.getAvatar());
             pstmt.setString(2, user.getFirstName());
@@ -120,11 +120,11 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
             pstmt.setString(5, user.getPhone());
             pstmt.setString(6, user.getPassword());
 
-            int rowsAffected = pstmt.executeUpdate();
+            final int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 status = true;
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Error inserting user: " + sqlEx.getMessage());
             //TODO: Custom exception throw.
         }// Resources are automatically closed by try-with-resources
@@ -135,56 +135,47 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
     @Override
     @Deprecated(since = "May impact performance")
     public List<User> selectAllUsers() {
-        List<User> userList = new ArrayList<>();
+        final List<User> userList = new ArrayList<>();
 
         final String sql = "SELECT * FROM shareapp.user_info";
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql);
+             final ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 userList.add(createUserFromResultSet(rs));
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Query execution failed: " + sqlEx.getMessage());
         }
 
         return userList;
     }
 
-
     @Override
-    public boolean updateUser(User user) {
+    public boolean updateUser(final User user) {
         boolean status = false;
 
-        String sql = "UPDATE shareapp.user_info SET avatar = ?, firstname = ?, lastname = ?, " +
-                "date_of_birth = ?, gender = ?, phone = ?, password = ? WHERE email = ? AND deleted = FALSE";
+        final StringBuilder sqlBuilder = new StringBuilder("UPDATE shareapp.user_info SET ");
+        final List<Object> params = this.constructUpdateQueryAndParams(sqlBuilder, user);
+        sqlBuilder.append(" WHERE email = ? AND deleted = FALSE");
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sqlBuilder.toString())) {
 
-            pstmt.setString(1, user.getAvatar());
-            pstmt.setString(2, user.getFirstName());
-            pstmt.setString(3, user.getLastName());
-
-            if (user.getDateOfBirth() != null && !user.getDateOfBirth().equals("null")) {
-                pstmt.setDate(4, java.sql.Date.valueOf(user.getDateOfBirth()));
-            } else {
-                pstmt.setNull(4, java.sql.Types.DATE);
+            int paramIndex = 1;
+            for (Object param : params) {
+                pstmt.setObject(paramIndex++, param);
             }
+            pstmt.setString(paramIndex, user.getEmail());
 
-            pstmt.setString(5, user.getGender());
-            pstmt.setString(6, user.getPhone());
-            pstmt.setString(7, user.getPassword());
-            pstmt.setString(8, user.getEmail());
-
-            int rowsUpdated = pstmt.executeUpdate();
+            final int rowsUpdated = pstmt.executeUpdate();
 
             if (rowsUpdated > 0) {
                 status = true;
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Error updating user: " + sqlEx.getMessage());
         }
 
@@ -193,27 +184,27 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
 
     // Should be scheduled cleanup in 90 days.
     @Override
-    public boolean deleteUserByExtId(UUID extId) {
+    public boolean deleteUserByExtId(final UUID extId) {
         boolean success = false;
-        String sql = "UPDATE shareapp.user_info SET deleted = TRUE WHERE ext_id = ?";
+        final String sql = "UPDATE shareapp.user_info SET deleted = TRUE WHERE ext_id = ?";
 
-        try (Connection dbCon = getDbConnection();
-             PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
+        try (final Connection dbCon = getDbConnection();
+             final PreparedStatement pstmt = dbCon.prepareStatement(sql)) {
 
             pstmt.setObject(1, extId);
 
-            int rowsAffected = pstmt.executeUpdate();
+            final int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 success = true;
             }
-        } catch (SQLException sqlEx) {
+        } catch (final SQLException sqlEx) {
             logger.warning("Error soft deleting user by external ID: " + sqlEx.getMessage());
         }
 
         return success;
     }
 
-    private User createUserFromResultSet(ResultSet rs) throws SQLException {
+    private User createUserFromResultSet(final ResultSet rs) throws SQLException {
         return new User.Builder(rs.getString("email"), rs.getString("password"))
                 .id(rs.getLong("id"))
                 .extId(rs.getObject("ext_id", UUID.class))
@@ -227,6 +218,42 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 .createdAt(rs.getObject("created_at", LocalDateTime.class))
                 .updatedAt(rs.getObject("updated_at", LocalDateTime.class))
                 .build();
+    }
+
+    private List<Object> constructUpdateQueryAndParams(final StringBuilder sqlBuilder, final User user) {
+        final List<Object> params = new ArrayList<>();
+        if (user.getAvatar() != null) {
+            sqlBuilder.append("avatar = ?, ");
+            params.add(user.getAvatar());
+        }
+        if (user.getFirstName() != null) {
+            sqlBuilder.append("firstname = ?, ");
+            params.add(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            sqlBuilder.append("lastname = ?, ");
+            params.add(user.getLastName());
+        }
+        if (user.getDateOfBirth() != null) {
+            sqlBuilder.append("date_of_birth = ?, ");
+            params.add(java.sql.Date.valueOf(user.getDateOfBirth()));
+        }
+        if (user.getGender() != null) {
+            sqlBuilder.append("gender = ?, ");
+            params.add(user.getGender());
+        }
+        if (user.getPhone() != null) {
+            sqlBuilder.append("phone = ?, ");
+            params.add(user.getPhone());
+        }
+        if (user.getPassword() != null) {
+            sqlBuilder.append("password = ?, ");
+            params.add(user.getPassword());
+        }
+
+        // Remove the trailing comma and space
+        sqlBuilder.delete(sqlBuilder.length() - 2, sqlBuilder.length());
+        return params;
     }
 
 }

@@ -5,18 +5,17 @@ import in.shareapp.security.jwt.JwtUtil;
 import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
+import in.shareapp.utils.ServletUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
-
-import static in.shareapp.utils.ServletUtil.writeJsonResponse;
 
 @WebServlet("/updateprofile")
 @MultipartConfig(
@@ -27,78 +26,84 @@ import static in.shareapp.utils.ServletUtil.writeJsonResponse;
 )
 public class ProfileUpdateProcessServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(DatabaseDataSource.class.getName());
+    private final UserService userService = new UserServiceImpl();
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        final Map<String, Object> jsonResponse = new HashMap<>();
-        logger.info("From ProfileUpdateProcessServlet: ");
+    protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws IOException, ServletException {
+        logger.info("Try to update profile for user.");
 
-        PrintWriter out = resp.getWriter();
-        User signedInUser = (User) req.getAttribute("user");
+        final User signedInUser = (User) req.getAttribute("user");
         if (signedInUser == null) {
+            Map<String, Object> jsonResponse = new HashMap<>();
             jsonResponse.put("status", "error");
             jsonResponse.put("message", "User not logged in, post upload failure");
-            writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_UNAUTHORIZED);
+            ServletUtil.writeJsonResponse(resp, jsonResponse, HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        UserService userService = new UserServiceImpl();
 
-        String photo = signedInUser.getAvatar();
-        String firstName = req.getParameter("fname");
-        String lastName = req.getParameter("lname");
-        String dob = req.getParameter("dob");
-        String gender = req.getParameter("gender");
-        String email = signedInUser.getEmail();
-        String phone = req.getParameter("phone");
-        String password = req.getParameter("password");
+        final StringBuilder messageForClient = new StringBuilder();
+        final String avatar = this.saveAvatar(req.getPart("photo"), messageForClient);
+        final User userDetails = this.extractUserDetails(req, signedInUser, avatar.isEmpty() ? signedInUser.getAvatar() : avatar);
 
-        boolean statusUploadInDatabase = false;
-        boolean statusUploadInFileSystem = false;
-        StringBuilder messageForClient = new StringBuilder();
+        this.updateUserInDatabaseAndRefreshToken(userDetails, messageForClient, resp);
 
-        if (password.isEmpty()) {
-            password = signedInUser.getPassword();
-            messageForClient.append("Password didn't update,\n ");
+        logger.info("Message for Client: " + messageForClient);
+        resp.getWriter().write(messageForClient.toString());
+    }
+
+    private String saveAvatar(Part filePart, StringBuilder messageForClient) {
+        if (filePart == null || filePart.getSize() <= 0) {
+            messageForClient.append("No photo received for upload. ");
+            return "";
         }
 
-        // Photo upload in FileSystem
-        // Retrieving the photo from request object & extracting the filename
-        Part filePart = req.getPart("photo");
-        logger.info("FILE Part:" + filePart);
+        //TODO: verify image file type, size, dimension. (Maybe use TIKA)
+        String avatar = this.userService.getProfilePictureName(filePart).trim();
+        if (avatar.isEmpty()) {
+            messageForClient.append("Unsupported file received. ");
+            return "";
+        }
 
-        if (filePart != null && filePart.getSize() > 0) {
-            photo = userService.getProfilePictureName(filePart);
+        String uniqueIdentifier = UUID.randomUUID().toString();
+        avatar = avatar.length() > 15 ? avatar.substring(0, 15).concat(uniqueIdentifier) : avatar.concat(uniqueIdentifier);
 
-            if (!photo.equals("FileNotReceived")) {
-                String serverFileDirectory = getServletContext().getRealPath("/") + "ClientResources/ProfilePics";
-                statusUploadInFileSystem = userService.saveProfilePicture(serverFileDirectory, photo, filePart);
-                messageForClient.append(statusUploadInFileSystem ? "Photo update: success, " : "Photo update: Fail, ");
-            } else {
-                messageForClient.append("Photo Upload Fail.");
-            }
+        final String serverFileDirectory = getServletContext().getRealPath("/") + "ClientResources/ProfilePics";
+        final boolean statusUploadInFileSystem = this.userService.saveProfilePicture(serverFileDirectory, avatar, filePart);
+
+        if (statusUploadInFileSystem) {
+            messageForClient.append("Photo saved successfully. ");
+            return avatar;
         } else {
-            messageForClient.append("No photo received for upload.");
+            messageForClient.append("Fail to save Photo. ");
+            return "";
         }
+    }
 
-        User user = new User(photo, firstName, lastName, dob, gender, email, phone, password);
-        logger.info(user.toString());
+    private User extractUserDetails(final HttpServletRequest req, final User signedInUser, final String avatar) {
+        String firstName = this.sanitize(req.getParameter("fname"));
+        String lastName = this.sanitize(req.getParameter("lname"));
+        String dob = this.sanitize(req.getParameter("dob"));
+        String gender = this.sanitize(req.getParameter("gender"));
+        String phone = this.sanitize(req.getParameter("phone"));
+        String password = this.sanitize(req.getParameter("password"));
+        String email = signedInUser.getEmail();
 
-        // Details Updating in Database.
-        if (email != null) {
-            statusUploadInDatabase = userService.updateProfile(user);
+        return new User(signedInUser.getExtId(), avatar, firstName, lastName, dob, gender, email, phone, password);
+    }
 
-            if (statusUploadInDatabase) {
-                String token = JwtUtil.generateToken(user);
-                JwtUtil.addTokenToResponse(token, resp);
-                messageForClient.append("Details update: success, ");
-            } else {
-                messageForClient.append("Details update: Fail, ");
-            }
+    private String sanitize(final String value) {
+        return (value != null && !value.isEmpty() && !value.trim().equalsIgnoreCase("null")) ? value.trim() : null;
+    }
+
+    private void updateUserInDatabaseAndRefreshToken(final User updatedUser, final StringBuilder messageForClient, HttpServletResponse resp) {
+        boolean statusUploadInDatabase = userService.updateProfile(updatedUser);
+        if (statusUploadInDatabase) {
+            String token = JwtUtil.generateToken(updatedUser);
+            JwtUtil.addTokenToResponse(token, resp);
+            messageForClient.append("Details updated successfully.");
+        } else {
+            messageForClient.append("Fail to update Details.");
+            logger.warning("Fail to update user in database");
         }
-
-        logger.info("statusFileSystem: " + statusUploadInFileSystem);
-        logger.info("statusDatabase: " + statusUploadInDatabase);
-        logger.info(messageForClient.toString());
-        out.print(messageForClient);
     }
 }

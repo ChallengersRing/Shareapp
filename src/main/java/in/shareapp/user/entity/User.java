@@ -12,14 +12,14 @@ public class User {
     private String lastName;
     private String dateOfBirth;
     private String gender;
-    private String email;
+    private final String email;
     private String phone;
-    private String password;
+    private final String password;
     private boolean isDeleted;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private User(Builder builder) {
+    private User(final Builder builder) {
         this.id = builder.id;
         this.extId = builder.extId;
         this.avatar = builder.avatar;
@@ -36,13 +36,14 @@ public class User {
     }
 
     //for signin
-    public User(String email, String password) {
+    public User(final String email, final String password) {
         this.email = email;
         this.password = password;
     }
 
     // for signup
-    public User(String avatar, String firstName, String lastName, String email, String phone, String password) {
+    public User(final String avatar, final String firstName, final String lastName, final String email,
+                final String phone, final String password) {
         this.avatar = avatar;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,8 +53,9 @@ public class User {
     }
 
     //for update
-    public User(String avatar, String firstName, String lastName, String dateOfBirth, String gender, String email,
-                String phone, String password) {
+    public User(final UUID extId, final String avatar, final String firstName, final String lastName, final String dateOfBirth,
+                final String gender, final String email, final String phone, final String password) {
+        this.extId = extId;
         this.avatar = avatar;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -141,57 +143,57 @@ public class User {
         }
 
         // Setter methods for optional parameters
-        public Builder id(Long id) {
+        public Builder id(final Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder extId(UUID extId) {
+        public Builder extId(final UUID extId) {
             this.extId = extId;
             return this;
         }
 
-        public Builder avatar(String avatar) {
+        public Builder avatar(final String avatar) {
             this.avatar = avatar;
             return this;
         }
 
-        public Builder firstName(String firstName) {
+        public Builder firstName(final String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public Builder lastName(String lastName) {
+        public Builder lastName(final String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public Builder dateOfBirth(String dateOfBirth) {
+        public Builder dateOfBirth(final String dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        public Builder gender(String gender) {
+        public Builder gender(final String gender) {
             this.gender = gender;
             return this;
         }
 
-        public Builder phone(String phone) {
+        public Builder phone(final String phone) {
             this.phone = phone;
             return this;
         }
 
-        public Builder isDeleted(boolean isDeleted) {
+        public Builder isDeleted(final boolean isDeleted) {
             this.isDeleted = isDeleted;
             return this;
         }
 
-        public Builder createdAt(LocalDateTime createdAt) {
+        public Builder createdAt(final LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Builder updatedAt(LocalDateTime updatedAt) {
+        public Builder updatedAt(final LocalDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }

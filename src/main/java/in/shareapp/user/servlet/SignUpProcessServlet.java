@@ -14,9 +14,7 @@ import java.util.logging.Logger;
 
 @WebServlet("/signup")
 public class SignUpProcessServlet extends HttpServlet {
-
     private static final Logger logger = Logger.getLogger(SignUpProcessServlet.class.getName());
-
     private final UserService userService = new UserServiceImpl();
 
     @Override

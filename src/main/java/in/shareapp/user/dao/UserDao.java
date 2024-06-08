@@ -7,19 +7,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserDao {
-    User selectUserByColumnValue(String column, String value);
+    User selectUserByColumnValue(final String column, final String value);
 
-    User selectUserByID(Long userId);
+    User selectUserByID(final Long userId);
 
-    User selectUserByExtId(UUID extId);
+    User selectUserByExtId(final UUID extId);
 
-    Optional<User> selectUserByEmail(String email);
+    Optional<User> selectUserByEmail(final String email);
 
-    boolean insertUser(User user);
+    boolean insertUser(final User user);
 
     List<User> selectAllUsers();
 
-    boolean updateUser(User user);
+    boolean updateUser(final User user);
 
-    boolean deleteUserByExtId(UUID id);
+    boolean deleteUserByExtId(final UUID id);
 }

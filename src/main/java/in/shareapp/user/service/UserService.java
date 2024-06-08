@@ -7,21 +7,21 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> authenticateUserByEmailAndPassword(User user);
+    Optional<User> authenticateUserByEmailAndPassword(final User user);
 
-    boolean checkUserExists(String email);
+    boolean checkUserExists(final String email);
 
-    boolean registerNewUser(User user);
+    boolean registerNewUser(final User user);
 
-    String getProfilePictureName(Part part);
+    String getProfilePictureName(final Part part);
 
     //store in filesystem
-    boolean saveProfilePicture(String serverProfilePicDirectory, String profilePicName, Part part);
+    boolean saveProfilePicture(final String serverProfilePicDirectory, final String profilePicName,final Part part);
 
     //store in db
-    boolean updateProfile(User user);
+    boolean updateProfile(final User user);
 
-    User getUserInformationById(Long id);
+    User getUserInformationById(final Long id);
 
     List<User> getAllUsersInformation();
 
