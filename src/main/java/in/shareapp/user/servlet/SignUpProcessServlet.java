@@ -18,25 +18,25 @@ public class SignUpProcessServlet extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         logger.info("From SignUpProcessServlet");
 
-        String photo = "defaultprofilepic.png";
-        String firstName = req.getParameter("fname");
-        String lastName = req.getParameter("lname");
-        String email = req.getParameter("email");
-        String phone = req.getParameter("phone");
-        String password = req.getParameter("password");
+        final String photo = "defaultprofilepic.png";
+        final String firstName = req.getParameter("fname");
+        final String lastName = req.getParameter("lname");
+        final String email = req.getParameter("email");
+        final String phone = req.getParameter("phone");
+        final String password = req.getParameter("password");
 
-        User user = new User(photo, firstName, lastName, email, phone, password);
-        boolean isUserAvailable = userService.checkUserExists(user.getEmail());
+        final User user = new User(photo, firstName, lastName, email, phone, password);
+        final boolean isUserAvailable = this.userService.checkUserExists(user.getEmail());
         logger.info("isUserAvailable: " + isUserAvailable);
 
         resp.setContentType("application/json");
-        PrintWriter out = resp.getWriter();
+        final PrintWriter out = resp.getWriter();
 
         if (!isUserAvailable) {
-            boolean result = userService.registerNewUser(user);
+            final boolean result = this.userService.registerNewUser(user);
 
             if (result) {
                 out.write("{\"success\": true}");

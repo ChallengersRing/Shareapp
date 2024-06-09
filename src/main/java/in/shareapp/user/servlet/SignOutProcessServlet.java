@@ -10,7 +10,7 @@ public class SignOutProcessServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(SignOutProcessServlet.class.getName());
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         Cookie tokenCookie = new Cookie("TOKEN", "");
         tokenCookie.setPath("/");

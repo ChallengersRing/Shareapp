@@ -19,7 +19,7 @@ public class SignInProcessServlet extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         final String email = req.getParameter("email");
         final String password = req.getParameter("password");
 

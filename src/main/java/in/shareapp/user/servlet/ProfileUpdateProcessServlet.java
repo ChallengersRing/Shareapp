@@ -80,13 +80,13 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
     }
 
     private User extractUserDetails(final HttpServletRequest req, final User signedInUser, final String avatar) {
-        String firstName = this.sanitize(req.getParameter("fname"));
-        String lastName = this.sanitize(req.getParameter("lname"));
-        String dob = this.sanitize(req.getParameter("dob"));
-        String gender = this.sanitize(req.getParameter("gender"));
-        String phone = this.sanitize(req.getParameter("phone"));
-        String password = this.sanitize(req.getParameter("password"));
-        String email = signedInUser.getEmail();
+        final String firstName = this.sanitize(req.getParameter("fname"));
+        final String lastName = this.sanitize(req.getParameter("lname"));
+        final String dob = this.sanitize(req.getParameter("dob"));
+        final String gender = this.sanitize(req.getParameter("gender"));
+        final String phone = this.sanitize(req.getParameter("phone"));
+        final String password = this.sanitize(req.getParameter("password"));
+        final String email = signedInUser.getEmail();
 
         return new User(signedInUser.getExtId(), avatar, firstName, lastName, dob, gender, email, phone, password);
     }
@@ -95,10 +95,11 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
         return (value != null && !value.isEmpty() && !value.trim().equalsIgnoreCase("null")) ? value.trim() : null;
     }
 
-    private void updateUserInDatabaseAndRefreshToken(final User updatedUser, final StringBuilder messageForClient, HttpServletResponse resp) {
-        boolean statusUploadInDatabase = userService.updateProfile(updatedUser);
+    private void updateUserInDatabaseAndRefreshToken(final User userDetails, final StringBuilder messageForClient,
+                                                     final HttpServletResponse resp) {
+        final boolean statusUploadInDatabase = this.userService.updateProfile(userDetails);
         if (statusUploadInDatabase) {
-            String token = JwtUtil.generateToken(updatedUser);
+            final String token = JwtUtil.generateToken(userDetails);
             JwtUtil.addTokenToResponse(token, resp);
             messageForClient.append("Details updated successfully.");
         } else {
