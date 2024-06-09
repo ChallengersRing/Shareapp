@@ -14,6 +14,9 @@ function toggleTheme() {
     localStorage.setItem('theme', targetTheme);
 }
 
+// TODO: Add Router
+// TODO: Add Date time picker, handle date time
+
 // -------------------------- Toaster functionality. -------------------------- -----------
 // Display a single toast
 function showToast(message, type = "info", duration = 3000) {
