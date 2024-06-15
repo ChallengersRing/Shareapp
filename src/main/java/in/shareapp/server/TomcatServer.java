@@ -1,20 +1,24 @@
 package in.shareapp.server;
 
+import in.shareapp.Shareapp;
 import org.apache.catalina.Context;
-import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.WebResourceSet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
+import org.apache.catalina.webresources.JarResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Logger;
 
 public class TomcatServer implements EmbeddedServer {
-    private static final Logger LOGGER = Logger.getLogger(TomcatServer.class.getName());
+    private static final Logger logger = Logger.getLogger(TomcatServer.class.getName());
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 5500;
-    private static final String DEFAULT_CONTEXT_PATH = "/shareapp";
+    private static final String SHAREAPP_CONTEXT_PATH = "/shareapp";
     private static final String DOC_BASE = ".";
     private static final String ADDITION_WEB_INF_CLASSES = "target/classes";
     private static final String WEB_APP_MOUNT = "/WEB-INF/classes";
@@ -22,27 +26,34 @@ public class TomcatServer implements EmbeddedServer {
 
     @Override
     public void run(String[] args) {
-        int port = this.getPort(args);
-        Tomcat tomcat = this.setupTomcat(port);
+        Tomcat tomcat = new Tomcat();
 
         // Add shutdown hook to gracefully stop Tomcat
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                LOGGER.info("Shutting down gracefully...");
+                logger.info("Shutting down gracefully...");
                 tomcat.stop();
+                tomcat.destroy();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }));
 
         try {
+            int port = this.getPort(args);
+            logger.info("Setting up Tomcat...");
+            this.setupTomcat(tomcat, port);
+            logger.info("Starting Tomcat...");
             tomcat.start();
-            LOGGER.info("Application started with URL: http://" + DEFAULT_HOST + ":" + port + DEFAULT_CONTEXT_PATH);
-            LOGGER.info("Hit Ctrl + D or C to stop it...");
+            logger.info("-----------------------------------------------------------------");
+            logger.info("Application started with URL: http://" + DEFAULT_HOST + ":" + port + SHAREAPP_CONTEXT_PATH);
+            logger.info("Hit Ctrl + D or C to stop it...");
+            logger.info("-----------------------------------------------------------------");
             tomcat.getServer().await();
-        } catch (LifecycleException exception) {
-            LOGGER.severe("{}" + exception.getMessage());
-            LOGGER.severe("Exit...");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            logger.severe(exception.getMessage());
+            logger.severe("Exit...");
             System.exit(1);
         }
     }
@@ -53,33 +64,53 @@ public class TomcatServer implements EmbeddedServer {
             try {
                 return Integer.parseInt(port);
             } catch (NumberFormatException exception) {
-                LOGGER.severe("Invalid port number argument {}" + port + exception);
+                logger.severe("Invalid port number argument {}" + port + exception);
             }
         }
-
         return DEFAULT_PORT;
     }
 
-    private Tomcat setupTomcat(int port) {
-        Tomcat tomcat = new Tomcat();
+    private void setupTomcat(Tomcat tomcat, int port) {
         tomcat.setHostname(DEFAULT_HOST);
         tomcat.getHost().setAppBase(DOC_BASE);
         tomcat.setPort(port);
         tomcat.getConnector();
-        addContext(tomcat);
-
-        return tomcat;
+        this.addContext(tomcat);
     }
 
     private void addContext(Tomcat tomcat) {
-        File baseDir = new File("src/main/webapp/");
-        System.out.println(baseDir.getAbsolutePath());
-        Context context = tomcat.addWebapp(DEFAULT_CONTEXT_PATH, baseDir.getAbsolutePath());
+        logger.info("--------------------isJar---------------:" + isJar());
 
-        File classes = new File(ADDITION_WEB_INF_CLASSES);
-        String base = classes.getAbsolutePath();
-        WebResourceRoot resources = new StandardRoot(context);
-        resources.addPreResources(new DirResourceSet(resources, WEB_APP_MOUNT, base, INTERNAL_PATH));
-        context.setResources(resources);
+        String webAppMount = "/WEB-INF/classes";
+        if (!isJar()) {
+            logger.info("--------------------getResourceFromFs---------------:" + getResourceFromFs());
+            Context context = tomcat.addWebapp(SHAREAPP_CONTEXT_PATH, new File(getResourceFromFs(), "META-INF/resources").getAbsolutePath());
+            WebResourceRoot webResourceRoot = new StandardRoot(context);
+            WebResourceSet webResourceSet = new DirResourceSet(webResourceRoot, webAppMount, getResourceFromFs(), "/");
+            webResourceRoot.addPreResources(webResourceSet);
+            context.setResources(webResourceRoot);
+        } else {
+            logger.info("--------------------getResourceFromJarFile---------------:" + getResourceFromJarFile());
+            Context context = tomcat.addWebapp(SHAREAPP_CONTEXT_PATH, "/");
+            WebResourceRoot webResourceRoot = new StandardRoot(context);
+            WebResourceSet webResourceSet = new JarResourceSet(webResourceRoot, webAppMount, getResourceFromJarFile(), "/");
+            webResourceRoot.addJarResources(webResourceSet);
+            context.setResources(webResourceRoot);
+        }
+    }
+
+    public static boolean isJar() {
+        URL resource = Shareapp.class.getResource("/");
+        return resource == null;
+    }
+
+    public static String getResourceFromJarFile() {
+        File jarFile = new File(System.getProperty("java.class.path"));
+        return jarFile.getAbsolutePath();
+    }
+
+    public static String getResourceFromFs() {
+        URL resource = Shareapp.class.getResource("/");
+        return resource.getFile();
     }
 }
