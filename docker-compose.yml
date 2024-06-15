@@ -17,11 +17,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - shareapp_network
 
   flyway:
-    image: flyway/flyway:7.7.3-alpine
+    network_mode: host
+    image: flyway/flyway:latest
     container_name: flyway-migration
     command: [ "-url=jdbc:postgresql://localhost:5432/shareapp",
                "-user=postgres", "-password=postgres", "migrate" ]
@@ -30,10 +29,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
-networks:
-  shareapp_network:
-    driver: bridge
 
 volumes:
   postgres_data:
