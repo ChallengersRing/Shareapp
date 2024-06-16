@@ -3,8 +3,12 @@
 <%@ page import="in.shareapp.user.service.UserServiceImpl" %>
 <%@ page import="in.shareapp.user.entity.User" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.slf4j.Logger" %>
+<%@ page import="org.slf4j.LoggerFactory" %>
+<%@ page import="in.shareapp.Shareapp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page session="false" %>
+<%Logger logger = LoggerFactory.getLogger(Shareapp.class);%>
 <html>
 <head>
     <title>ShareApp</title>
@@ -13,9 +17,9 @@
 <h1>Recommended</h1>
 <div class="videos-container">
     <%
-        System.out.println("From PostListAllUsers.jsp");
+        logger.info("From PostListAllUsers.jsp");
         List<Post> posts = (List<Post>) request.getAttribute("POSTLISTALLUSERS");
-        System.out.println("POST LIST ALL USERS at PostListAllUsers.jsp: "+posts.size());
+        logger.info("POST LIST ALL USERS at PostListAllUsers.jsp: {}", posts.size());
 
         UserService userService = new UserServiceImpl();
 

@@ -2,7 +2,7 @@ package in.shareapp.user.service;
 
 import in.shareapp.user.entity.User;
 
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 import java.util.List;
 import java.util.Optional;
 

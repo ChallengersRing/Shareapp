@@ -6,7 +6,7 @@ import in.shareapp.user.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

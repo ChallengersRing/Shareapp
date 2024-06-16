@@ -5,10 +5,13 @@ import in.shareapp.user.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -17,6 +20,7 @@ import java.util.Optional;
         urlPatterns = {"/postupload", "/updateprofile", "/jsp/LoadProfile.jsp"}
 )
 public class AuthFilter implements Filter {
+    Logger logger = LoggerFactory.getLogger(AuthFilter.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
@@ -41,16 +45,18 @@ public class AuthFilter implements Filter {
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.setContentType("application/json");
             httpResponse.getWriter().write("{\"success\": false, \"message\": \"Unauthorized: Token expired\"}");
+            logger.warn("Unauthorized: Expired token.", e);
         } catch (JwtException e) {
             // Handle other JWT parsing errors
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.setContentType("application/json");
             httpResponse.getWriter().write("{\"success\": false, \"message\": \"Unauthorized: Invalid token\"}");
+            logger.error("Unauthorized: Invalid token.", e);
         } catch (Exception e) {
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpResponse.setContentType("application/json");
             httpResponse.getWriter().write("{\"success\": false, \"message\": \"Internal server error\"}");
-            e.printStackTrace();
+            logger.error("Exception while extracting token.", e);
         }
     }
 }

@@ -1,6 +1,6 @@
 package in.shareapp.file.service;
 
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 
 public class fileServiceImpl implements fileService{
     @Override

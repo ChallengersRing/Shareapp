@@ -14,20 +14,25 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
+        <jakarta.servlet>6.1.0</jakarta.servlet>
+        <tomcat.version>11.0.0-M20</tomcat.version>
         <database.url>jdbc:postgresql://localhost:5432/shareapp</database.url>
         <database.user>postgres</database.user>
         <database.password>postgres</database.password>
-        <flyway.version>9.22.3</flyway.version>
-        <postgresql.version>42.7.1</postgresql.version>
+        <postgresql.version>42.7.3</postgresql.version>
         <hikaricp.version>5.1.0</hikaricp.version>
-        <tomcat.version>9.0.68</tomcat.version>
+        <flyway.version>9.22.3</flyway.version>
         <!--
         Disable the transactional lock in Flyway that breaks all non-transactional migrations since v9.1.2 of the plugin
         See https://github.com/flyway/flyway/issues/3508
         -->
         <flyway.postgresql.transactional.lock>false</flyway.postgresql.transactional.lock>
         <jsonwebtoken.version>0.12.5</jsonwebtoken.version>
-        <log4j.version>2.20.0</log4j.version>
+        <jackson.version>2.15.2</jackson.version>
+        <slf4j.version>2.0.13</slf4j.version>
+        <logback.version>1.5.6</logback.version>
+        <junit.version>5.10.2</junit.version>
+        <maven.version>3.6.0</maven.version>
     </properties>
 
     <profiles>
@@ -40,20 +45,27 @@
     </profiles>
 
     <dependencies>
+        <!--Jakarta servlet api-->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet}</version>
             <scope>provided</scope>
         </dependency>
 
+        <!--Embedded tomcat-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <!--Database-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -65,6 +77,7 @@
             <version>${hikaricp.version}</version>
         </dependency>
 
+        <!--JWT-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -83,57 +96,37 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--SerDe-->
         <dependency>
             <groupId>com.fasterxml.jackson.jr</groupId>
             <artifactId>jackson-jr-all</artifactId>
-            <version>2.15.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat.embed</groupId>-->
-        <!--            <artifactId>tomcat-embed-websocket</artifactId>-->
-        <!--            <version>${tomcat.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat.embed</groupId>-->
-        <!--            <artifactId>tomcat-embed-el</artifactId>-->
-        <!--            <version>${tomcat.version}</version>-->
-        <!--        </dependency>-->
-
+        <!--Logging-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.13</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.5.6</version>
+            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.6</version>
+            <version>${logback.version}</version>
         </dependency>
 
-
-        <!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--            <version></version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
+        <!--Test-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -148,6 +141,7 @@
         </resources>
 
         <plugins>
+            <!--Flyway migration-->
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
@@ -180,10 +174,11 @@
                 </executions>
             </plugin>
 
+            <!--Packaging Shade-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>${maven.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
