@@ -4,6 +4,8 @@ import in.shareapp.user.entity.User;
 import in.shareapp.utils.PropertyHolder;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.Cookie;
@@ -13,11 +15,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class JwtUtil {
-    private static final Logger logger = Logger.getLogger(JwtUtil.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final String TOKEN = "TOKEN";
@@ -108,7 +108,7 @@ public class JwtUtil {
         try {
             return jwtParser.parseSignedClaims(token).getPayload();
         } catch (JwtException e) {
-            logger.log(Level.SEVERE, "Error parsing JWT claims: " + e.getMessage());
+            logger.error("Error parsing JWT claims. {}", e.getMessage());
             throw e;
         }
     }
@@ -117,7 +117,7 @@ public class JwtUtil {
         try {
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error validating JWT claims: " + e.getMessage());
+            logger.error("Error validating JWT claims. {}", e.getMessage());
             throw e;
         }
     }

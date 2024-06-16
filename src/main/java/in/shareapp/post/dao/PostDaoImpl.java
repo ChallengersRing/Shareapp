@@ -2,14 +2,15 @@ package in.shareapp.post.dao;
 
 import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.post.entity.Post;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class PostDaoImpl extends DatabaseDataSource implements PostDao {
-    private static final Logger logger = Logger.getLogger(PostDaoImpl.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PostDaoImpl.class);
 
     @Override
     public boolean uploadPost(Post post) {
@@ -34,7 +35,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
                 status = true;
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: " + sqlEx.getMessage());
+            logger.warn("UploadPost query execution failed:{}", sqlEx.getMessage());
         }
 
         return status;
@@ -65,7 +66,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
                 }
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: " + sqlEx.getMessage());
+            logger.warn("retrievePost query execution failed:{}",sqlEx.getMessage());
         }
 
         return status;
@@ -96,7 +97,7 @@ public class PostDaoImpl extends DatabaseDataSource implements PostDao {
                 posts.add(post);
             }
         } catch (SQLException sqlEx) {
-            logger.warning("Query execution failed: " + sqlEx.getMessage());
+            logger.warn("RetrieveAllPost query execution failed:{}", sqlEx.getMessage());
         }
 
         return posts;

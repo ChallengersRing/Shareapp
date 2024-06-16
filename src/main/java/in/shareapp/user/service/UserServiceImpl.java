@@ -3,16 +3,16 @@ package in.shareapp.user.service;
 import in.shareapp.user.dao.UserDao;
 import in.shareapp.user.dao.UserDaoImpl;
 import in.shareapp.user.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserServiceImpl implements UserService {
-    private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserDao userDao = new UserDaoImpl();
 
     @Override
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             part.write(serverProfilePicDirectory + "\\" + profilePicName);
             return true;
         } catch (IOException ioException) {
-            logger.log(Level.SEVERE, "Fail to save profile pic in FS", ioException);
+            logger.error("Fail to save profile pic in FS.", ioException);
             return false;
         }
     }
@@ -78,5 +78,4 @@ public class UserServiceImpl implements UserService {
     public boolean updateProfile(final User user) {
         return userDao.updateUser(user);
     }
-
 }

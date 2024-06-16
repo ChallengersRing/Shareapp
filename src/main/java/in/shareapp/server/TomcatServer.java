@@ -8,21 +8,18 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.JarResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 public class TomcatServer implements EmbeddedServer {
-    private static final Logger logger = Logger.getLogger(TomcatServer.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(TomcatServer.class);
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 5500;
     private static final String SHAREAPP_CONTEXT_PATH = "/shareapp";
     private static final String DOC_BASE = ".";
-    private static final String ADDITION_WEB_INF_CLASSES = "target/classes";
-    private static final String WEB_APP_MOUNT = "/WEB-INF/classes";
-    private static final String INTERNAL_PATH = "/";
 
     @Override
     public void run(String[] args) {
@@ -35,7 +32,7 @@ public class TomcatServer implements EmbeddedServer {
                 tomcat.stop();
                 tomcat.destroy();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }));
 
@@ -43,17 +40,15 @@ public class TomcatServer implements EmbeddedServer {
             int port = this.getPort(args);
             logger.info("Setting up Tomcat...");
             this.setupTomcat(tomcat, port);
-            logger.info("Starting Tomcat...");
             tomcat.start();
             logger.info("-----------------------------------------------------------------");
-            logger.info("Application started with URL: http://" + DEFAULT_HOST + ":" + port + SHAREAPP_CONTEXT_PATH);
+            logger.info("Application started with URL: http://{}:{}/{}", DEFAULT_HOST, port, SHAREAPP_CONTEXT_PATH);
             logger.info("Hit Ctrl + D or C to stop it...");
             logger.info("-----------------------------------------------------------------");
             tomcat.getServer().await();
         } catch (Exception exception) {
-            exception.printStackTrace();
-            logger.severe(exception.getMessage());
-            logger.severe("Exit...");
+            logger.error("Message:{}", exception.getMessage(), exception);
+            logger.error("Exit...");
             System.exit(1);
         }
     }
@@ -64,7 +59,7 @@ public class TomcatServer implements EmbeddedServer {
             try {
                 return Integer.parseInt(port);
             } catch (NumberFormatException exception) {
-                logger.severe("Invalid port number argument {}" + port + exception);
+                logger.error("Invalid port number argument {}. ", port, exception);
             }
         }
         return DEFAULT_PORT;
@@ -79,18 +74,18 @@ public class TomcatServer implements EmbeddedServer {
     }
 
     private void addContext(Tomcat tomcat) {
-        logger.info("--------------------isJar---------------:" + isJar());
+        logger.info("--------------------isJar---------------:{}", isJar());
 
         String webAppMount = "/WEB-INF/classes";
         if (!isJar()) {
-            logger.info("--------------------getResourceFromFs---------------:" + getResourceFromFs());
+            logger.info("--------------------getResourceFromFs---------------:{}", getResourceFromFs());
             Context context = tomcat.addWebapp(SHAREAPP_CONTEXT_PATH, new File(getResourceFromFs(), "META-INF/resources").getAbsolutePath());
             WebResourceRoot webResourceRoot = new StandardRoot(context);
             WebResourceSet webResourceSet = new DirResourceSet(webResourceRoot, webAppMount, getResourceFromFs(), "/");
             webResourceRoot.addPreResources(webResourceSet);
             context.setResources(webResourceRoot);
         } else {
-            logger.info("--------------------getResourceFromJarFile---------------:" + getResourceFromJarFile());
+            logger.info("--------------------getResourceFromJarFile---------------:{}", getResourceFromJarFile());
             Context context = tomcat.addWebapp(SHAREAPP_CONTEXT_PATH, "/");
             WebResourceRoot webResourceRoot = new StandardRoot(context);
             WebResourceSet webResourceSet = new JarResourceSet(webResourceRoot, webAppMount, getResourceFromJarFile(), "/");

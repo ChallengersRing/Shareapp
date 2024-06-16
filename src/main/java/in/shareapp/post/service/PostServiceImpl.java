@@ -3,22 +3,21 @@ package in.shareapp.post.service;
 import in.shareapp.post.dao.PostDao;
 import in.shareapp.post.dao.PostDaoImpl;
 import in.shareapp.post.entity.Post;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PostServiceImpl implements PostService {
-    private static final Logger logger = Logger.getLogger(PostServiceImpl.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     PostDao postDao = new PostDaoImpl();
 
     @Override
     public String getPostFileName(Part part) {
-        String postFileName = part.getSubmittedFileName().isEmpty() ? "PostNotReceived" : part.getSubmittedFileName();
-        return postFileName;
+        return part.getSubmittedFileName().isEmpty() ? "PostNotReceived" : part.getSubmittedFileName();
     }
 
     @Override
@@ -27,8 +26,7 @@ public class PostServiceImpl implements PostService {
             part.write(serverFileDirectory + "\\" + postFileName);
             return true;
         } catch (IOException ioException) {
-            logger.log(Level.SEVERE, "Fail to save post in FS", ioException);
-            ioException.printStackTrace();
+            logger.error("Fail to save post in FS", ioException);
             return false;
         }
     }

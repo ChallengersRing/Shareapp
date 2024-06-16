@@ -3,13 +3,14 @@ package in.shareapp.dds;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import in.shareapp.utils.PropertyHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class DatabaseDataSource {
-    private static final Logger logger = Logger.getLogger(DatabaseDataSource.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseDataSource.class);
     private static final HikariDataSource dataSource;
 
     static {
@@ -27,8 +28,8 @@ public class DatabaseDataSource {
     }
 
     public Connection getDbConnection() throws SQLException {
-        logger.info("Get connection from pool. Active: " + dataSource.getHikariPoolMXBean().getActiveConnections()
-                + ", Idle: " + dataSource.getHikariPoolMXBean().getIdleConnections());
+        logger.info("Get connection from pool. Active:{} , Idle:{} ", dataSource.getHikariPoolMXBean().getActiveConnections(),
+                dataSource.getHikariPoolMXBean().getIdleConnections());
         return dataSource.getConnection();
     }
 

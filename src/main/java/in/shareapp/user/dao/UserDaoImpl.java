@@ -2,14 +2,15 @@ package in.shareapp.user.dao;
 
 import in.shareapp.dds.DatabaseDataSource;
 import in.shareapp.user.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class UserDaoImpl extends DatabaseDataSource implements UserDao {
-    private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Override
     public User selectUserByColumnValue(final String column, final String value) {
@@ -27,7 +28,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 }
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Error selecting user by column field name: " + sqlEx.getMessage());
+            logger.error("Error selecting user by column field name.", sqlEx);
         }
 
         return user;
@@ -51,7 +52,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 }
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Query execution failed: " + sqlEx.getMessage());
+            logger.error("SelectUserByEmail query execution failed.", sqlEx);
         }
 
         return Optional.ofNullable(user);
@@ -73,7 +74,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 }
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Error selecting user by ID: " + sqlEx.getMessage());
+            logger.error("Error selecting user by ID.", sqlEx);
         }
 
         return user;
@@ -96,7 +97,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 }
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Error selecting user by external ID: " + sqlEx.getMessage());
+            logger.error("Error selecting user by external ID.", sqlEx);
         }
 
         return user;
@@ -125,8 +126,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Error inserting user: " + sqlEx.getMessage());
-            //TODO: Custom exception throw.
+            logger.error("Error inserting user.", sqlEx);
         }// Resources are automatically closed by try-with-resources
 
         return status;
@@ -147,7 +147,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 userList.add(createUserFromResultSet(rs));
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Query execution failed: " + sqlEx.getMessage());
+            logger.error("SelectAllUsers query execution failed.", sqlEx);
         }
 
         return userList;
@@ -176,7 +176,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 status = true;
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Error updating user: " + sqlEx.getMessage());
+            logger.error("Error updating user.", sqlEx);
         }
 
         return status;
@@ -198,7 +198,7 @@ public class UserDaoImpl extends DatabaseDataSource implements UserDao {
                 success = true;
             }
         } catch (final SQLException sqlEx) {
-            logger.warning("Error soft deleting user by external ID: " + sqlEx.getMessage());
+            logger.error("Error soft deleting user by external ID.", sqlEx);
         }
 
         return success;

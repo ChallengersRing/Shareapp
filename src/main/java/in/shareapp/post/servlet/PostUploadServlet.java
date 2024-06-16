@@ -4,6 +4,8 @@ import in.shareapp.post.entity.Post;
 import in.shareapp.post.service.PostService;
 import in.shareapp.post.service.PostServiceImpl;
 import in.shareapp.user.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,7 +17,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static in.shareapp.utils.ServletUtil.writeJsonResponse;
 
@@ -27,11 +28,12 @@ import static in.shareapp.utils.ServletUtil.writeJsonResponse;
         location = "/" //Temp loc for store upload file
 )
 public class PostUploadServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(PostUploadServlet.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PostUploadServlet.class);
 
     @Override
     protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         final Map<String, Object> jsonResponse = new HashMap<>();
+        logger.info("Trying to upload post...");
 
         final User user = (User) req.getAttribute("user");
         if (user == null) {
@@ -100,6 +102,7 @@ public class PostUploadServlet extends HttpServlet {
 
         jsonResponse.put("status", "success");
         writeJsonResponse(resp, jsonResponse, 200);
+        logger.info("Successfully uploaded post");
     }
 
     private String getDateTime() {

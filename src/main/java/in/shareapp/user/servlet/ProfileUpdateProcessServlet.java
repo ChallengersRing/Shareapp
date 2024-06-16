@@ -6,6 +6,8 @@ import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
 import in.shareapp.utils.ServletUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,7 +17,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @WebServlet("/updateprofile")
 @MultipartConfig(
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
         location = "/" //Temp loc for store upload file
 )
 public class ProfileUpdateProcessServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(DatabaseDataSource.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseDataSource.class);
     private final UserService userService = new UserServiceImpl();
 
     @Override
@@ -47,7 +48,7 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
 
         this.updateUserInDatabaseAndRefreshToken(userDetails, messageForClient, resp);
 
-        logger.info("Message for Client: " + messageForClient);
+        logger.info("Message for Client: {}", messageForClient);
         resp.getWriter().write(messageForClient.toString());
     }
 
@@ -104,7 +105,7 @@ public class ProfileUpdateProcessServlet extends HttpServlet {
             messageForClient.append("Details updated successfully.");
         } else {
             messageForClient.append("Fail to update Details.");
-            logger.warning("Fail to update user in database");
+            logger.warn("Fail to update user in database");
         }
     }
 }

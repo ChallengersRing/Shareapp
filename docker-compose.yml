@@ -1,21 +1,38 @@
 version: '3.8'
 
 services:
-  postgres:
+  db:
     image: postgres:15
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: shareapp
+    container_name: shareapp-db
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - shareapp
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-networks:
-  shareapp:
+  flyway:
+    network_mode: host
+    image: flyway/flyway:latest
+    container_name: flyway-migration
+    command: [
+      "-url=jdbc:postgresql://localhost:5432/shareapp",
+      "-user=postgres",
+      "-password=postgres",
+      "-schemas=shareapp",
+      "migrate" ]
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql/db
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
-  postgres-data:
+  postgres_data:

@@ -4,6 +4,8 @@ import in.shareapp.user.entity.User;
 import in.shareapp.user.service.UserService;
 import in.shareapp.user.service.UserServiceImpl;
 import in.shareapp.security.jwt.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,11 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @WebServlet("/signin")
 public class SignInProcessServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(SignInProcessServlet.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SignInProcessServlet.class);
     private final UserService userService = new UserServiceImpl();
 
     @Override
@@ -33,7 +34,7 @@ public class SignInProcessServlet extends HttpServlet {
             resp.getWriter().write("{\"success\": true}");
         } else {
             // Authentication failed
-            logger.warning("Failed authentication for user with email: " + email);
+            logger.warn("Failed authentication for user with email: {}", email);
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.setContentType("application/json");
             resp.getWriter().write("{\"success\": false, \"message\": \"Invalid User\"}");

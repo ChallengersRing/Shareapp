@@ -1,16 +1,19 @@
 package in.shareapp.user.servlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 @WebServlet("/signout")
 public class SignOutProcessServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(SignOutProcessServlet.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SignOutProcessServlet.class);
 
     @Override
     protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
+        logger.debug("Signing out user...");
         resp.setContentType("application/json");
         Cookie tokenCookie = new Cookie("TOKEN", "");
         tokenCookie.setPath("/");
